@@ -36,6 +36,20 @@ To run the test suite from the same directory, use `npm test`. Some checks open 
 
 The application runs on your computer. When you use an external service, your request, conversation context and relevant project content may be sent to that service. Depending on permissions, tools can read or change files and run commands. Review actions, protect credentials and keep backups. See the [privacy information](PRIVACY.md) for details.
 
+## Repository structure
+
+| Path | Contents |
+| --- | --- |
+| [`source/`](source/) | Application source, tests and build scripts. The 1.3.38 candidate is in `source/onlyone-4c4c5c3/`. |
+| [`docs/`](docs/) | Guides, contribution rules, security information and release status. |
+| [`releases/`](releases/) | Information and manifests for builds; download published files from GitHub Releases. |
+| [`LICENSES/`](LICENSES/) | License texts and notices for included components. |
+| [`README.md`](README.md) | Project overview and setup instructions. |
+| [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE) | Project license and accompanying notices. |
+| [`PRIVACY.md`](PRIVACY.md), [`TERMS.md`](TERMS.md), [`SECURITY.md`](SECURITY.md) | Privacy, usage and security information. |
+| [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md) | Notices for third-party components and materials. |
+| [`.gitignore`](.gitignore) | Files Git should normally leave out of the repository. |
+
 ## Project documents
 
 - [Contributing and repository rules](docs/CONTRIBUTING.md)
@@ -83,6 +97,20 @@ npm run dev
 ### Данные и безопасность
 
 Приложение работает на вашем компьютере. При использовании внешнего сервиса ему могут передаваться запрос, контекст переписки и относящиеся к задаче данные проекта. В зависимости от разрешений инструменты могут читать и менять файлы и выполнять команды. Проверяйте действия, защищайте ключи и сохраняйте резервные копии. Подробнее — в [информации о конфиденциальности](PRIVACY.md).
+
+### Структура репозитория
+
+| Путь | Что внутри |
+| --- | --- |
+| [`source/`](source/) | Исходники приложения, тесты и скрипты сборки. Кандидат 1.3.38 находится в `source/onlyone-4c4c5c3/`. |
+| [`docs/`](docs/) | Руководства, правила участия, сведения о безопасности и статус выпуска. |
+| [`releases/`](releases/) | Информация и манифесты сборок; опубликованные файлы скачиваются через GitHub Releases. |
+| [`LICENSES/`](LICENSES/) | Тексты лицензий и уведомления для включённых компонентов. |
+| [`README.md`](README.md) | Описание проекта и инструкция запуска. |
+| [`LICENSE`](LICENSE) и [`NOTICE`](NOTICE) | Лицензия проекта и сопутствующие уведомления. |
+| [`PRIVACY.md`](PRIVACY.md), [`TERMS.md`](TERMS.md), [`SECURITY.md`](SECURITY.md) | Информация о конфиденциальности, использовании и безопасности. |
+| [`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md) | Уведомления о сторонних компонентах и материалах. |
+| [`.gitignore`](.gitignore) | Файлы, которые Git обычно исключает из репозитория. |
 
 ### Документы проекта
 
