@@ -1,4 +1,4 @@
-# Local build candidate binaries
+# Build executables are distributed through Releases, not Git
 *.exe
 *.exe.blockmap
 **/node_modules/
