@@ -7,3 +7,5 @@ The 1.3.38 candidate was built from source revision `4c4c5c3`. Its Windows execu
 Установщики и portable-сборки не хранятся в Git-репозитории. После публикации их можно скачать на странице [Releases](https://github.com/pkwoblerdev/onlyone/releases).
 
 Кандидат 1.3.38 собран из ревизии `4c4c5c3`. Исполняемые файлы Windows не подписаны. Проверки и оставшиеся ограничения описаны в [статусе выпуска](../docs/RELEASE-STATUS.md).
+
+Portable archives contain the standalone portable executable; extract the archive before running it. / Архив portable содержит отдельный исполняемый файл; перед запуском распакуйте архив.
