@@ -7,3 +7,5 @@
 - [Security / Безопасность](SECURITY.md)
 - [Third-party notices / Сторонние компоненты](THIRD-PARTY-NOTICES.md)
 - [Command line / Командная строка](CLI.md)
+
+- [Contribution guide / Правила участия](CONTRIBUTING.md)
