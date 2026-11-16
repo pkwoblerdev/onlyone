@@ -1,0 +1,9 @@
+{
+  "id": "demo",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "entry": "worker.cjs",
+  "capabilities": ["fs.read", "storage"],
+  "selftest": { "method": "selftest" },
+  "ui": { "title": "Demo" }
+}

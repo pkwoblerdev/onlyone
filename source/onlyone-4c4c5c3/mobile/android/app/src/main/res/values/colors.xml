@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Цвета берутся из макета: тёмный фон приложения и оранжевый акцент. Без них
+     системная полоса статуса оставалась серой и выбивалась из тёмного окна —
+     на телефоне это первое, что бросается в глаза. -->
+<resources>
+    <color name="colorPrimary">#171613</color>
+    <color name="colorPrimaryDark">#171613</color>
+    <color name="colorAccent">#e08c62</color>
+    <color name="onecodeSurface">#171613</color>
+</resources>

@@ -1,0 +1,21 @@
+.run-configurations-dialog { width: min(1000px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; padding: var(--ui-space-4); color: var(--text); background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); box-shadow: var(--ui-shadow-overlay); font: var(--ui-size-body)/1.5 var(--font-ui); }
+.run-configurations-dialog[open] { display: grid; gap: var(--ui-space-4); }
+.run-configurations-dialog:not([open]) { display: none; }
+.run-configurations-dialog::backdrop { background: var(--bg-window); opacity: .75; }
+.run-configurations-dialog header { display: flex; gap: var(--ui-space-3); justify-content: space-between; align-items: center; }
+.run-configurations-dialog h2 { margin: 0; font-size: var(--ui-size-section); }
+.run-configurations-dialog p { margin: 0; color: var(--text-2); overflow-wrap: anywhere; }
+.run-configurations-selectors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ui-space-3); }
+.run-configurations-selectors label { display: grid; gap: var(--ui-space-2); min-width: 0; }
+.run-configurations-selectors select { width: 100%; min-width: 0; min-height: 36px; color: var(--text); background: var(--bg-input); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); padding: var(--ui-space-2); font: inherit; }
+.run-configurations-comparison table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.run-configurations-comparison th, .run-configurations-comparison td { padding: var(--ui-space-3); text-align: left; vertical-align: top; border-bottom: 1px solid var(--line-strong); overflow-wrap: anywhere; }
+.run-configurations-comparison code { font: var(--ui-size-body)/1.5 var(--font-code); }
+.run-configurations-comparison .configuration-different { background: var(--bg-hover); }
+.run-configurations-comparison details { margin-top: var(--ui-space-3); overflow-wrap: anywhere; }
+.run-configurations-comparison summary { cursor: pointer; }
+.run-configurations-ids { margin-top: var(--ui-space-3) !important; }
+.run-configurations-restore:not([hidden]) { display: flex; flex-wrap: wrap; gap: var(--ui-space-3); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); padding: var(--ui-space-3); }
+.run-configurations-restore p { flex-basis: 100%; }
+.run-configurations-restore code { overflow-wrap: anywhere; }
+@media (max-width: 720px) { .run-configurations-selectors { grid-template-columns: 1fr; } }

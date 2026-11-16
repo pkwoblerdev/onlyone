@@ -1,0 +1,76 @@
+.mods-manager { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
+.mods-manager p, .mod-card p { overflow-wrap: anywhere; white-space: pre-wrap; margin: 0; }
+.mod-card {
+  min-width: 0;
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--line-subtle);
+  display: grid;
+  gap: var(--s2);
+}
+.mod-card:last-child { border-bottom: 0; }
+.mod-card h3 { margin: 0; font-size: var(--fs-ui); font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.mod-card small, .mods-manager > p { color: var(--ink-4); font-size: var(--fs-cap); overflow-wrap: anywhere; }
+.mod-card > p { color: var(--ink-2); font-size: var(--fs-ui); }
+.mod-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin-top: var(--s1); }
+.mod-controls button { min-width: 0; max-width: 100%; height: auto; min-height: var(--ui-control-md); white-space: normal; overflow-wrap: anywhere; text-align: left; }
+.mods-package, .mods-manager select {
+  background: var(--field-bg);
+  color: var(--ink);
+  border: 0;
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 1px var(--field-line);
+  padding: var(--s2) var(--s3);
+  font: 400 var(--fs-ui)/20px var(--font-ui);
+  max-width: 100%;
+}
+.mods-package:focus, .mods-manager select:focus {
+  background: var(--field-bg-focus);
+  box-shadow: inset 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft);
+  outline: 0;
+}
+.mods-package { width: 100%; min-height: 160px; box-sizing: border-box; resize: vertical; }
+.mod-counts { display: flex; flex-wrap: wrap; gap: var(--s2); margin: var(--s1) 0; }
+.mod-chip {
+  display: grid;
+  gap: var(--s-half);
+  min-width: 0;
+  padding: var(--s1) var(--s2);
+  border-radius: var(--r-xs);
+  background: var(--bg-chip);
+}
+.mod-chip dt { color: var(--ink-4); font-size: var(--fs-cap); margin: 0; }
+.mod-chip dd { display: flex; align-items: baseline; gap: var(--s-half); margin: 0; font-size: var(--fs-ui); color: var(--ink); font-variant-numeric: tabular-nums; }
+.mod-counts [data-zero] dd { color: var(--ink-disabled); }
+.mod-trend { color: var(--ink-4); font-size: var(--fs-cap); }
+.mod-progress { height: var(--s1); margin-top: var(--s2); overflow: hidden; border-radius: var(--r-pill); background: var(--bg-active); }
+.mod-progress-fill { display: block; height: 100%; width: 0; background: var(--ok); }
+.mod-status { padding: var(--s1) var(--s2); border-left: 3px solid var(--line-strong); font-size: var(--fs-cap); }
+.mod-status[data-tone="error"] { border-color: var(--danger); color: var(--danger); }
+.mod-status[data-tone="success"] { border-color: var(--ok); color: var(--ok); }
+.mod-status[data-tone="warning"] { border-color: var(--warn); color: var(--warn); }
+.mod-feedback { color: var(--ink-3); font-size: var(--fs-cap); margin: 0; }
+.mods-dialog {
+  width: min(640px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  box-sizing: border-box;
+  padding: var(--s6);
+  color: var(--ink);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-pop);
+  font: 400 var(--fs-ui)/20px var(--font-ui);
+}
+.mods-dialog::backdrop { background: var(--scrim, rgba(8, 6, 5, 0.65)); }
+.mods-dialog header { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); margin-bottom: var(--s4); }
+.mods-dialog h2 { margin: 0; font-size: var(--fs-h2); font-weight: var(--fw-head); color: var(--ink); }
+.mods-dialog pre { white-space: pre-wrap; overflow-wrap: anywhere; font: 400 var(--fs-ui)/20px var(--font-ui); padding: var(--s3); border-radius: var(--r-sm); background: var(--field-bg); }
+.mods-dialog-top { display: flex; align-items: center; justify-content: flex-end; margin-bottom: var(--s3); }
+.mods-draft-badge { margin: var(--s2); }
+.mods-density { display: inline-flex; align-items: center; gap: var(--s2); color: var(--ink-3); font-size: var(--fs-ui); cursor: pointer; }
+.mods-density input { margin: 0; accent-color: var(--accent); }
+.mods-density input:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mods-density-desk { flex: none; padding: var(--s2) var(--s6); border-bottom: 1px solid var(--line); }
+.mods-density-empty { color: var(--ink-3); font-size: var(--fs-ui); }
+.mods-panel-list[data-density="compact"] .mod-card[data-mods-empty], #desk-mods-body[data-density="compact"] .mod-card[data-mods-empty] { display: none; }

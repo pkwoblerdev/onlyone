@@ -1,0 +1,16 @@
+rules:
+  - id: node-command-injection
+    languages: [javascript]
+    message: user-controlled string reaches child_process.exec
+    severity: ERROR
+    patterns:
+      - pattern: exec($CMD, ...)
+      - pattern-not: exec("...", ...)
+
+  - id: node-path-traversal
+    languages: [javascript]
+    message: path.join with a non-literal segment escapes the base directory
+    severity: WARNING
+    patterns:
+      - pattern: path.join(..., $SEGMENT)
+      - pattern-not: path.join(..., "...")

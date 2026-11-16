@@ -1,0 +1,7 @@
+{
+  "appId": "best.pkwobler.onlyone",
+  "appName": "onlyone",
+  "webDir": "www",
+  "android": { "allowMixedContent": false },
+  "server": { "androidScheme": "https" }
+}

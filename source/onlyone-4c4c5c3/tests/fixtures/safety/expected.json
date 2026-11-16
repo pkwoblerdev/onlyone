@@ -1,0 +1,14 @@
+{
+  "findings": [
+    "test-no-assert.cjs:1:no-assert",
+    "test-skipped.cjs:3:skipped",
+    "test-skipped.cjs:4:skipped",
+    "test-skipped.cjs:5:skipped",
+    "test-tautology.cjs:3:tautology",
+    "test-tautology.cjs:4:tautology",
+    "test-tautology.cjs:5:tautology",
+    "test-swallowed.cjs:3:empty-catch",
+    "test-swallowed.cjs:4:empty-catch",
+    "test-swallowed.cjs:5:empty-catch"
+  ]
+}

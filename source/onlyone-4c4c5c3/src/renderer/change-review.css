@@ -1,0 +1,13 @@
+.change-review-dialog { width: min(1100px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; padding: var(--ui-space-4); color: var(--text); background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); box-shadow: var(--ui-shadow-overlay); font: var(--ui-size-body)/1.5 var(--font-ui); }
+.change-review-dialog[open] { display: grid; gap: var(--ui-space-4); }
+.change-review-dialog::backdrop { background: var(--bg-window); opacity: .75; }
+.change-review-dialog header { display: flex; justify-content: space-between; align-items: center; gap: var(--ui-space-3); }
+.change-review-dialog h2, .change-review-dialog h3, .change-review-dialog h4 { margin: 0; font-size: var(--ui-size-section); }
+.change-review-dialog p { margin: 0; color: var(--text-2); overflow-wrap: anywhere; }
+.change-review-dialog table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.change-review-dialog th, .change-review-dialog td { padding: var(--ui-space-2); text-align: left; vertical-align: top; border-bottom: 1px solid var(--line-strong); overflow-wrap: anywhere; }
+.change-review-detail { display: grid; gap: var(--ui-space-3); }
+.change-review-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ui-space-3); }
+.change-review-comparison section { min-width: 0; }
+.change-review-comparison pre { max-height: 320px; overflow: auto; margin: var(--ui-space-2) 0; padding: var(--ui-space-3); background: var(--bg-input); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); font: var(--ui-size-body)/1.5 var(--font-code); white-space: pre-wrap; overflow-wrap: anywhere; }
+@media (max-width: 700px) { .change-review-comparison { grid-template-columns: 1fr; } }

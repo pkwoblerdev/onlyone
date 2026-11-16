@@ -1,0 +1,6 @@
+.chat-fork-preview { width: min(520px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; padding: var(--ui-space-4); color: var(--text); background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); box-shadow: var(--ui-shadow-overlay); font: var(--ui-size-body)/1.5 var(--font-ui); }
+.chat-fork-preview[open] { display: grid; gap: var(--ui-space-3); }
+.chat-fork-preview h2 { margin: 0; font-size: var(--fs-h2); }
+.chat-fork-preview p { margin: 0; }
+.chat-fork-preview-meta { color: var(--text-dim); }
+.chat-fork-preview-actions { display: flex; gap: var(--ui-space-2); justify-content: flex-end; }

@@ -1,0 +1,17 @@
+/* Карточка разрешения в ленте — одной узкой строкой: значок, что просят, две маленькие кнопки. Подробности (адрес, пояснение)
+   — в подсказке и под значком-шевроном «Показать изменения»; длинный текст больше не распирает карточку и не налезает на заголовок. */
+.approval-card:not(.kind-resume):not(.kind-design-task) {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--ui-space-1) var(--ui-space-2);
+  margin: var(--ui-space-1) 0; padding: var(--ui-space-1) var(--ui-space-2);
+  border-radius: var(--ui-radius-control); box-shadow: none;
+}
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-head { flex: 1 1 0; min-width: 0; padding: 0; gap: var(--ui-space-2); }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-icon { width: var(--ui-icon); height: var(--ui-icon); background: none; }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-icon svg { width: var(--ui-icon-compact); height: var(--ui-icon-compact); }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-headings { display: flex; align-items: baseline; gap: var(--ui-space-2); min-width: 0; }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-action { flex: none; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--ui-size-small); }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-target { flex: 1 1 auto; min-width: 0; margin: 0; font-size: var(--ui-size-small); color: var(--text-4); }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-meta { display: none; }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-actions { flex: none; padding: 0; border: 0; background: none; gap: var(--ui-space-1); }
+.approval-card:not(.kind-resume):not(.kind-design-task) :is(.approval-deny, .approval-allow) { height: var(--ui-control-sm); padding: 0 var(--ui-space-3); font-size: var(--ui-size-small); }
+.approval-card:not(.kind-resume):not(.kind-design-task) .approval-toggle, .approval-card:not(.kind-resume):not(.kind-design-task) .approval-diff { flex: 1 0 100%; }

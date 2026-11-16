@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; frame-src onecode-artifact:; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Onlyone Desk</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="ultra-blocks.css">
+  <link rel="stylesheet" href="mods.css">
+  <link rel="stylesheet" href="desk.css">
+  <link rel="stylesheet" href="budget-desk.css">
+</head>
+<body>
+  <svg width="0" height="0" class="desk-defs" aria-hidden="true"><defs>
+    <path id="desk-mark" fill-rule="evenodd" d="M53.22 32L52.77 33.09L51.78 34.08L50.33 34.9L48.56 35.52L46.62 35.92L44.69 36.12L42.92 36.19L41.46 36.21L40.39 36.28L39.77 36.48L39.58 36.92L39.76 37.64L40.23 38.66L40.84 39.96L41.48 41.48L42 43.11L42.31 44.73L42.32 46.21L42.01 47.42L41.39 48.26L40.49 48.67L39.4 48.63L38.21 48.17L36.99 47.37L35.85 46.36L34.82 45.27L33.94 44.27L33.21 43.49L32.58 43.06L32 43.03L31.4 43.44L30.71 44.25L29.88 45.37L28.88 46.68L27.71 48.03L26.39 49.25L25.01 50.2L23.65 50.75L22.41 50.82L21.39 50.38L20.67 49.45L20.31 48.09L20.32 46.42L20.67 44.58L21.3 42.7L22.09 40.93L22.91 39.36L23.62 38.09L24.1 37.13L24.23 36.48L23.95 36.1L23.23 35.9L22.12 35.79L20.68 35.68L19.05 35.47L17.38 35.11L15.82 34.56L14.53 33.84L13.64 32.96L13.22 32L13.32 31.02L13.9 30.1L14.9 29.29L16.19 28.64L17.64 28.15L19.09 27.81L20.4 27.55L21.44 27.3L22.14 26.97L22.45 26.48L22.39 25.76L22.04 24.76L21.48 23.48L20.85 21.96L20.27 20.27L19.86 18.52L19.73 16.85L19.93 15.39L20.49 14.28L21.39 13.62L22.56 13.46L23.91 13.83L25.35 14.67L26.77 15.9L28.08 17.38L29.23 18.95L30.17 20.45L30.92 21.7L31.51 22.59L32 23.03L32.47 22.98L33 22.46L33.66 21.54L34.47 20.36L35.47 19.05L36.62 17.78L37.87 16.71L39.14 15.96L40.35 15.62L41.39 15.74L42.19 16.31L42.7 17.28L42.9 18.54L42.81 19.99L42.51 21.49L42.08 22.92L41.66 24.18L41.35 25.21L41.29 25.97L41.55 26.48L42.21 26.8L43.25 26.99L44.64 27.15L46.27 27.36L48.03 27.71L49.74 28.23L51.26 28.95L52.42 29.85L53.1 30.89ZM35.2 32a3.2 3.2 0 1 0-6.4 0a3.2 3.2 0 1 0 6.4 0Z"/>
+  </defs></svg>
+  <header class="desk-bar">
+    <svg class="desk-spark" viewBox="10.5 10.5 43 43" aria-hidden="true"><use href="#desk-mark"/></svg>
+    <span id="desk-title" class="desk-name"></span>
+    <div id="desk-agent" class="desk-agent" aria-live="polite" hidden><span class="desk-dot"></span><span id="desk-agent-what" class="desk-agent-what"></span></div>
+    <button id="desk-agent-act" class="desk-btn desk-btn-sm" type="button" hidden><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"></svg><span></span></button>
+    <span class="desk-sp"></span>
+    <button id="desk-watch-toggle" class="desk-ib" type="button" aria-expanded="false" aria-controls="desk-watch-panel"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.2" y="3" width="11.6" height="10" rx="2.4"/><path d="M5 6.4l1.8 1.6L5 9.6M8.4 9.6H11"/></svg><span id="desk-watch-count" class="desk-n">0</span><span id="desk-watch-label" class="desk-sr"></span></button>
+    <button id="desk-budget-toggle" class="desk-ib" type="button" aria-expanded="false" aria-controls="desk-budget-panel"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M2.6 11.4a5.4 5.4 0 1 1 10.8 0"/><path d="M8 8l2.2-2.2"/></svg><span class="desk-sr" id="desk-budget-label"></span></button>
+    <button id="desk-mods-toggle" class="desk-ib" type="button" aria-expanded="false" aria-controls="desk-mods-panel"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.4 3.2h3.2v3.2H3.4zM9.4 3.2h3.2v3.2H9.4zM6.4 9.6h3.2v3.2H6.4zM5 6.4v1.6h6V6.4M8 8v1.6"/></svg><span class="desk-sr" id="desk-mods-label"></span></button>
+    <button id="desk-transfer-open" class="desk-ib" type="button" aria-haspopup="dialog"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.2" y="3" width="11.6" height="10" rx="2.4"/><path d="M2.2 6.6h11.6"/></svg><span class="desk-sr" id="desk-transfer-open-label"></span></button>
+    <button id="desk-main" class="desk-btn" type="button"><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"><rect x="2.2" y="3" width="11.6" height="8.6" rx="2.4"/><path d="M5.8 11.6L4.4 14.1v-2.5"/></svg><span class="desk-main-word">Onlyone</span></button>
+  </header>
+  <main id="desk-canvas">
+    <div id="desk-banner" class="desk-banner" hidden><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.6l5.8 10.2H2.2z"/><path d="M8 6.6v2.8M8 11v.01"/></svg><span id="desk-banner-text"></span><span class="desk-sp"></span><button id="desk-banner-retry" class="desk-btn" type="button" hidden><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"><path d="M12.6 8a4.6 4.6 0 1 1-1.4-3.3M12.8 2.8v2.6h-2.6"/></svg><span></span></button></div>
+    <nav id="desk-tabs" class="desk-tabs" hidden></nav>
+    <section id="desk-empty">
+      <svg class="desk-spark desk-spark-big" viewBox="10.5 10.5 43 43" aria-hidden="true"><use href="#desk-mark"/></svg>
+      <h1 id="desk-empty-title"></h1><p id="desk-empty-text"></p>
+      <div class="desk-acts"><button id="desk-empty-main" class="desk-btn desk-primary" type="button"></button><button id="desk-empty-accept" class="desk-btn" type="button"></button></div>
+    </section>
+    <div id="desk-dock" class="desk-dock"></div>
+    <div id="desk-notice" class="desk-notice" hidden><span id="desk-notice-text"></span><button id="desk-notice-undo" class="desk-btn desk-accent" type="button" hidden><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.4 6.4h5.4a3 3 0 0 1 0 6H7.6M6.4 4l-2.4 2.4 2.4 2.4"/></svg><span></span></button><i class="desk-notice-time"></i></div>
+  </main>
+  <footer id="desk-status" class="desk-sr" role="status" aria-live="polite"></footer>
+  <section id="desk-watch-panel" class="desk-drawer" role="region" aria-labelledby="desk-watch-title" hidden>
+    <div class="desk-dh"><button id="desk-process-back" class="desk-ib" type="button" hidden><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M10 3.6L5.6 8l4.4 4.4"/></svg><span class="desk-sr"></span></button><h2 id="desk-watch-title"></h2><span class="desk-sp"></span><button id="desk-watch-close" class="desk-ib" type="button"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg><span class="desk-sr"></span></button></div>
+    <div class="desk-dbody" id="desk-watch-body">
+      <section><h3 id="desk-process-title" class="desk-lab"></h3><p id="desk-process-empty" class="desk-quiet" hidden></p><ul id="desk-process-list"></ul></section>
+      <section><h3 id="desk-watch-folders-title" class="desk-lab"><span></span><button id="desk-watch-stop-all" class="desk-lnk" type="button" hidden></button></h3><p id="desk-watch-empty" class="desk-quiet" hidden></p><ul id="desk-watch-list"></ul></section>
+      <section><h3 id="desk-watch-recent-title" class="desk-lab"></h3><p id="desk-watch-recent-empty" class="desk-quiet" hidden></p><ul id="desk-watch-recent"></ul></section>
+    </div>
+    <div class="desk-output" id="desk-process-view" hidden>
+      <pre id="desk-process-output-full" class="desk-term desk-term-panel"></pre>
+      <div class="desk-dfoot"><button id="desk-process-view-stop" class="desk-btn desk-stop" type="button"></button><span class="desk-sp"></span><button id="desk-process-view-copy" class="desk-btn" type="button"></button></div>
+    </div>
+  </section>
+  <section id="desk-budget-panel" class="desk-drawer" role="region" aria-labelledby="desk-budget-title" hidden>
+    <div class="desk-dh"><h2 id="desk-budget-title"></h2><span class="desk-sp"></span><button id="desk-budget-close" class="desk-ib" type="button"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg><span class="desk-sr"></span></button></div>
+    <div class="desk-dbody"><div id="desk-budget-body" class="desk-budget"></div></div>
+  </section>
+  <aside id="desk-mods-panel" class="mods-desk-panel desk-drawer" aria-labelledby="desk-mods-title" hidden>
+    <div class="desk-dh"><h2 id="desk-mods-title"></h2><span class="desk-sp"></span><button id="desk-mods-close" class="desk-ib" type="button"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg><span class="desk-sr"></span></button></div>
+    <div id="desk-mods-body" class="desk-mods-body"></div>
+    <div class="desk-dfoot"><button id="desk-mods-settings" class="desk-btn" type="button"></button></div>
+  </aside>
+  <dialog id="desk-transfer-dialog" class="desk-transfer-dialog desk-drawer" aria-labelledby="desk-transfer-title" aria-describedby="desk-transfer-help">
+    <div class="desk-dh"><h2 id="desk-transfer-title"></h2><span class="desk-sp"></span><button id="desk-transfer-close" class="desk-ib" type="button"><svg class="desk-i" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg><span class="desk-sr"></span></button></div>
+    <div class="desk-dbody">
+      <div class="desk-seg" role="tablist"><button id="desk-transfer-tab-out" class="desk-sg" type="button" role="tab" aria-selected="true"></button><button id="desk-transfer-tab-in" class="desk-sg" type="button" role="tab" aria-selected="false"></button></div>
+      <div id="desk-transfer-out" class="desk-pane">
+        <p id="desk-transfer-help" class="desk-dtext"></p>
+        <section><h3 id="desk-transfer-blocks-title" class="desk-lab"></h3><ul id="desk-transfer-blocks"></ul></section>
+        <label class="desk-switch-row"><span id="desk-transfer-content-label"></span><input id="desk-transfer-content" class="desk-switch" type="checkbox"></label>
+        <label id="desk-transfer-export-label" class="desk-sr" for="desk-transfer-export"></label>
+        <textarea id="desk-transfer-export" class="desk-sr" rows="4" readonly spellcheck="false" tabindex="-1"></textarea>
+      </div>
+      <div id="desk-transfer-in" class="desk-pane" hidden>
+        <section>
+          <label id="desk-transfer-input-label" class="desk-fl" for="desk-transfer-input"></label>
+          <textarea id="desk-transfer-input" class="desk-fld" rows="4" maxlength="262144" spellcheck="false"></textarea>
+          <div id="desk-transfer-chip" class="desk-fld desk-chip-field" hidden><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"><path d="M9 2.2H4.6c-.9 0-1.6.7-1.6 1.6v8.4c0 .9.7 1.6 1.6 1.6h6.8c.9 0 1.6-.7 1.6-1.6V6.2zM9 2.2v4h4"/></svg><span id="desk-transfer-chip-text" class="desk-chipf"></span><button id="desk-transfer-clear" class="desk-ib desk-ib-sm" type="button"><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 4.5l7 7M11.5 4.5l-7 7"/></svg><span class="desk-sr"></span></button></div>
+        </section>
+        <section id="desk-transfer-preview-panel" hidden><h3 id="desk-transfer-preview-title" class="desk-lab"></h3><ul id="desk-transfer-preview-list"></ul><p id="desk-transfer-preview-note" class="desk-dtext"></p></section>
+      </div>
+      <p id="desk-transfer-message" class="desk-ferr" role="status" aria-live="polite"></p>
+    </div>
+    <div class="desk-dfoot">
+      <button id="desk-fit" class="desk-btn" type="button"></button>
+      <button id="desk-transfer-legacy" class="desk-btn" type="button"></button>
+      <span class="desk-sp"></span>
+      <button id="desk-transfer-preview" class="desk-btn" type="button"></button>
+      <button id="desk-transfer-apply" class="desk-btn desk-primary" type="button" disabled></button>
+      <button id="desk-transfer-copy" class="desk-btn desk-primary" type="button"><svg class="desk-i desk-i14" viewBox="0 0 16 16" aria-hidden="true"><rect x="5.4" y="5.4" width="8" height="8" rx="1.8"/><path d="M10.6 5.4V4.2c0-1-.8-1.8-1.8-1.8H4.2c-1 0-1.8.8-1.8 1.8v4.6c0 1 .8 1.8 1.8 1.8h1.2"/></svg><span></span></button>
+    </div>
+  </dialog>
+  <div id="desk-menu" class="desk-menu" role="menu" hidden></div>
+  <script src="i18n.js"></script>
+  <script src="ultra-blocks.js"></script>
+  <script src="desk-transfer.js"></script>
+  <script src="mods-panels.js"></script>
+  <script src="mods-ui.js"></script>
+  <script src="budget-desk.js"></script>
+  <script src="desk.js"></script>
+</body>
+</html>

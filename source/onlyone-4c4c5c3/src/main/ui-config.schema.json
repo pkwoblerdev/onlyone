@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UiConfig",
+  "description": "Схема конфигурации интерфейса onlyone (размеры панелей, видимость, кегль кода и интерфейса)",
+  "type": "object",
+  "properties": {
+    "sidebarWidth": {
+      "type": "integer",
+      "description": "Ширина боковой панели (px)",
+      "minimum": 180,
+      "maximum": 420,
+      "default": 240
+    },
+    "workPanelWidth": {
+      "type": "integer",
+      "description": "Ширина панели «Работа» (px)",
+      "minimum": 280,
+      "maximum": 720,
+      "default": 360
+    },
+    "codeFontSize": {
+      "type": "integer",
+      "description": "Размер шрифта блоков кода (px)",
+      "minimum": 10,
+      "maximum": 24,
+      "default": 13
+    },
+    "fontUiSize": {
+      "type": "number",
+      "description": "Размер интерфейсного шрифта (px)",
+      "minimum": 11,
+      "maximum": 18,
+      "default": 13.5
+    },
+    "lineHeight": {
+      "type": "number",
+      "description": "Базовый интерлиньяж",
+      "minimum": 1.2,
+      "maximum": 1.8,
+      "default": 1.45
+    },
+    "showSidebar": {
+      "type": "boolean",
+      "description": "Видимость боковой панели",
+      "default": true
+    },
+    "showWorkPanel": {
+      "type": "boolean",
+      "description": "Видимость панели «Работа»; по умолчанию видна, как до 7.1 (Н94)",
+      "default": true
+    },
+    "panelsOrder": {
+      "type": "array",
+      "description": "Порядок расположения панелей",
+      "items": {
+        "type": "string",
+        "enum": ["sidebar", "chat", "work"]
+      },
+      "default": ["sidebar", "chat", "work"]
+    },
+    "versionPreset": {
+      "type": "string",
+      "description": "Версия оболочки интерфейса: прежняя (default), Pro или Ultra",
+      "enum": ["default", "pro", "ultra"],
+      "default": "default"
+    },
+    "taskPreset": {
+      "type": "string",
+      "description": "Набор интерфейса под задачу: дизайн (design), код (code), исследование (research)",
+      "enum": ["design", "code", "research"],
+      "default": "code"
+    }
+  },
+  "additionalProperties": false
+}

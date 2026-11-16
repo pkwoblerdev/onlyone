@@ -1,0 +1,10 @@
+{
+  "stack": "python",
+  "findings": [
+    "tests/test_fake_green.py:8:tautology",
+    "tests/test_fake_green.py:11:tautology",
+    "tests/test_fake_green.py:14:skipped",
+    "tests/test_fake_green.py:20:skipped"
+  ],
+  "honest": ["tests/test_honest.py"]
+}

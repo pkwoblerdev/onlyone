@@ -1,0 +1,262 @@
+/* Вступление первого запуска (макет 25.10) и карточки версий в Настройках.
+ *
+ * Вступление стоит в главной колонке окна, на месте чата: вопрос — карточка,
+ * которая выглядит как строка ввода (та же поверхность, скругление 20, тень),
+ * ответы над ней — тихие строки. Роли и размеры — из tokens.css, ничего своего.
+ * Движение ведёт onboarding.js (WAAPI); здесь только отклик на наведение и
+ * нажатие и появление всего экрана.
+ */
+
+.ob {
+  position: absolute;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 var(--fs-ui)/20px var(--font-ui);
+  opacity: 0;
+  transition: opacity 220ms var(--ease-out);
+}
+.ob.is-in { opacity: 1; }
+.ob.is-out { opacity: 0; transition-duration: 160ms; transition-timing-function: var(--ease-in); pointer-events: none; }
+.ob.is-fixed { position: fixed; inset: auto 0 0 0; z-index: 4000; }
+.ob [hidden] { display: none !important; }
+/* Сброс кнопок — без веса: размеры и цвета задают классы ниже. */
+:where(.ob) button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+.ob-i { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.ob-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.ob :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ob :focus:not(:focus-visible) { outline: none; }
+
+/* Боковая панель на время знакомства — настоящая, но приглушена. */
+.sidebar.ob-dim { opacity: .45; }
+
+/* Верх: язык и «Пропустить»; в конце уходит. */
+.ob-top { flex: none; display: flex; align-items: center; justify-content: flex-end; gap: var(--s2); height: var(--head-h); padding: 0 var(--s4) 0 var(--s6); }
+.ob.is-done .ob-top { visibility: hidden; }
+.ob-seg { display: inline-flex; gap: var(--s-half); padding: var(--s1); border-radius: var(--r-pill); background: var(--bg-chip); }
+.ob-seg button { height: 24px; padding: 0 var(--s3); border-radius: var(--r-pill); color: var(--ink-3); transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out); }
+.ob-seg button:hover { color: var(--ink); }
+.ob-seg button[aria-checked="true"] { background: var(--bg-raised); color: var(--ink); font-weight: 500; box-shadow: var(--contact); }
+
+.ob-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); height: 32px; padding: 0 var(--s3);
+  border-radius: var(--r-sm); color: var(--ink-2); font-weight: 500; white-space: nowrap;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out), transform var(--dur-press-back) var(--ease-out);
+}
+.ob-btn:hover:not(:disabled) { background: var(--bg-hover); color: var(--ink); }
+.ob-btn:active:not(:disabled) { transform: translateY(1px); transition-duration: var(--dur-hover), var(--dur-hover), var(--dur-press); }
+.ob-btn:disabled { color: var(--ink-disabled); cursor: default; }
+.ob-btn.is-pri { background: var(--accent); color: var(--on-accent); box-shadow: var(--contact); }
+.ob-btn.is-pri:hover:not(:disabled) { background: var(--accent-hover); color: var(--on-accent); }
+.ob-btn.is-pri:active:not(:disabled) { box-shadow: none; }
+.ob-lnk { display: inline-flex; align-items: center; gap: var(--s1); min-height: 24px; color: var(--ink-2); text-decoration: underline 1px transparent; text-underline-offset: 4px; transition: color var(--dur-hover) var(--ease-out), text-decoration-color var(--dur-hover) var(--ease-out); }
+.ob-lnk:hover { color: var(--ink); text-decoration-color: currentColor; }
+.ob-lnk .ob-i { width: 12px; height: 12px; }
+
+/* Сцена: верх растёт вверх и упирается в карточку; карточка стоит там, где на
+   главном экране строка ввода. */
+.ob-stage { flex: 1; min-height: 0; display: grid; grid-template-rows: minmax(auto, 44%) auto 1fr; padding: 0 var(--s6); }
+.ob-upper { display: flex; flex-direction: column; justify-content: flex-end; width: 100%; max-width: 784px; margin: 0 auto; padding-bottom: var(--s6); }
+.ob-lower { width: 100%; max-width: 784px; margin: 0 auto; }
+.ob-hero-mk { width: 24px; height: 24px; margin-bottom: var(--s4); flex: none; fill: var(--spark); }
+.ob-h1 { margin: 0; font: 600 var(--fs-h1)/32px var(--font-ui); letter-spacing: -.015em; color: var(--ink); text-wrap: balance; }
+.ob-lead { margin: var(--s2) 0 0; max-width: 600px; font-size: var(--fs-body); line-height: 24px; color: var(--ink-3); text-wrap: pretty; }
+
+/* Пример работы — те же части, что в ленте чата. */
+.ob-thread { margin-top: var(--s6); }
+.ob-bubble { width: fit-content; max-width: 85%; margin-left: auto; padding: var(--s3) var(--s4); border-radius: var(--r-lg); background: var(--bg-chip); font-size: var(--fs-body); line-height: 24px; color: var(--ink); }
+.ob-run-sum { display: inline-flex; align-items: center; gap: var(--s2); min-height: 28px; margin: var(--s4) 0 0 calc(-1 * var(--s2)); padding: 0 var(--s2); border-radius: var(--r-sm); color: var(--ink-3); }
+.ob-run-sum .ob-i { width: 14px; height: 14px; color: var(--ink-4); }
+.ob-dchip { display: inline-flex; align-items: center; height: 18px; padding: 0 var(--s1); border-radius: var(--r-xs); font-size: var(--fs-cap); font-variant-numeric: tabular-nums; color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.ob-answer { margin-top: var(--s2); min-height: 48px; font-size: var(--fs-body); line-height: 24px; color: var(--ink-2); }
+
+/* Ответы — тихие строки «что — значение»; нажатие возвращает к вопросу. */
+.ob-answers { display: grid; gap: var(--s-half); margin: var(--s4) 0 0 calc(-1 * var(--s2)); }
+.ob-answers:empty { display: none; }
+.ob-arow {
+  display: grid; grid-template-columns: 96px minmax(0, 1fr) 16px; align-items: center; gap: var(--s3);
+  min-height: 28px; padding: 0 var(--s2); border-radius: var(--r-sm); text-align: left;
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.ob-arow:hover { background: var(--bg-hover); }
+.ob-arow-k { color: var(--ink-4); }
+.ob-arow-v { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink-2); }
+.ob-arow-v.is-none { color: var(--ink-4); }
+.ob-arow .ob-i { width: 14px; height: 14px; color: var(--ink-4); opacity: 0; transition: opacity var(--dur-hover) var(--ease-out); }
+.ob-arow:hover .ob-i, .ob-arow:focus-visible .ob-i { opacity: 1; }
+.ob-summary { margin: var(--s4) 0 0; max-width: 640px; color: var(--ink-3); font-size: var(--fs-body); line-height: 24px; text-wrap: pretty; }
+.ob-summary .ob-lnk { display: inline; font-size: inherit; color: var(--ink-2); text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
+
+/* Карточка вопроса = строка ввода приложения. */
+.ob-card {
+  position: relative;
+  background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: var(--r-lg); box-shadow: var(--shadow-composer);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.ob-card:focus-within { border-color: var(--line-field); }
+.ob-card-in { padding: var(--s4) var(--s3) var(--s3) var(--s5); }
+.ob-q { display: block; margin: 0; font: 600 var(--fs-body)/24px var(--font-ui); color: var(--ink); }
+.ob-q-note { font-weight: 400; color: var(--ink-3); }
+.ob-card-main { margin-top: var(--s3); }
+.ob-card-bar { display: flex; align-items: center; gap: var(--s2); min-height: 36px; margin: var(--s4) 0 0 calc(-1 * var(--s2)); }
+.ob-count { padding-left: var(--s2); color: var(--ink-4); font-variant-numeric: tabular-nums; }
+.ob-grow { flex: 1; }
+
+/* Имя: поле без рамки, как текст строки ввода; курсор — акцентом. */
+.ob-bare { display: block; width: 100%; height: 28px; padding: 0; border: 0; background: none; color: var(--ink); font: 400 var(--fs-body)/24px var(--font-ui); caret-color: var(--accent); outline: none; }
+.ob-bare::placeholder { color: var(--ink-4); }
+
+/* Пилюли выбора: подложка; выбранное — цветом выбора. */
+.ob-chips { display: flex; flex-wrap: wrap; gap: var(--s2); }
+.ob-chip {
+  display: inline-flex; align-items: center; height: 32px; padding: 0 var(--s3); border-radius: var(--r-pill);
+  background: var(--bg-chip); color: var(--ink-2);
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out), transform var(--dur-press-back) var(--ease-out);
+}
+.ob-chip:hover { background: var(--bg-active); color: var(--ink); }
+.ob-chip:active { transform: translateY(1px); transition-duration: var(--dur-hover), var(--dur-hover), var(--dur-press); }
+.ob-chip:is([aria-checked="true"], [aria-pressed="true"]) { background: var(--accent-soft); color: var(--accent); }
+
+/* Ключ: провайдер пилюлей без стрелки — как модель в строке ввода. */
+.ob-key-row { display: flex; align-items: center; gap: var(--s2); }
+.ob-pill {
+  display: inline-flex; align-items: center; flex: none; height: 32px; padding: 0 var(--s3); border-radius: var(--r-pill);
+  background: var(--bg-chip); color: var(--ink-2); font-weight: 500;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.ob-pill:hover, .ob-pill[aria-expanded="true"] { background: var(--bg-active); color: var(--ink); }
+.ob-fwrap { position: relative; flex: 1; min-width: 0; }
+.ob-field {
+  width: 100%; height: 32px; padding: 0 var(--s10) 0 var(--s3); border: 0; border-radius: var(--r-sm);
+  background: var(--field-bg); box-shadow: inset 0 0 0 1px var(--field-line); color: var(--ink); caret-color: var(--accent);
+  font: 400 var(--fs-ui)/20px var(--font-ui); outline: 2px solid transparent;
+  transition: box-shadow var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out);
+}
+.ob-field::placeholder { color: var(--ink-4); }
+.ob-field:hover:not(:disabled):not(:focus) { box-shadow: inset 0 0 0 1px var(--field-line-hover); }
+.ob-field:focus { background: var(--field-bg-focus); box-shadow: inset 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft); }
+.ob-field:disabled { color: var(--ink-4); cursor: default; }
+.ob-field[aria-invalid="true"] { box-shadow: inset 0 0 0 1px var(--danger); }
+.ob-eye { position: absolute; right: var(--s1); top: var(--s-half); display: grid; place-items: center; width: 28px; height: 28px; border-radius: var(--r-xs); color: var(--ink-4); }
+.ob-eye:hover { color: var(--ink); background: var(--bg-hover); }
+.ob-kstat { display: flex; align-items: flex-start; gap: var(--s2); margin-top: var(--s3); color: var(--ink-2); }
+.ob-kstat .ob-i { margin-top: var(--s-half); }
+.ob-kstat.is-ok .ob-i { color: var(--ok); }
+.ob-kstat.is-err { color: var(--danger); }
+.ob-spin { width: 14px; height: 14px; margin-top: 3px; flex: none; border-radius: 50%; border: 1.5px solid var(--line-strong); border-top-color: var(--ink-2); animation: obSpin .8s linear infinite; }
+@keyframes obSpin { to { transform: rotate(360deg); } }
+.ob-key-help { margin-top: var(--s3); }
+/* Провайдеров больше двух дюжин: меню в колонки (их число ставит onboarding.js),
+   чтобы встать в окно без прокрутки. */
+.ob-menu { position: absolute; z-index: 5; display: grid; grid-template-columns: repeat(var(--ob-cols, 1), minmax(176px, 1fr)); gap: 0 var(--s1); padding: var(--s1); border-radius: var(--r-md); background: var(--bg-raised); box-shadow: var(--shadow-pop); }
+.ob-mi { display: flex; align-items: center; justify-content: flex-start; gap: var(--s2); width: 100%; height: 32px; padding: 0 var(--s2); border-radius: var(--r-sm); color: var(--ink); text-align: left; }
+.ob-mi:hover, .ob-mi:focus-visible { background: var(--bg-hover); }
+.ob-mi .ob-i { margin-left: auto; color: var(--accent); }
+
+/* Тема — три окошка, как в Настройках, крупнее. */
+.ob-tiles { display: flex; flex-wrap: wrap; gap: var(--s3); }
+.ob-tile { display: grid; justify-items: start; gap: var(--s2); padding: var(--s1); border-radius: var(--r-md); color: var(--ink-3); transition: color var(--dur-hover) var(--ease-out); }
+.ob-tile:hover { color: var(--ink); }
+.ob-tile[aria-checked="true"] { color: var(--ink); font-weight: 500; }
+.ob-pv { position: relative; display: grid; grid-template-columns: 24px 1fr; width: 132px; height: 80px; overflow: hidden; border-radius: var(--r-sm); box-shadow: 0 0 0 1px var(--line-strong), var(--contact); transition: box-shadow var(--dur-hover) var(--ease-out); }
+.ob-tile[aria-checked="true"] .ob-pv { box-shadow: 0 0 0 2px var(--accent), var(--contact); }
+.ob-pv-side { height: 100%; }
+.ob-pv-main { display: grid; align-content: start; gap: var(--s2); padding: var(--s3) var(--s2); }
+.ob-pv-main i { display: block; height: 4px; border-radius: var(--s-half); }
+.ob-pv-main i:nth-child(1) { width: 70%; }
+.ob-pv-main i:nth-child(2) { width: 46%; }
+.ob-pv-main i:nth-child(3) { width: 16px; height: 8px; background: var(--spark) !important; }
+.ob-pv.is-dark { background: var(--pv-dark-bg); }
+.ob-pv.is-dark .ob-pv-side { background: var(--pv-dark-side); }
+.ob-pv.is-dark .ob-pv-main i { background: var(--pv-dark-ink); }
+.ob-pv.is-light { background: var(--pv-light-bg); }
+.ob-pv.is-light .ob-pv-side { background: var(--pv-light-side); }
+.ob-pv.is-light .ob-pv-main i { background: var(--pv-light-ink); }
+.ob-pv.is-system { background: linear-gradient(90deg, var(--pv-light-bg) 50%, var(--pv-dark-bg) 50%); }
+.ob-pv.is-system .ob-pv-side { background: var(--pv-light-side); }
+.ob-pv.is-system .ob-pv-main i:nth-child(1) { width: 80%; background: linear-gradient(90deg, var(--pv-light-ink) 50%, var(--pv-dark-ink) 50%); }
+.ob-pv.is-system .ob-pv-main i:nth-child(2) { background: var(--pv-light-ink); }
+
+/* Конец: карточка — строка ввода главного экрана. */
+.ob-composer-text {
+  display: block; width: 100%; min-height: 24px; padding: 0; border: 0; resize: none; background: none; outline: none;
+  color: var(--ink); font: 400 var(--fs-body)/24px var(--font-ui); caret-color: var(--accent);
+}
+.ob-composer-text::placeholder { color: var(--ink-4); }
+.ob-cbtn { display: grid; place-items: center; width: 32px; height: 32px; border-radius: var(--r-sm); color: var(--ink-3); }
+.ob-cbtn:hover { background: var(--bg-hover); color: var(--ink); }
+.ob-cpill { display: inline-flex; align-items: center; height: 28px; padding: 0 var(--s3); border-radius: var(--r-pill); background: var(--bg-chip); color: var(--ink-2); font-weight: 500; }
+.ob-send { display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r-pill); background: var(--accent); color: var(--on-accent); box-shadow: var(--contact); }
+.ob-send .ob-i { width: 18px; height: 18px; stroke-width: 1.9; }
+
+/* Узкое окно: колонка без боковых полей. */
+@media (max-width: 700px) { .ob-stage { padding: 0 var(--s4); } }
+
+/* --- Карточки версий: Настройки → «Вид приложения» -------------------------- */
+
+.edition-choices { display: flex; flex-direction: column; gap: 8px; padding: 4px 0 12px; }
+.edition-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 12px 16px;
+  text-align: left;
+  border-radius: var(--ui-radius-card);
+  border: 1px solid var(--line-card);
+  background: var(--bg-card);
+  color: var(--text);
+  transition: border-color 150ms ease, background-color 150ms ease;
+}
+.edition-card.is-selected { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 7%, var(--bg-card)); }
+.edition-card:focus-visible { outline: var(--ui-focus-width) solid var(--ui-focus); outline-offset: 2px; }
+@media (hover: hover) { .edition-card:not(.is-selected):not(.is-soon):hover { border-color: var(--line-hover); } }
+.edition-card.is-soon { cursor: default; }
+.edition-card.is-soon .edition-sketch,
+.edition-card.is-soon .edition-desc { opacity: 0.6; }
+.edition-sketch {
+  width: 48px;
+  height: 32px;
+  flex: none;
+  fill: none;
+  stroke: var(--text-3);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.edition-card.is-selected .edition-sketch { stroke: var(--accent); }
+.edition-text { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+.edition-name { font-size: 13.5px; font-weight: 500; }
+.edition-desc { font-size: 13px; line-height: 1.45; color: var(--text-2); }
+.edition-soon {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  background: var(--bg-input);
+}
+.edition-radio {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-4);
+}
+.edition-card.is-selected .edition-radio { border: 5px solid var(--accent); }
+.edition-card.is-soon .edition-radio { visibility: hidden; }
+/* Нажатие на «скоро»: короткий отказ сдвигом, а не молчание. */
+.edition-card.is-denied { animation: obDeny 260ms ease-out; }
+@keyframes obDeny {
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ob, .ob.is-out { transition: none; }
+  .ob-spin { animation-duration: 2.4s; }
+  .edition-card.is-denied { animation: none; }
+}

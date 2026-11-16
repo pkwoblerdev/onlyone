@@ -1,0 +1,89 @@
+/* Reusable onlyone components. Load after fonts.css and tokens.css.
+   Deliberately scoped: migration of existing screens belongs to plan 1.3. */
+.one-ui {
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-body);
+  font-weight: var(--ui-weight-body);
+  line-height: var(--ui-leading);
+  color: var(--text);
+}
+.one-ui *, .one-ui *::before, .one-ui *::after { box-sizing: border-box; }
+.one-ui [hidden] { display: none !important; }
+.one-ui :is(button, input, textarea) { font: inherit; color: inherit; }
+.one-ui :is(button, input, textarea, [tabindex]):focus-visible,
+.one-ui [data-state="focus"] {
+  outline: var(--ui-focus-width) solid var(--ui-focus);
+  outline-offset: var(--ui-focus-offset);
+}
+.one-ui .ui-section-title { font-size: var(--ui-size-section); font-weight: var(--ui-weight-heading); margin: 0; }
+.one-ui .ui-heading { font-size: var(--ui-size-heading); font-weight: var(--ui-weight-heading); margin: 0; }
+.one-ui .ui-label { font-size: var(--ui-size-label); font-weight: var(--ui-weight-label); }
+.one-ui .ui-small { font-size: var(--ui-size-small); color: var(--ui-muted); }
+.one-ui .ui-mono { font: var(--ui-size-mono)/var(--ui-leading) var(--font-mono); }
+.one-ui .ui-muted { color: var(--ui-muted); }
+.one-ui .ui-stack { display: grid; align-content: start; gap: var(--ui-space-3); min-width: 0; }
+.one-ui .ui-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--ui-space-2); }
+.one-ui .ui-icon { width: var(--ui-icon); height: var(--ui-icon); stroke: currentColor; stroke-width: var(--ui-icon-stroke); fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.one-ui .ui-button {
+  min-height: var(--ui-control-md); min-width: var(--ui-control-md);
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--ui-space-2);
+  padding: var(--ui-space-1) var(--ui-space-3);
+  background: var(--ui-control-fill); border: var(--ui-border-width) solid var(--ui-control-line);
+  border-radius: var(--ui-radius-control); font-weight: var(--ui-weight-label);
+  cursor: pointer; overflow-wrap: anywhere;
+}
+.one-ui .ui-button--primary { background: var(--accent); color: var(--ui-on-accent); border-color: var(--accent); }
+.one-ui .ui-button--icon { width: var(--ui-control-md); padding: var(--ui-space-1); }
+.one-ui .ui-button--small { min-height: var(--ui-control-sm); min-width: var(--ui-control-sm); }
+.one-ui .ui-button--large { min-height: var(--ui-control-lg); min-width: var(--ui-control-lg); }
+.one-ui .ui-button:not(:disabled):hover, .one-ui .ui-button[data-state="hover"] { background: var(--bg-hover); border-color: var(--line-hover); color: var(--text); }
+.one-ui .ui-button:not(:disabled):active, .one-ui .ui-button[data-state="pressed"] { background: var(--bg-active); color: var(--text); border-color: var(--line-hover); }
+.one-ui :is(button, input, textarea):disabled { opacity: var(--ui-disabled-opacity); cursor: not-allowed; }
+.one-ui [aria-busy="true"] { cursor: progress; }
+.one-ui .ui-field { display: grid; gap: var(--ui-space-2); min-width: 0; }
+.one-ui .ui-input {
+  width: 100%; min-width: 0; min-height: var(--ui-control-md); padding: var(--ui-space-2) var(--ui-space-3);
+  background: var(--bg-input); border: var(--ui-border-width) solid var(--ui-control-border);
+  border-radius: var(--ui-radius-control);
+  font-weight: var(--ui-weight-body);
+}
+.one-ui .ui-input::placeholder { color: var(--ui-muted); }
+.one-ui .ui-input:hover:not(:disabled) { border-color: var(--text-3); }
+.one-ui .ui-input[aria-invalid="true"] { border-color: var(--ui-danger); }
+.one-ui .ui-error { color: var(--ui-danger); font-size: var(--ui-size-small); margin: 0; }
+.one-ui .ui-card { padding: var(--ui-space-6); border: var(--ui-border-width) solid var(--line-card); border-radius: var(--ui-radius-card); background: var(--bg-card); min-width: 0; overflow-wrap: anywhere; }
+.one-ui .ui-chip { display: inline-flex; align-items: center; max-width: 100%; gap: var(--ui-space-1); border: var(--ui-border-width) solid var(--ui-surface-line); background: var(--bg-inset); border-radius: var(--ui-radius-chip); padding: var(--ui-space-1) var(--ui-space-2); overflow-wrap: anywhere; }
+.one-ui .ui-chip .ui-button { border: 0; background: transparent; }
+.one-ui .ui-switch { display: inline-flex; align-items: center; gap: var(--ui-space-2); cursor: pointer; }
+.one-ui .ui-switch input { appearance: none; width: var(--ui-switch-width); height: var(--ui-switch-height); border: var(--ui-border-width) solid var(--ui-control-border); border-radius: var(--r-full); background: var(--bg-inset); margin: 0; flex-shrink: 0; cursor: pointer; }
+.one-ui .ui-switch input::before { content: ""; display: block; width: var(--ui-switch-thumb); height: var(--ui-switch-thumb); margin: var(--ui-focus-offset); border-radius: var(--r-full); background: var(--text); transition: transform var(--dur-press) var(--ease-out); }
+.one-ui .ui-switch input:checked { background: var(--accent); border-color: var(--accent); }
+.one-ui .ui-switch input:checked::before { transform: translateX(var(--ui-switch-travel)); background: var(--ui-on-accent); }
+.one-ui .ui-switch { min-height: var(--ui-control-md); }
+/* Вкладки — переключатель, как в правой панели и просмотре скилла. */
+.one-ui .ui-tabs { display: inline-flex; flex-wrap: wrap; gap: var(--ui-segment-pad); padding: var(--ui-segment-pad); border: var(--ui-border-width) solid var(--ui-control-line); border-radius: var(--ui-segment-radius); background: var(--bg-input); }
+.one-ui .ui-tab { min-height: var(--ui-control-sm); background: transparent; border-color: transparent; border-radius: var(--ui-segment-item-radius); color: var(--ui-muted); font-weight: var(--ui-weight-body); }
+.one-ui .ui-tab:not(:disabled):hover { background: transparent; border-color: transparent; color: var(--text); }
+.one-ui .ui-tab[aria-selected="true"], .one-ui .ui-tab[aria-selected="true"]:not(:disabled):hover { color: var(--text); background: var(--bg-active); font-weight: var(--ui-weight-label); }
+.one-ui .ui-select { position: relative; min-width: 0; }
+.one-ui .ui-select > .ui-button { width: 100%; justify-content: space-between; text-align: left; }
+.one-ui .ui-options { position: absolute; inset-inline: 0; top: calc(100% + var(--ui-space-1)); z-index: var(--ui-tooltip-layer); padding: var(--ui-space-1); margin: 0; list-style: none; border: var(--ui-border-width) solid var(--ui-surface-line); border-radius: var(--ui-radius-control); background: var(--bg-popover); box-shadow: var(--ui-shadow-overlay); max-height: var(--ui-panel-width); overflow: auto; }
+.one-ui .ui-option { padding: var(--ui-space-2); min-height: var(--ui-control-md); border-radius: var(--ui-radius-chip); cursor: pointer; }
+.one-ui .ui-option:hover, .one-ui .ui-option:focus, .one-ui .ui-option[aria-selected="true"] { background: var(--bg-active); }
+/* Пункт списка с фокусом — заливка и черта слева, а не рамка вокруг: рамка на
+   каждом пункте превращала короткий список в набор кнопок. */
+.one-ui .ui-option:focus-visible { outline: none; box-shadow: inset var(--ui-focus-width) 0 0 var(--ui-focus); }
+.one-ui .ui-tip-wrap { position: relative; display: inline-flex; }
+:is(.one-ui, body) .ui-tooltip, .ui-tooltip { position: fixed; max-width: min(var(--ui-tooltip-width), calc(100vw - var(--ui-space-6))); width: max-content; overflow-wrap: anywhere; padding: var(--ui-space-1) var(--ui-space-2); border: var(--ui-border-width) solid var(--ui-surface-line); border-radius: var(--ui-radius-control); background: var(--bg-popover); color: var(--text); box-shadow: var(--ui-shadow-overlay); z-index: var(--ui-tooltip-layer); font-size: var(--ui-size-small); font-family: var(--font-sans); line-height: var(--ui-leading); max-height: calc(100vh - var(--ui-space-6)); overflow: auto; pointer-events: auto; opacity: 0; transform: translateY(var(--ui-segment-pad)); transition: opacity var(--dur-press) var(--ease-out), transform var(--dur-press) var(--ease-out); display: inline-flex; align-items: center; gap: var(--ui-space-2); }
+:is(.one-ui, body) .ui-tooltip.is-visible, .ui-tooltip.is-visible { opacity: 1; transform: translateY(0); }
+:is(.one-ui, body) .ui-tooltip-kbd, .ui-tooltip-kbd { display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-ui); font-size: var(--ui-size-mono); padding: var(--ui-border-width) var(--ui-space-1); background: var(--ui-control-fill); border: var(--ui-border-width) solid var(--ui-control-line); border-radius: var(--ui-radius-chip); color: var(--ui-muted); line-height: var(--ui-leading); }
+:is(.one-ui, body) .ui-emoji, .ui-emoji { display: inline-block; font-family: var(--font-emoji); font-size: var(--ui-size-emoji); width: var(--ui-size-emoji); height: var(--ui-size-emoji); line-height: 1; vertical-align: middle; text-align: center; font-style: normal; font-weight: var(--ui-weight-body); }
+.one-ui .ui-dialog { width: min(var(--ui-panel-width), calc(100% - var(--ui-dialog-margin))); max-height: calc(100% - var(--ui-dialog-margin)); padding: var(--ui-space-6); color: var(--text); background: var(--bg-popover); border: var(--ui-border-width) solid var(--ui-surface-line); border-radius: var(--ui-radius-card); box-shadow: var(--ui-shadow-overlay); }
+.one-ui .ui-dialog::backdrop { background: var(--bg-window); opacity: var(--ui-scrim-opacity); }
+.one-ui .ui-notice { display: flex; align-items: center; gap: var(--ui-space-3); padding: var(--ui-space-3); border: var(--ui-border-width) solid var(--ui-surface-line); border-radius: var(--ui-radius-control); background: var(--bg-inset); }
+.one-ui .ui-notice > span { flex: 1; min-width: 0; }
+.one-ui .ui-empty { padding: var(--ui-space-8); text-align: center; justify-items: center; }
+.one-ui p { margin: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .one-ui *, .one-ui *::before, .one-ui *::after { transition: none !important; animation: none !important; }
+}

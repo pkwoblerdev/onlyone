@@ -1,0 +1,26 @@
+{
+  "version": "1.3.38",
+  "revision": "4c4c5c323529f0468236423702d9706d1448e966",
+  "status": "candidate-verified",
+  "published": false,
+  "signature": "unsigned",
+  "tests": "passed",
+  "licenseReview": "completed",
+  "files": [
+    {
+      "file": "onlyone Setup 1.3.38.exe",
+      "bytes": 116361488,
+      "sha256": "1d34c4ab2007c1906edb2ba4e6da538ac406a28cf5a0d354a31738d9964f544b"
+    },
+    {
+      "file": "onlyone-1.3.38-portable.exe",
+      "bytes": 116104964,
+      "sha256": "bc0cba58e2b890e7883faefce365102a096c8e68778d7e464171f0b64f968154"
+    }
+  ],
+  "blockmap": {
+    "file": "onlyone Setup 1.3.38.exe.blockmap",
+    "bytes": 122482,
+    "sha256": "5f096a8fdc5e7801229e4b679b34bff25a3a237658de652988f090626a5c6814"
+  }
+}

@@ -1,0 +1,19 @@
+/* Бюджет задачи в Desk — только чтение, поэтому ни полей, ни кнопок: строки
+   состояния и пределы из настроек Onlyone. Цвета, отступы и радиусы — из
+   tokens.css; здесь своих значений нет. */
+.desk-budget { display: grid; gap: var(--s1); align-content: start; }
+.desk-budget .desk-lab:not(:first-child) { margin-top: var(--s2); }
+.desk-budget-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: var(--s1) var(--s3); min-height: 32px; padding: var(--s1) 0; border-bottom: 1px solid var(--line-subtle); }
+.desk-budget-row:last-of-type { border-bottom: 0; }
+.desk-budget-label { min-width: 0; color: var(--ink-2); }
+.desk-budget-value { font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; color: var(--ink); }
+.desk-budget-note { grid-column: 1 / -1; font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); }
+.desk-budget-row[data-tone="warn"] .desk-budget-value { color: var(--warn); }
+.desk-budget-row[data-tone="danger"] .desk-budget-value { color: var(--danger); }
+.desk-budget-row.is-settings .desk-budget-value { color: var(--ink-2); font-weight: 400; }
+.desk-budget-reason { display: grid; gap: var(--s1); margin-bottom: var(--s2); padding: var(--s2) var(--s3); border-radius: var(--r-sm); background: var(--bg-chip); color: var(--ink-2); }
+.desk-budget-reason[data-tone="warn"] { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--warn); }
+.desk-budget-reason[data-tone="danger"] { background: color-mix(in srgb, var(--danger) 14%, transparent); color: var(--danger); }
+.desk-budget-reason-title { font-weight: 500; }
+.desk-budget-reason-detail { font-size: var(--fs-cap); line-height: 16px; color: var(--ink-2); }
+.desk-budget-policy { margin-top: var(--s2); font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); }

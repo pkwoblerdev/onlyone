@@ -1,0 +1,24 @@
+{
+  "runner": "onlyone-public-tests/v1",
+  "command": [
+    "npm",
+    "test"
+  ],
+  "revision": "4c4c5c323529f0468236423702d9706d1448e966",
+  "manifestSha256": "a7e9bd4792d1caf2ebd9875ce72dd97c193002030a37d3797f294593fd308bc2",
+  "sourceBefore": "ff60d452cbd0f786c3d1ac1eccc48e894486d64a6188d8f0890f335a842ad94d",
+  "sourceAfter": "ff60d452cbd0f786c3d1ac1eccc48e894486d64a6188d8f0890f335a842ad94d",
+  "checkoutBefore": "db75016edddc97e0a98718db5e0eb36db8718f44",
+  "checkoutAfter": "db75016edddc97e0a98718db5e0eb36db8718f44",
+  "statusBefore": "",
+  "statusAfter": "",
+  "changed": [],
+  "code": 0,
+  "signal": null,
+  "startedAt": "2026-11-16T09:03:50.667Z",
+  "finishedAt": "2026-11-16T10:02:30.504Z",
+  "durationMs": 3519834,
+  "log": "npm-test.log",
+  "logSha256": "d747cdf843a4313b902321c6d406c5d1da88c723ea656602683cbe1b3a47a855",
+  "ok": true
+}

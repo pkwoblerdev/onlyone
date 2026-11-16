@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; script-src 'self'; font-src 'self'; img-src 'self'">
+  <title>onlyone — компоненты</title>
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="ui-system.css">
+  <link rel="stylesheet" href="ui-catalog.css">
+  <script defer src="ui-system.js"></script>
+  <script defer src="ui-catalog.js"></script>
+</head>
+<body class="one-ui">
+<svg hidden aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-plus" viewBox="0 0 16 16"><path d="M8 3v10M3 8h10"/></symbol>
+  <symbol id="i-close" viewBox="0 0 16 16"><path d="m4 4 8 8M12 4l-8 8"/></symbol>
+  <symbol id="i-down" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></symbol>
+</svg>
+<main class="ui-catalog">
+  <header class="ui-catalog-header">
+    <div class="ui-stack"><span class="ui-small">onlyone / 1.2</span><h1 class="ui-section-title">Компоненты</h1></div>
+    <button id="theme" class="ui-button" aria-pressed="false">Светлая тема</button>
+  </header>
+  <div class="ui-catalog-grid">
+    <section class="ui-card ui-stack ui-catalog-wide" aria-labelledby="type-title">
+      <h2 id="type-title" class="ui-heading">Типографика</h2>
+      <div class="ui-type-example"><span class="ui-section-title">Новый проект</span><code class="ui-mono">section · 24 / 600</code></div>
+      <div class="ui-type-example"><span class="ui-heading">Рабочая папка</span><code class="ui-mono">heading · 16 / 600</code></div>
+      <div class="ui-type-example"><span>Все файлы проекта в одном месте.</span><code class="ui-mono">body · 13 / 400</code></div>
+      <div class="ui-type-example"><span class="ui-label">Название</span><code class="ui-mono">label · 13.5 / 500</code></div>
+      <div class="ui-type-example"><span class="ui-small">Обновлено сегодня</span><code class="ui-mono">small · 11.5 / 400</code></div>
+    </section>
+    <section class="ui-card ui-stack ui-catalog-wide" aria-labelledby="buttons-title">
+      <h2 id="buttons-title" class="ui-heading">Действия</h2>
+      <div id="button-states" class="ui-row">
+        <div class="ui-state-example"><button class="ui-button ui-button--primary">Создать</button><span class="ui-small">Обычное</span></div>
+        <div class="ui-state-example"><button class="ui-button" data-state="hover">Создать</button><span class="ui-small">Наведение</span></div>
+        <div class="ui-state-example"><button class="ui-button" data-state="focus">Создать</button><span class="ui-small">Фокус</span></div>
+        <div class="ui-state-example"><button class="ui-button" data-state="pressed">Создать</button><span class="ui-small">Нажатие</span></div>
+        <div class="ui-state-example"><button class="ui-button" disabled>Создать</button><span class="ui-small">Недоступно</span></div>
+        <div class="ui-state-example"><button class="ui-button" aria-busy="true" disabled>Создаётся…</button><span class="ui-small">Ожидание</span></div>
+      </div>
+      <div class="ui-row">
+        <button class="ui-button ui-button--small">28 · Компактная</button>
+        <button class="ui-button">32 · Обычная</button>
+        <button class="ui-button ui-button--large">40 · Крупная</button>
+        <span class="ui-tip-wrap">
+          <button class="ui-button ui-button--icon" aria-label="Добавить файл" aria-describedby="add-tip"><svg class="ui-icon" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          <span id="add-tip" role="tooltip" class="ui-tooltip" hidden>Добавить файл</span>
+        </span>
+      </div>
+    </section>
+    <section class="ui-card ui-stack" aria-labelledby="fields-title">
+      <h2 id="fields-title" class="ui-heading">Поля и выбор</h2>
+      <label class="ui-field ui-label">Название<input class="ui-input" value="Сайт проекта" id="name"></label>
+      <label class="ui-field ui-label">Папка<input class="ui-input" value="Не выбрана" disabled></label>
+      <label class="ui-field ui-label">Адрес<input id="address" class="ui-input" aria-invalid="true" aria-describedby="address-error" value="example"></label>
+      <p id="address-error" class="ui-error">Укажите полный адрес: https://example.com</p>
+      <div class="ui-select" data-value="auto">
+        <span id="mode-label" class="ui-label">Режим</span>
+        <button id="mode-trigger" class="ui-button" aria-haspopup="listbox" aria-expanded="false" aria-controls="mode-options" aria-labelledby="mode-label mode-value">
+          <span id="mode-value" data-value-label>Авто</span><svg class="ui-icon" aria-hidden="true"><use href="#i-down"/></svg>
+        </button>
+        <ul id="mode-options" class="ui-options" role="listbox" aria-labelledby="mode-label" hidden>
+          <li class="ui-option" role="option" tabindex="-1" aria-selected="true" data-value="auto">Авто</li>
+          <li class="ui-option" role="option" tabindex="-1" aria-selected="false" data-value="manual">Вручную</li>
+          <li class="ui-option" role="option" tabindex="-1" aria-selected="false" data-value="read">Только чтение</li>
+        </ul>
+      </div>
+    </section>
+    <section class="ui-card ui-stack" aria-labelledby="controls-title">
+      <h2 id="controls-title" class="ui-heading">Переключатели</h2>
+      <label class="ui-switch"><input type="checkbox" role="switch" checked>Уведомления</label>
+      <label class="ui-switch"><input type="checkbox" role="switch">Звук</label>
+      <label class="ui-switch"><input type="checkbox" role="switch" disabled>Недоступно в этом режиме</label>
+      <div role="tablist" aria-label="Задачи" class="ui-tabs">
+        <button id="tab-active" role="tab" aria-selected="true" aria-controls="panel-active" class="ui-button ui-tab">Активные</button>
+        <button id="tab-history" role="tab" aria-selected="false" aria-controls="panel-history" tabindex="-1" class="ui-button ui-tab">История</button>
+      </div>
+      <div id="panel-active" role="tabpanel" aria-labelledby="tab-active" tabindex="0"><p>Проверка интерфейса</p><span class="ui-small">В работе</span></div>
+      <div id="panel-history" role="tabpanel" aria-labelledby="tab-history" tabindex="0" hidden><p>Тесты проекта</p><span class="ui-small">Завершены</span></div>
+      <div class="ui-row"><span class="ui-chip" data-dismissible>Проект<button class="ui-button ui-button--icon ui-button--small" data-dismiss aria-label="Убрать проект"><svg class="ui-icon" aria-hidden="true"><use href="#i-close"/></svg></button></span><span class="ui-chip">Только чтение</span></div>
+    </section>
+    <section class="ui-card ui-stack" aria-labelledby="feedback-title">
+      <h2 id="feedback-title" class="ui-heading">Обратная связь</h2>
+      <div class="ui-notice" data-dismissible><svg class="ui-icon" aria-hidden="true"><use href="#i-check"/></svg><span role="status">Изменения сохранены</span><button class="ui-button ui-button--icon" data-dismiss aria-label="Закрыть уведомление"><svg class="ui-icon" aria-hidden="true"><use href="#i-close"/></svg></button></div>
+      <p class="ui-error">Не удалось сохранить. Повторите попытку.</p>
+      <button id="open-dialog" class="ui-button" data-dialog="sample-dialog" data-dismiss-focus>Открыть диалог</button>
+    </section>
+    <section class="ui-card ui-empty ui-stack" aria-labelledby="empty-title">
+      <h2 id="empty-title" class="ui-heading">Здесь появятся проекты</h2>
+      <p class="ui-muted">Добавьте папку, чтобы начать работу.</p>
+      <button class="ui-button" data-dialog="empty-dialog"><svg class="ui-icon" aria-hidden="true"><use href="#i-plus"/></svg>Добавить папку</button>
+    </section>
+  </div>
+  <p class="ui-small">Образцы интерфейса. Данные демонстрационные; файлы и настройки не меняются.</p>
+  <dialog id="sample-dialog" class="ui-dialog" aria-labelledby="dialog-title">
+    <div class="ui-stack"><h2 id="dialog-title" class="ui-heading">Сохранить изменения?</h2><p>Это демонстрация диалога подтверждения.</p><div class="ui-row"><button class="ui-button" data-close-dialog autofocus>Отмена</button><button class="ui-button ui-button--primary" data-close-dialog>Сохранить</button></div></div>
+  </dialog>
+  <dialog id="empty-dialog" class="ui-dialog" aria-labelledby="empty-dialog-title">
+    <div class="ui-stack"><h2 id="empty-dialog-title" class="ui-heading">Добавление папки</h2><p>В приложении здесь откроется выбор папки. Этот образец не обращается к файловой системе.</p><button class="ui-button" data-close-dialog autofocus>Закрыть</button></div>
+  </dialog>
+</main>
+</body>
+</html>

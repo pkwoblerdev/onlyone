@@ -1,0 +1,28 @@
+.review-sections-dialog { width: min(1100px, calc(100vw - 32px)); max-height: calc(100vh - 48px); overflow: auto; padding: var(--ui-space-4); color: var(--text); background: var(--bg-card); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); box-shadow: var(--ui-shadow-overlay); font: var(--ui-size-body)/1.5 var(--font-ui); }
+.review-sections-dialog[open] { display: grid; gap: var(--ui-space-4); }
+.review-sections-dialog::backdrop { background: var(--bg-window); opacity: .75; }
+.review-sections-dialog header, .review-sections-toolbar { display: flex; justify-content: space-between; align-items: center; gap: var(--ui-space-3); }
+.review-sections-toolbar { justify-content: flex-end; }
+.review-sections-dialog h2, .review-sections-dialog h3, .review-sections-dialog h4 { margin: 0; font-size: var(--ui-size-section); }
+.review-sections-dialog p { margin: 0; color: var(--text-2); overflow-wrap: anywhere; }
+.review-sections-dialog table { width: 100%; table-layout: fixed; border-collapse: collapse; }
+.review-sections-dialog th, .review-sections-dialog td { padding: var(--ui-space-2); text-align: left; vertical-align: top; border-bottom: 1px solid var(--line-strong); overflow-wrap: anywhere; }
+/* Ширины относятся к списку участков: первый столбец — флажок, четвёртый —
+   состояние. У таблицы файлов команды первый столбец несёт имя файла, и
+   узкая ширина флажка рвала его на буквы. */
+.review-sections-list th:first-child, .review-sections-list td:first-child { width: 2.5rem; }
+.review-sections-list th:nth-child(4), .review-sections-list td:nth-child(4) { width: 6.5rem; }
+.review-sections-detail table th:first-child, .review-sections-detail table td:first-child { width: 52%; }
+.review-sections-detail table th:nth-child(2), .review-sections-detail table td:nth-child(2) { width: 20%; }
+.review-sections-list { min-width: 0; overflow: auto; }
+.review-sections-detail { display: grid; gap: var(--ui-space-3); }
+.review-sections-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--ui-space-3); }
+.review-sections-comparison section { min-width: 0; }
+.review-sections-comparison pre { max-height: 320px; overflow: auto; margin: var(--ui-space-2) 0; padding: var(--ui-space-3); background: var(--bg-input); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); font: var(--ui-size-body)/1.5 var(--font-code); white-space: pre-wrap; overflow-wrap: anywhere; }
+.review-sections-fragments { display: grid; gap: var(--ui-space-3); }
+.review-sections-fragment { display: grid; gap: var(--ui-space-2); padding: var(--ui-space-3); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); }
+.review-sections-confirm { display: grid; gap: var(--ui-space-2); padding: var(--ui-space-3); border: 1px solid var(--line-strong); border-radius: var(--ui-radius-control); }
+.review-sections-confirm p { color: var(--text); }
+.review-sections-reasons { margin: 0; padding-left: var(--ui-space-4); color: var(--text-2); overflow-wrap: anywhere; }
+.review-sections-dialog button { width: auto; justify-self: start; }
+@media (max-width: 700px) { .review-sections-comparison { grid-template-columns: 1fr; } }

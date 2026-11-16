@@ -1,0 +1,14 @@
+# Local build candidate binaries
+*.exe
+*.exe.blockmap
+**/node_modules/
+**/.env
+**/.env.*
+*.pfx
+*.p12
+*.pem
+*.key
+*.keystore
+*.log
+Thumbs.db
+.DS_Store

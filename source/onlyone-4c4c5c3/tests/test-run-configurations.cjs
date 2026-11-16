@@ -1,0 +1,41 @@
+'use strict'
+const assert = require('node:assert/strict')
+const fs = require('node:fs'), path = require('node:path')
+const { flattenRecords, compareConfigurations } = require('../src/renderer/run-configurations.js')
+const before = { id: 'a', model: 'vendor/first', reasoningEffort: 'low', agentIndex: 0, instructions: 'old',
+  toolCount: 2, skillCount: 1, toolSetHash: 'tools-a', skillSetHash: 'skills-a',
+  tools: [{ name: 'keep', hash: 'same' }, { name: 'remove', hash: 'old' }], skills: [{ id: 'skill', hash: 'old' }] }
+const after = { ...before, id: 'b', model: 'vendor/second', instructions: 'new', toolCount: 3, toolSetHash: 'tools-b', skillSetHash: 'skills-b',
+  tools: [{ name: 'keep', hash: 'changed' }, { name: 'add', hash: 'new' }], skills: [{ id: 'skill', hash: 'new' }] }
+const diff = compareConfigurations(before, after)
+assert.equal(diff.fields.find(field => field.key === 'model').changed, true)
+assert.equal(diff.fields.find(field => field.key === 'reasoningEffort').changed, false)
+assert.deepEqual(diff.tools.added, ['add'])
+assert.deepEqual(diff.tools.removed, ['remove'])
+assert.deepEqual(diff.tools.changed, ['keep'])
+assert.equal(diff.tools.truncated, true, 'full set count can exceed the captured name list')
+assert.deepEqual(diff.skills.changed, ['skill'])
+assert.equal(compareConfigurations(before, before).fields.some(field => field.changed), false)
+const records = flattenRecords([{ runId: 'older', startedAt: 1, state: 'completed', configurations: [before] },
+  { runId: 'newer', startedAt: 2, state: 'failed', configurations: [before, after] }])
+assert.deepEqual(records.map(row => [row.runId, row.version]), [['newer', 2], ['newer', 1], ['older', 1]])
+assert.equal(records[0].configuration.model, after.model)
+assert.deepEqual(flattenRecords(null), [])
+assert.deepEqual(flattenRecords([{ configurations: [null] }]), [])
+assert.equal(flattenRecords(Array.from({ length: 20 }, (_, i) => ({ runId: String(i), startedAt: i, configurations: Array(40).fill(before) }))).length, 16 * 32)
+const source = fs.readFileSync(path.join(__dirname, '../src/renderer/app.js'), 'utf8')
+const blockStart = source.indexOf('  function configurationParameterBlock() {')
+const blockEnd = source.indexOf('  function workPanel()', blockStart)
+assert(blockStart > 0 && blockEnd > blockStart)
+const gate = new Function('fastMode', 'panes', 'designTaskPanes', source.slice(blockStart, blockEnd) + '; return configurationParameterBlock()')
+assert.equal(gate(true, [], new Map()).code, 'fast')
+assert.equal(gate(false, [{ preparing: true }], new Map()).code, 'busy')
+assert.equal(gate(false, [], new Map([['design', { generating: true }]])).code, 'busy')
+assert.equal(gate(false, [], new Map()), null)
+const modalStart = source.indexOf('  function designPreviewModalOpen() {')
+const modalEnd = source.indexOf('  async function undoDesignPreviewComponent()', modalStart)
+assert(modalStart > 0 && modalEnd > modalStart)
+const nativeModalOpen = new Function('document', source.slice(modalStart, modalEnd) + '; return designPreviewModalOpen()')
+assert.equal(nativeModalOpen({ querySelector: () => ({}), querySelectorAll: () => [] }), true, 'native configuration dialog must block Design deletion and undo shortcuts')
+assert.equal(nativeModalOpen({ querySelector: () => null, querySelectorAll: () => [] }), false)
+console.log('PASS run configuration comparison: archive bounds/order, field diffs, tool/skill changes and truncated-list disclosure')

@@ -1,0 +1,100 @@
+/* Раздел «Удалённое управление» (волна 4): код, QR, устройства. Только токены дизайн-системы. */
+.remote-pair {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-4);
+  padding: var(--ui-space-4);
+  border: var(--ui-border-width) solid var(--ui-surface-line);
+  border-radius: var(--ui-radius-card);
+  background: var(--bg-inset);
+}
+.remote-pair[hidden] { display: none; }
+.remote-qr {
+  flex: none;
+  width: var(--ui-qr-size);
+  height: var(--ui-qr-size);
+  padding: var(--ui-space-2);
+  border-radius: var(--ui-radius-control);
+  background: var(--text-bright);
+}
+.remote-qr svg { display: block; width: 100%; height: 100%; }
+.remote-pair-text { display: flex; flex-direction: column; gap: var(--ui-space-2); min-width: 0; }
+.remote-code {
+  font-family: var(--font-mono);
+  font-size: var(--ui-size-section);
+  font-weight: var(--ui-weight-label);
+  letter-spacing: .06em;
+  color: var(--text);
+  user-select: all;
+}
+.remote-hint, .remote-countdown, .remote-pending { font-size: var(--ui-size-small); line-height: var(--ui-leading); color: var(--text-3); margin: 0; }
+.remote-pending { color: var(--accent); }
+.remote-device {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-3);
+  min-height: var(--ui-control-lg);
+  padding: var(--ui-space-2) 0;
+  border-bottom: var(--ui-border-width) solid var(--line-hairline);
+}
+.remote-device:last-child { border-bottom: none; }
+.remote-device-dot {
+  flex: none;
+  width: var(--ui-space-2);
+  height: var(--ui-space-2);
+  border-radius: var(--r-full);
+  background: var(--text-5);
+}
+.remote-device-dot.online { background: var(--accent); }
+.remote-device-main { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.remote-device-name { font-size: var(--ui-size-label); font-weight: var(--ui-weight-label); color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.remote-device-meta { font-size: var(--ui-size-small); color: var(--text-3); }
+.remote-audit { margin: var(--ui-space-2) 0 0; padding: 0; list-style: none; font-size: var(--ui-size-small); color: var(--text-3); display: flex; flex-direction: column; gap: var(--ui-space-1); }
+.remote-audit-time { color: var(--text-4); }
+.remote-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  height: var(--ui-control-sm);
+  padding: 0 var(--ui-space-2);
+  border: var(--ui-border-width) solid var(--accent-line);
+  border-radius: var(--ui-radius-chip);
+  background: var(--accent-08);
+  color: var(--accent);
+  font: inherit;
+  font-size: var(--ui-size-small);
+  cursor: pointer;
+}
+.remote-badge .icon { width: var(--ui-icon-compact); height: var(--ui-icon-compact); }
+.remote-badge:focus-visible { outline: var(--ui-focus-width) solid var(--ui-focus); outline-offset: var(--ui-focus-offset); }
+.history-item .remote-mark { flex: none; width: var(--ui-icon-compact); height: var(--ui-icon-compact); color: var(--text-4); }
+@media (max-width: 640px) { .remote-pair { flex-direction: column; align-items: flex-start; } }
+
+/* Канал stable: выбора версии (Default, Pro, Ultra) нет вовсе. */
+html[data-channel="stable"] :is(#editionGroup, #ultraIntroRow) { display: none; }
+
+/* Регулировка панели «Браузер / Превью»: ширина за левый край и масштаб страниц. */
+.artifact-resizer {
+  position: absolute; z-index: 5; top: 0; bottom: 0; left: 0;
+  width: var(--ui-space-2);
+  cursor: col-resize;
+  touch-action: none;
+}
+.artifact-resizer::after {
+  content: ""; position: absolute; top: 0; bottom: 0; left: 0;
+  width: var(--ui-segment-pad);
+  background: transparent;
+  transition: background var(--dur-hover) var(--ease-out);
+}
+.artifact-resizer:hover::after, .artifact-resizer:focus-visible::after, body.is-resizing-panel .artifact-resizer::after { background: var(--accent); }
+.artifact-resizer:focus-visible { outline: none; }
+body.is-resizing-panel { cursor: col-resize; user-select: none; }
+body.is-resizing-panel webview { pointer-events: none; }
+.browser-zoom { display: inline-flex; align-items: center; flex: none; }
+.browser-zoom-level {
+  min-width: var(--ui-control-lg); height: var(--ui-control-sm); padding: 0 var(--ui-space-1);
+  border: 0; border-radius: var(--ui-radius-chip); background: transparent;
+  color: var(--text-3); font: inherit; font-size: var(--ui-size-small); font-variant-numeric: tabular-nums; cursor: pointer;
+}
+.browser-zoom-level:hover { background: var(--bg-hover); color: var(--text); }
+.browser-zoom .browser-icon-btn:disabled { opacity: .4; }

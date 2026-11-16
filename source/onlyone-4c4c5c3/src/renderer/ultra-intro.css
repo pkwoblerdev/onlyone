@@ -1,0 +1,176 @@
+/* Представление onlyone Ultra (план, 9.2). Показывается один раз — при первой
+   новой сессии в Ultra — и по кнопке в Настройках → «Вид приложения».
+
+   Сцена свёрстана в кадре 1280×760 (.ux-stage) и уменьшается или
+   увеличивается под окно целиком; фон (.ux-sky) — на всё окно. Движение —
+   только сдвиг и прозрачность, медленное; к концу темп нарастает.
+   Шрифт — один, веса 400 и 500 (дизайн-система). Искра в Ultra не вращается. */
+.ux {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  overflow: hidden;
+  background: #0b0a09;
+  color: var(--text);
+  font-family: var(--font-ui);
+  opacity: 0;
+  transition: opacity 700ms ease;
+}
+.ux, .ux *, .ux *::before, .ux *::after { box-sizing: border-box; }
+.ux.is-in { opacity: 1; }
+.ux.is-out { opacity: 0; transition: opacity 520ms ease; }
+.ux-sky { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ux-grain { position: absolute; inset: 0; opacity: 0.06; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.ux-vig { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.55) 100%); }
+.ux-skip { position: absolute; top: 14px; right: 16px; z-index: 3; height: 32px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; color: var(--text-3); font: 400 13.5px var(--font-ui); cursor: pointer; transition: background-color 160ms ease, color 160ms ease, opacity 400ms ease; }
+@media (hover: hover) { .ux-skip:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); } }
+.ux-skip:focus-visible, .ux-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.ux.is-final .ux-skip { opacity: 0; pointer-events: none; }
+
+.ux-stage { position: absolute; left: 0; top: 0; width: 1280px; height: 760px; transform-origin: 0 0; }
+.ux-stage > * { position: absolute; }
+.ux-ic { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.ux-mark { fill: var(--accent); }
+
+/* Подпись сцены — сверху по центру: номер, название, одна строка. */
+.ux-cap { left: 0; right: 0; top: 38px; display: grid; justify-items: center; gap: 8px; text-align: center; pointer-events: none; }
+.ux-cap > * { opacity: 0; transform: translateY(12px); transition: opacity 900ms ease, transform 1100ms var(--ease-out); }
+.ux-cap.is-on > * { opacity: 1; transform: none; }
+.ux-cap.is-on > :nth-child(2) { transition-delay: 90ms; }
+.ux-cap.is-on > :nth-child(3) { transition-delay: 180ms; }
+.ux-cap.is-off > * { opacity: 0; transform: translateY(-8px); transition: opacity 500ms ease, transform 600ms ease; }
+.ux-cap-n { font-size: 12.5px; color: var(--text-4); letter-spacing: 0.04em; font-variant-numeric: tabular-nums; }
+.ux-cap-n b { color: var(--accent); font-weight: 500; }
+.ux-cap h2 { margin: 0; font-size: 32px; font-weight: 500; line-height: 38px; letter-spacing: -0.02em; color: var(--text); }
+.ux-cap p { margin: 0; font-size: 15px; color: var(--text-3); }
+
+/* Искра — открытие сцены и финал. */
+.ux-spark { left: 604px; top: 262px; width: 72px; height: 72px; opacity: 0; transform: scale(0.86); transition: opacity 1400ms ease, transform 1600ms var(--ease-out); }
+.ux-spark::before { content: ''; position: absolute; inset: -60px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 30%, transparent), transparent 72%); }
+.ux-spark svg { position: relative; width: 100%; height: 100%; }
+.ux-spark.is-on { opacity: 1; transform: none; }
+.ux-spark.is-away { opacity: 0; transform: translateY(-40px) scale(0.7); transition: opacity 900ms ease, transform 1100ms var(--ease-out); }
+
+/* Разговор: одна колонка по центру, как в Ultra, вместе со строкой ввода.
+   Сдвигается целиком, когда рядом встаёт блок результата. */
+.ux-main { left: 0; top: 0; width: 1280px; height: 760px; transition: transform 1100ms cubic-bezier(0.45, 0, 0.2, 1), opacity 700ms ease; }
+.ux-main > * { position: absolute; }
+.ux-col { left: 360px; top: 176px; width: 560px; height: 400px; }
+.ux-col > * { position: absolute; left: 0; right: 0; opacity: 0; transform: translateY(14px); transition: opacity 700ms ease, transform 900ms var(--ease-out); }
+.ux-col > .is-on { opacity: 1; transform: translateY(var(--y, 0px)); }
+.ux-col > .is-gone { opacity: 0; transform: translateY(calc(var(--y, 0px) - 8px)); transition: opacity 500ms ease, transform 600ms ease; }
+.ux-bubble { display: flex; justify-content: flex-end; }
+.ux-bubble span { max-width: 78%; padding: 11px 16px; border-radius: 14px; background: var(--user-bubble, #25221e); border: 1px solid var(--user-bubble-line, #302c27); color: var(--user-bubble-text, var(--text)); font-size: 15px; line-height: 22px; }
+.ux-steps { display: grid; gap: 8px; }
+.ux-step { display: flex; align-items: center; gap: 10px; height: 22px; font-size: 14px; color: var(--text-3); opacity: 0; transform: translateY(6px); transition: opacity 500ms ease, transform 600ms var(--ease-out), color 400ms ease; }
+.ux-step.is-on { opacity: 1; transform: none; }
+.ux-step i { position: relative; width: 16px; height: 16px; flex: none; }
+.ux-step i svg { position: absolute; inset: 0; width: 16px; height: 16px; transition: opacity 400ms ease, transform 500ms var(--ease-out); }
+.ux-step .ux-run { fill: var(--accent); animation: uxBreath 1.6s ease-in-out infinite; }
+.ux-step .ux-ok { opacity: 0; transform: scale(0.6); color: var(--ok, #6aa582); }
+.ux-step.is-done .ux-run { opacity: 0; animation: none; }
+.ux-step.is-done .ux-ok { opacity: 1; transform: none; }
+.ux-step.is-done { color: var(--text-2); }
+.ux-step em { font-style: normal; color: var(--text-4); }
+@keyframes uxBreath { 50% { opacity: 0.45; } }
+.ux-answer { font-size: 15.5px; line-height: 24px; color: var(--text); }
+.ux-prop { display: flex; }
+.ux-prop > span { display: inline-flex; align-items: center; gap: 12px; padding: 6px 6px 6px 14px; border-radius: 12px; border: 1px solid var(--line-card); background: var(--bg-card); font-size: 14px; color: var(--text-2); }
+.ux-prop b { display: inline-flex; align-items: center; gap: 7px; height: 30px; padding: 0 12px; border-radius: 9px; background: var(--accent); color: var(--accent-ink); font-weight: 500; font-size: 13.5px; }
+.ux-prop b.is-hit { animation: uxHit 420ms var(--ease-out); }
+.ux-applied { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text-3); }
+.ux-applied .ux-ic { color: var(--ok, #6aa582); }
+.ux-applied u { text-decoration: none; color: var(--accent); }
+@keyframes uxHit { 40% { transform: scale(0.94); } }
+
+/* Строка ввода Ultra: полупрозрачная, над горизонтом. */
+.ux-comp { left: 360px; top: 596px; width: 560px; padding: 14px 16px 10px; border-radius: 18px; border: 1px solid var(--line-strong, #3a3631); background: color-mix(in srgb, #1c1a17 88%, transparent); backdrop-filter: blur(10px); opacity: 0; transform: translateY(16px); transition: opacity 900ms ease, transform 1100ms var(--ease-out), border-color 300ms ease; }
+.ux-comp.is-on { opacity: 1; transform: none; }
+.ux-comp.is-typing { border-color: color-mix(in srgb, var(--accent) 50%, var(--line-strong, #3a3631)); }
+.ux-comp-in { position: relative; min-height: 24px; font-size: 15px; line-height: 24px; color: var(--text); white-space: nowrap; overflow: hidden; }
+.ux-comp-in .ux-ph { position: absolute; left: 0; top: 0; color: var(--text-4); transition: opacity 200ms ease; }
+.ux-comp.is-typing .ux-ph { opacity: 0; }
+.ux-caret { display: inline-block; width: 1.5px; height: 18px; margin-left: 1px; vertical-align: -3px; background: var(--accent); opacity: 0; }
+.ux-comp.is-typing .ux-caret { opacity: 1; animation: uxCaret 1s steps(1) infinite; }
+@keyframes uxCaret { 50% { opacity: 0; } }
+.ux-comp-row { display: flex; align-items: center; gap: 10px; margin-top: 10px; color: var(--text-3); }
+.ux-comp-row .ux-sp { flex: 1; }
+.ux-send { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 10px; background: var(--accent); color: var(--accent-ink); }
+.ux-send.is-hit { animation: uxHit 420ms var(--ease-out); }
+
+/* Результат — свободный блок. Двигается сдвигом, растягивается раскрытием. */
+.ux-block { left: 0; top: 0; width: 560px; height: 330px; opacity: 0; transform: translate(var(--x, 700px), var(--y, 230px)) scale(0.97); transition: opacity 800ms ease, transform 1200ms cubic-bezier(0.45, 0, 0.2, 1), clip-path 1000ms cubic-bezier(0.45, 0, 0.2, 1); clip-path: inset(0 0 0 var(--clip, 160px) round 14px); }
+.ux-block.is-on { opacity: 1; transform: translate(var(--x, 700px), var(--y, 230px)); }
+.ux-block-in { position: absolute; inset: 0; display: grid; grid-template-rows: 40px 1fr; border-radius: 14px; border: 1px solid var(--line-strong, #3a3631); background: color-mix(in srgb, #1c1a17 92%, transparent); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); }
+.ux-block-h { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 0 12px; border-bottom: 1px solid var(--line-card); font-size: 13px; color: var(--text-2); }
+.ux-block-h b { font-weight: 400; display: inline-flex; align-items: center; gap: 7px; margin-right: 6px; }
+.ux-block-h .ux-ic { color: var(--text-4); }
+.ux-phones { display: flex; justify-content: flex-end; align-items: center; gap: 12px; padding: 0 22px; }
+.ux-phone { width: 104px; height: 216px; display: grid; align-content: start; gap: 7px; padding: 12px 9px; border-radius: 17px; border: 1px solid var(--line-strong, #3a3631); background: #f5f1e8; color: #34403a; }
+.ux-phone b { font-size: 11.5px; font-weight: 500; }
+.ux-phone i { height: 22px; border-radius: 6px; background: #e4dccb; }
+.ux-phone i.is-on { background: #3f5a4c; }
+/* Край, за который тянут, — светится акцентом. */
+.ux-edge { position: absolute; top: 16px; bottom: 16px; left: 0; width: 2px; border-radius: 2px; background: var(--accent); opacity: 0; transform: translateX(calc(var(--clip, 160px) - 1px)); transition: opacity 300ms ease, transform 1000ms cubic-bezier(0.45, 0, 0.2, 1); }
+.ux-block.is-pull .ux-edge { opacity: 0.9; }
+.ux-block.is-trying .ux-block-in { outline: 1.5px dashed var(--accent); outline-offset: 4px; }
+.ux-snap { left: 0; top: 0; width: 400px; height: 330px; border-radius: 14px; border: 1.5px dashed var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); opacity: 0; transform: translate(var(--x, 840px), var(--y, 176px)); transition: opacity 360ms ease; }
+.ux-snap.is-on { opacity: 1; }
+.ux-pill { left: 0; top: 0; display: flex; align-items: center; gap: 7px; height: 32px; padding: 0 14px; border-radius: 99px; border: 1px solid var(--line-strong, #3a3631); background: #1c1a17; color: var(--text-2); font-size: 13px; opacity: 0; transform: translate(var(--x, 1100px), var(--y, 176px)) scale(0.9); transition: opacity 500ms ease, transform 700ms var(--ease-out); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); }
+.ux-pill.is-on { opacity: 1; transform: translate(var(--x, 1100px), var(--y, 176px)); }
+.ux-try { left: 0; right: 0; top: 142px; display: flex; justify-content: center; opacity: 0; transform: translateY(-6px); transition: opacity 500ms ease, transform 600ms var(--ease-out); }
+.ux-try.is-on { opacity: 1; transform: none; }
+.ux-try > span { display: inline-flex; align-items: center; gap: 10px; padding: 6px 6px 6px 14px; border-radius: 14px; border: 1px solid var(--accent-line); background: #1c1a17; font-size: 13.5px; font-weight: 500; color: var(--text); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45); }
+.ux-try i { font-style: normal; height: 28px; display: inline-flex; align-items: center; padding: 0 12px; border-radius: 9px; font-size: 13px; }
+.ux-try .is-quiet { color: var(--text-2); border: 1px solid var(--line-card); }
+.ux-try .is-main { background: var(--accent); color: var(--accent-ink); }
+.ux-try .is-hit { animation: uxHit 420ms var(--ease-out); }
+
+/* Граф порядка работы: этапы появляются, связи прорисовываются, по ним идёт ход. */
+.ux-graph { left: 140px; top: 214px; width: 1000px; height: 300px; opacity: 0; transition: opacity 900ms ease; }
+.ux-graph.is-on { opacity: 1; }
+.ux-graph svg.ux-links { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ux-links path { fill: none; stroke: var(--line-strong, #3a3631); stroke-width: 1.5; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 900ms cubic-bezier(0.45, 0, 0.2, 1), stroke 500ms ease; }
+.ux-links path.is-on { stroke-dashoffset: 0; }
+.ux-links path.is-done { stroke: color-mix(in srgb, var(--accent) 70%, transparent); }
+.ux-node { position: absolute; display: flex; align-items: center; gap: 9px; width: 150px; height: 50px; margin: -25px 0 0 -75px; padding: 0 14px; border-radius: 13px; border: 1px solid var(--line-strong, #3a3631); background: #1a1815; font-size: 14px; color: var(--text-2); opacity: 0; transform: translateY(10px) scale(0.96); transition: opacity 600ms ease, transform 800ms var(--ease-out), border-color 400ms ease, color 400ms ease; }
+.ux-node.is-on { opacity: 1; transform: none; }
+.ux-node i { position: relative; width: 16px; height: 16px; flex: none; }
+.ux-node i svg { position: absolute; inset: 0; width: 16px; height: 16px; transition: opacity 400ms ease; }
+.ux-node .ux-dot { width: 8px; height: 8px; margin: 4px; border-radius: 50%; background: var(--text-4); transition: background-color 300ms ease, opacity 300ms ease; }
+.ux-node .ux-run { fill: var(--accent); opacity: 0; }
+.ux-node .ux-ok { color: var(--ok, #6aa582); opacity: 0; }
+.ux-node.is-run { border-color: var(--accent-line); color: var(--text); }
+.ux-node.is-run .ux-dot { opacity: 0; }
+.ux-node.is-run .ux-run { opacity: 1; animation: uxBreath 1.4s ease-in-out infinite; }
+.ux-node.is-done { color: var(--text); }
+.ux-node.is-done .ux-dot, .ux-node.is-done .ux-run { opacity: 0; animation: none; }
+.ux-node.is-done .ux-ok { opacity: 1; }
+
+/* Финал: искра, «onlyone Ultra», одна строка, кнопка. */
+.ux-final { left: 0; right: 0; top: 236px; display: grid; justify-items: center; gap: 18px; text-align: center; pointer-events: none; }
+.ux-final > * { opacity: 0; transform: translateY(14px); transition: opacity 800ms ease, transform 1000ms var(--ease-out); }
+.ux.is-final .ux-final { pointer-events: auto; }
+.ux.is-final .ux-final > * { opacity: 1; transform: none; }
+.ux.is-final .ux-final > :nth-child(2) { transition-delay: 380ms; }
+.ux.is-final .ux-final > :nth-child(3) { transition-delay: 620ms; }
+.ux.is-final .ux-final > :nth-child(4) { transition-delay: 860ms; }
+.ux-final-mark { position: relative; width: 84px; height: 84px; margin-bottom: 6px; }
+.ux-final-mark::before { content: ''; position: absolute; inset: -70px; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 34%, transparent), transparent 72%); }
+.ux-final-mark svg { position: relative; width: 100%; height: 100%; }
+.ux-final h2 { margin: 0; font-size: 52px; font-weight: 500; line-height: 58px; letter-spacing: -0.03em; color: var(--text); }
+.ux-final h2 span { color: var(--accent); }
+.ux-final p { margin: 0; font-size: 18px; line-height: 26px; color: var(--text-2); }
+.ux-cta { height: 44px; margin-top: 8px; padding: 0 22px; border: 0; border-radius: 12px; background: var(--accent); color: var(--accent-ink); font: 500 15px var(--font-ui); cursor: pointer; transition: filter 160ms ease; }
+@media (hover: hover) { .ux-cta:hover { filter: brightness(1.07); } }
+
+/* Скорый монтаж перед финалом: сцены пролетают ближе друг к другу. */
+.ux-stage.is-rush .ux-main, .ux-stage.is-rush .ux-block, .ux-stage.is-rush .ux-graph { transition-duration: 380ms; }
+.ux-stage.is-gather .ux-main, .ux-stage.is-gather .ux-block, .ux-stage.is-gather .ux-graph, .ux-stage.is-gather .ux-cap, .ux-stage.is-gather .ux-pill { opacity: 0 !important; transition: opacity 600ms ease, transform 700ms var(--ease-out); }
+
+/* Без движения: сразу итог и список возможностей. */
+.ux-list { left: 0; right: 0; top: 540px; display: none; justify-content: center; gap: 22px; font-size: 14px; color: var(--text-3); }
+@media (prefers-reduced-motion: reduce) {
+  .ux, .ux *, .ux *::before { animation: none !important; transition: none !important; }
+  .ux-list { display: flex; }
+}

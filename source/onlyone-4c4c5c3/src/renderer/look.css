@@ -1,0 +1,702 @@
+/* Вид по макету 19.10.2026 (audits/ui-2026-10-18/onlyone-mockup.html).
+   Подключается последним: накладывает компоненты макета на прежние классы
+   приложения — id и data-атрибуты не меняются, поведение остаётся старым.
+   Значения — только роли из tokens.css. Порядок разделов — порядок переноса
+   (port-guide.md): общие компоненты, каркас, чат, разделы, настройки, окна.
+
+   Правила, которые держат весь вид:
+   - одна залитая кнопка на экран; остальные — текст или значок без контура,
+     фон появляется только под указателем;
+   - нажатие — элемент садится на 1 px; масштаба нет совсем (scale на Windows
+     размывает шрифт);
+   - один шрифт, пять размеров (--fs-*), заголовки весом 600. */
+
+/* ═══════════════ 1. ОБЩИЕ КОМПОНЕНТЫ ═══════════════ */
+
+/* Кольцо фокуса — одно на всё. У строк во всю ширину — внутрь (они стоят в
+   прокрутке, внешнее кольцо срезается). */
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+:focus:not(:focus-visible) { outline: none; }
+
+/* Клавиша */
+kbd, .inline-kbd {
+  display: inline-flex; align-items: center; height: 18px; padding: 0 var(--s1);
+  border: 0; border-radius: var(--r-xs); background: var(--bg-chip); box-shadow: none;
+  font: 400 var(--fs-cap)/1 var(--font-ui); color: var(--ink-3); font-variant-numeric: tabular-nums;
+}
+
+/* ─── Кнопки: одно семейство ───
+   Наведение — фон за 120 мс; нажатие — 1 px вниз за 70 мс, возврат пружиной press. */
+.btn-primary, .btn-secondary, .btn-danger, .btn,
+.btn-icon, .btn-close-modal, .browser-icon-btn, .artifact-close, .artifact-action {
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out),
+              box-shadow var(--dur-hover) var(--ease-out), transform var(--dur-press-back) var(--ease-press);
+}
+:is(.btn-primary, .btn-secondary, .btn-danger, .btn, .btn-icon, .btn-close-modal,
+    .browser-icon-btn, .artifact-close, .artifact-action):active:not(:disabled):not([aria-disabled="true"]) {
+  transform: translateY(1px);
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out),
+              box-shadow var(--dur-press) var(--ease-out), transform var(--dur-press) var(--ease-out);
+}
+
+.btn-primary, .btn-secondary, .btn-danger, .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  height: 32px; min-height: 32px; padding: 0 var(--s3);
+  border: 0; border-radius: var(--r-sm);
+  font: 500 var(--fs-ui)/20px var(--font-ui); white-space: nowrap; text-decoration: none;
+}
+:is(.btn-primary, .btn-secondary, .btn-danger, .btn) .icon,
+:is(.btn-primary, .btn-secondary, .btn-danger, .btn) .ic { width: 14px; height: 14px; }
+
+/* Главная: ровная заливка акцентом и контактная тень — без бликов и фасок */
+.btn-primary, .btn.pri {
+  background: var(--accent); color: var(--on-accent); box-shadow: var(--contact);
+}
+:is(.btn-primary, .btn.pri):hover:not(:disabled) { background: var(--accent-hover); color: var(--on-accent); border-color: transparent; }
+:is(.btn-primary, .btn.pri):active:not(:disabled) { box-shadow: none; }
+:is(.btn-primary, .btn.pri):disabled { background: var(--bg-active); color: var(--ink-disabled); box-shadow: none; }
+.btn.pri .ic, .btn-primary .icon { color: inherit; }
+
+/* Тихая (и бывшая «в обводке» — контура больше нет): тело только под указателем */
+.btn-secondary, .btn, .btn.ghost {
+  background: none; color: var(--ink-2); box-shadow: none;
+}
+:is(.btn-secondary, .btn:not(.pri)):hover:not(:disabled) { background: var(--bg-hover); color: var(--ink); border-color: transparent; }
+:is(.btn-secondary, .btn:not(.pri)):active:not(:disabled) { background: var(--bg-active); }
+:is(.btn-secondary, .btn:not(.pri)):disabled, .btn[disabled]:not(.pri) { background: none; color: var(--ink-disabled); cursor: default; }
+.btn .ic { color: var(--ink-3); }
+.btn.sm, .btn-sm { height: 28px; min-height: 28px; padding: 0 var(--s3); font-size: var(--fs-ui); }
+.btn.lg { height: 40px; padding: 0 var(--s5); }
+
+/* Опасное действие: залито только в окне подтверждения, где оно единственное
+   залитое; в остальных местах — текст цветом опасности. */
+.btn-danger {
+  background: var(--danger); color: var(--on-danger); box-shadow: var(--contact);
+}
+.btn-danger:hover:not(:disabled) { background: color-mix(in srgb, var(--danger) 88%, var(--ink)); }
+.btn-danger:active:not(:disabled) { box-shadow: none; }
+.btn.dan, .btn-secondary.danger, .btn-danger-text { color: var(--danger); background: none; }
+:is(.btn.dan, .btn-secondary.danger):hover:not(:disabled) { color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, transparent); }
+
+/* Значок-кнопка: 32 × 32, значок 16 --ink-3, фон под указателем */
+.btn-icon, .btn-close-modal, .artifact-close {
+  display: inline-grid; place-items: center; flex: none;
+  width: 32px; height: 32px; padding: 0;
+  border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-3);
+}
+:is(.btn-icon, .btn-close-modal, .artifact-close):hover:not(:disabled) { background: var(--bg-hover); color: var(--ink); }
+:is(.btn-icon, .btn-close-modal, .artifact-close):active:not(:disabled) { background: var(--bg-active); }
+:is(.btn-icon, .btn-close-modal, .artifact-close):disabled,
+:is(.btn-icon, .btn-close-modal, .artifact-close)[aria-disabled="true"] { color: var(--ink-disabled); background: none; }
+:is(.btn-icon, .btn-close-modal, .artifact-close) .icon { width: 16px; height: 16px; }
+.btn-icon[aria-pressed="true"], .btn-icon[aria-expanded="true"] { background: var(--bg-active); color: var(--ink); }
+/* Красная корзина у «Очистить» — лишний сигнал: очистка обратима («Вернуть») */
+.btn-icon--danger:hover:not(:disabled) { color: var(--ink); background: var(--bg-hover); }
+
+/* Ссылка-действие: тонкое подчёркивание при наведении */
+.lnk, .link-external {
+  display: inline-flex; align-items: center; gap: var(--s2); min-height: 24px;
+  color: var(--ink-2); white-space: nowrap; font-size: var(--fs-ui); border-radius: var(--r-xs);
+  text-decoration: underline 1px transparent; text-underline-offset: 4px;
+  transition: color var(--dur-hover) var(--ease-out), text-decoration-color var(--dur-hover) var(--ease-out);
+}
+:is(.lnk, .link-external):hover { text-decoration-color: currentColor; color: var(--ink); }
+.lnk-accent, .lnk-accent:hover { color: var(--accent); font-weight: 500; }
+.lnk-danger, .lnk-danger:hover { color: var(--danger); }
+.link-external .icon { width: 12px; height: 12px; }
+
+@media (pointer: coarse) {
+  .btn-primary, .btn-secondary, .btn-danger, .btn, .btn-icon { min-height: 44px; }
+  .btn-icon { min-width: 44px; }
+  .lnk, .link-external { min-height: 40px; }
+}
+
+/* ─── Переключатель: 36 × 22, бегунок 16, зона нажатия 44 × 44 ───
+   Включено — светлая дорожка, без акцента (решение «нейтральные» ждёт слова
+   владельца — отдельным правилом ниже, чтобы легко вернуть). */
+.toggle-switch { position: relative; display: inline-block; flex: none; width: 36px; height: 22px; }
+.toggle-switch::before { content: ""; position: absolute; inset: -11px -4px; }
+.toggle-switch .slider { border-radius: 11px; background-color: var(--bg-active); transition: background-color var(--dur-hover) var(--ease-out); }
+.toggle-switch .slider::before {
+  left: 3px; bottom: 3px; width: 16px; height: 16px;
+  background-color: var(--ink-3); box-shadow: none;
+  transition: transform var(--dur-snap) var(--ease-snap), background-color var(--dur-hover) var(--ease-out);
+}
+.toggle-switch:hover .slider::before { background-color: var(--ink-2); }
+.toggle-switch input:checked + .slider { background-color: var(--ink-2); }
+.toggle-switch input:checked + .slider::before { transform: translateX(14px); background-color: var(--bg); }
+.toggle-switch input:focus-visible + .slider { outline: 2px solid var(--focus); outline-offset: 2px; }
+.toggle-switch input:disabled + .slider { opacity: .4; cursor: default; }
+
+.sw {
+  width: 36px; height: 22px; border: 0; border-radius: 11px; background: var(--bg-active);
+  transition: background-color var(--dur-hover) var(--ease-out);
+}
+.sw::before {
+  top: 3px; left: 3px; width: 16px; height: 16px; background: var(--ink-3);
+  transition: transform var(--dur-snap) var(--ease-snap), background-color var(--dur-hover) var(--ease-out);
+}
+.sw:hover::before { background: var(--ink-2); }
+.sw:checked { background: var(--ink-2); border-color: transparent; }
+.sw:checked::before { transform: translateX(14px); background: var(--bg); }
+
+/* ─── Сегменты: подложка-пилюля, выбранное — поверхностью ─── */
+.seg {
+  display: inline-flex; flex: none; flex-wrap: wrap; gap: var(--s-half); padding: var(--s1);
+  border: 0; border-radius: var(--r-pill); background: var(--bg-chip);
+}
+.seg span, .seg button {
+  display: inline-grid; place-items: center; height: 26px; padding: 0 var(--s3);
+  border: 0; border-radius: var(--r-pill); background: none; box-shadow: none;
+  font: 400 var(--fs-ui)/20px var(--font-ui); color: var(--ink-3); white-space: nowrap; cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.seg span:hover, .seg button:hover:not(:disabled) { color: var(--ink); background: none; }
+.seg span.on, .seg button.on, .seg span[aria-selected="true"],
+.seg button[aria-checked="true"], .seg button[aria-pressed="true"], .seg button[aria-selected="true"] {
+  background: var(--bg-raised); color: var(--ink); font-weight: 500; box-shadow: var(--contact);
+}
+.seg button:disabled { color: var(--ink-disabled); }
+.seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+@media (pointer: coarse) { .seg span, .seg button { min-height: 40px; } }
+
+/* ─── Поле: 32 px, фон окна, рамка --line-field; фокус — кольцо ─── */
+.field-input, .field-textarea, .field-select, .in, select {
+  min-height: 32px; padding: 0 var(--s3);
+  background: var(--bg) !important; color: var(--ink) !important;
+  border: 1px solid var(--line-field); border-radius: var(--r-sm); box-shadow: none;
+  font: 400 var(--fs-ui)/20px var(--font-ui);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.field-input, .field-select, .in:not(textarea), select { height: 32px; }
+.field-textarea, textarea.in { padding: var(--s2) var(--s3); line-height: 20px; }
+:is(.field-input, .field-textarea, .in)::placeholder { color: var(--ink-3); }
+:is(.field-input, .field-textarea, .field-select, .in, select):hover:not(:disabled):not(:focus) { border-color: var(--ink-4); }
+:is(.field-input, .field-textarea, .field-select, .in, select):focus { border-color: var(--line-field); background: var(--bg) !important; }
+:is(.field-input, .field-textarea, .field-select, .in, select):focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+:is(.field-input, .field-textarea, .in)[aria-invalid="true"] { border-color: var(--danger); }
+.field-select, select { color-scheme: dark; cursor: pointer; }
+:root[data-theme="light"] :is(.field-select, select) { color-scheme: light; }
+select option { background-color: var(--bg-raised) !important; color: var(--ink) !important; }
+select optgroup { background-color: var(--bg-sunken) !important; color: var(--ink-3) !important; }
+.field-label { font: 500 var(--fs-ui)/20px var(--font-ui); color: var(--ink); }
+.field-note { font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); }
+.feedback-msg { font-size: var(--fs-cap); line-height: 16px; color: var(--ink-3); }
+.feedback-msg.error { color: var(--danger); }
+@media (pointer: coarse) { .field-input, .field-select, .in:not(textarea), select { height: 44px; } }
+
+/* Поиск — пилюля без рамки, лупа слева; рамка проявляется под указателем */
+.modal-search-field, .task-center-search, .mp-search {
+  height: 32px; border: 1px solid transparent; border-radius: var(--r-pill);
+  background: var(--bg-chip); color: var(--ink); font: 400 var(--fs-ui)/20px var(--font-ui);
+}
+:is(.modal-search-field, .task-center-search, .mp-search):hover { border-color: var(--line-strong); }
+:is(.modal-search-field, .task-center-search, .mp-search)::placeholder { color: var(--ink-3); }
+:is(.modal-search-field, .task-center-search, .mp-search):focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+
+/* ─── Подсказка: 12/16 --ink-2 на поверхности, одна фраза, клавиша справа ─── */
+.ui-tooltip, :is(.one-ui, body) .ui-tooltip {
+  max-width: min(280px, calc(100vw - 16px)); padding: var(--s1) var(--s2);
+  border: 0; border-radius: var(--r-sm); background: var(--bg-raised); box-shadow: var(--shadow-pop);
+  font: 400 var(--fs-cap)/16px var(--font-ui); color: var(--ink-2);
+  transform: translateY(4px);
+  transition: opacity var(--dur-exit) var(--ease-in), transform var(--dur-exit) var(--ease-in);
+}
+.ui-tooltip.is-visible, :is(.one-ui, body) .ui-tooltip.is-visible {
+  transform: none; transition: opacity var(--dur-pop) var(--ease-out), transform var(--dur-pop) var(--ease-out);
+}
+.ui-tooltip-kbd, :is(.one-ui, body) .ui-tooltip-kbd {
+  height: 18px; padding: 0 var(--s1); border: 0; border-radius: var(--r-xs);
+  background: var(--bg-chip); color: var(--ink-3); font: 400 var(--fs-cap)/1 var(--font-ui);
+}
+
+/* ─── Уведомление: одна строка над строкой ввода, «Вернуть» акцентом ─── */
+.toast-box {
+  top: auto; bottom: 132px; left: calc(50% + var(--sidebar-w) / 2);
+  display: flex; align-items: center; gap: var(--s4);
+  max-width: min(560px, calc(100vw - var(--sidebar-w) - 48px));
+  padding: var(--s2) var(--s4); overflow: hidden;
+  border: 0; border-radius: var(--r-md); background: var(--bg-raised); box-shadow: var(--shadow-pop);
+  font: 400 var(--fs-ui)/20px var(--font-ui); color: var(--ink-2);
+  transform: translateY(4px);
+  transition: opacity var(--dur-exit) var(--ease-in), transform var(--dur-exit) var(--ease-in);
+}
+.toast-box.show { transform: none; transition: opacity var(--dur-pop) var(--ease-out), transform var(--dur-soft) var(--ease-soft); }
+@media (max-width: 899px) { .toast-box { left: 50%; max-width: calc(100vw - 32px); } }
+
+/* ─── Окно: подложка 140 мс, окно поднимается на 8 px пружиной soft ───
+   Без размытия и без масштаба. Шапка: заголовок 18/600; подвал справа. */
+.modal-backdrop {
+  background: var(--scrim); backdrop-filter: none; -webkit-backdrop-filter: none;
+  padding: var(--s4); animation: lookScrimIn var(--dur-pop) var(--ease-out);
+}
+.modal-card {
+  border: 0; border-radius: var(--r-lg); background: var(--bg-raised); box-shadow: var(--shadow-pop);
+  max-height: calc(100vh - 64px);
+  animation: lookDialogIn var(--dur-soft) var(--ease-soft);
+}
+.modal-small { width: min(420px, 100%); max-width: 100%; }
+.modal-medium { width: min(600px, 100%); }
+@keyframes lookScrimIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lookDialogIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.modal-header {
+  display: flex; align-items: flex-start; gap: var(--s3);
+  padding: var(--s5) var(--s4) var(--s3) var(--s6); border: 0; background: none;
+}
+.modal-title { margin: 0; font: var(--fw-head) var(--fs-h2)/24px var(--font-ui); color: var(--ink); letter-spacing: 0; }
+.modal-header .modal-title, .modal-title-wrap { flex: 1; min-width: 0; }
+.modal-form { padding: var(--s1) var(--s6) var(--s2); }
+.modal-footer {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: var(--s2);
+  margin: 0 calc(-1 * var(--s6)); padding: var(--s4) var(--s6) var(--s5); border: 0; background: none;
+}
+.confirm-message { margin: 0 0 var(--s2); font-size: var(--fs-ui); line-height: 20px; color: var(--ink-2); max-width: 58ch; }
+/* Поле в окне: рамка --ink-4 (на --bg-raised --line-field давал 2,8:1), 36 px */
+.modal-card :is(.field-input, .field-select) { height: 36px; border-color: var(--ink-4); }
+.modal-card .field-textarea { border-color: var(--ink-4); }
+.field-wrap { display: grid; gap: var(--s1); margin-top: var(--s4); }
+.field-wrap:first-child { margin-top: 0; }
+
+/* ─── Меню: поверхность, --r-md, тень; пункт — название и пояснение ─── */
+.ctx-menu, .model-popover, .perm-menu {
+  border: 0; border-radius: var(--r-md); background: var(--bg-raised); box-shadow: var(--shadow-pop);
+}
+.ctx-item, .mp-row, .mp-fast {
+  border-radius: var(--r-sm); font: 400 var(--fs-ui)/20px var(--font-ui); color: var(--ink);
+}
+:is(.ctx-item, .mp-row, .mp-fast):hover:not(:disabled), .ctx-item:focus-visible { background: var(--bg-hover); color: var(--ink); }
+.ctx-item:active:not(:disabled) { transform: translateY(1px); }
+.ctx-item.danger { color: var(--danger); }
+.ctx-item.danger:hover:not(:disabled) { color: var(--danger); background: var(--bg-hover); }
+.ctx-sep { background: var(--line-subtle); }
+.ctx-heading { font-size: var(--fs-cap); color: var(--ink-4); text-transform: none; letter-spacing: 0; }
+.mp-check { stroke: var(--accent); }
+.mp-foot { border-top: 1px solid var(--line-subtle); }
+.mp-price { color: var(--ink-4); }
+.mp-price.is-free { color: var(--ok); }
+
+/* ─── Скелет загрузки: единственная бесконечная анимация ─── */
+.skel { display: inline-block; vertical-align: middle; max-width: 100%; border-radius: 4px; background: var(--bg-active); animation: lookSkel 1.2s ease-in-out infinite alternate; }
+@keyframes lookSkel { from { opacity: .5; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-backdrop, .modal-card { animation: none; }
+}
+
+/* ═══════════════ 2. КАРКАС ═══════════════ */
+
+/* Заголовок окна — рамка окна, в макете её нет: тон боковой панели, знак и
+   имя как у строки бренда макета (15/600), кнопка боковой панели рядом. */
+.window-titlebar { height: 40px; background: var(--bg-sidebar); border-bottom: 1px solid var(--line-subtle); }
+.titlebar-drag { gap: var(--s2); padding: 0 var(--s2) 0 var(--s4); }
+.titlebar-brand { gap: var(--s2); }
+.brand-glyph { width: 16px; height: 16px; }
+.brand-glyph path { fill: var(--spark) !important; }
+.brand-name { font: var(--fw-head) var(--fs-body)/20px var(--font-ui); color: var(--ink); letter-spacing: 0; }
+.titlebar-drag .sidebar-toggle { -webkit-app-region: no-drag; margin-left: var(--s2); width: 28px; height: 28px; }
+.win-btn { height: 39px; color: var(--ink-3); transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out); }
+.win-btn:hover { background: var(--bg-hover); color: var(--ink); }
+.win-btn.win-close:hover { background: var(--danger); color: var(--on-danger); }
+
+/* ─── Шапка чата: 52 px; название 13/500, мета 12 --ink-4 ─── */
+.chat-header {
+  display: flex; align-items: center; gap: var(--s3); flex: none;
+  height: 52px; padding: 0 var(--s4) 0 var(--s6); border-bottom: 0;
+}
+.chat-header-title {
+  flex: 0 1 auto; min-width: 0; height: 28px; margin-left: calc(-1 * var(--s2)); padding: 4px var(--s2);
+  border-radius: var(--r-sm); font: 500 var(--fs-ui)/20px var(--font-ui); color: var(--ink); letter-spacing: 0;
+}
+.chat-header-title:hover { background: var(--bg-hover); }
+.chat-header-rename { font: 500 var(--fs-ui)/20px var(--font-ui); color: var(--ink); }
+.chat-header-meta, .chat-header-place {
+  flex: none; display: inline-flex; align-items: center; gap: var(--s3); height: auto; padding: 0;
+  border-radius: 0; background: none; font: 400 var(--fs-cap)/16px var(--font-ui); color: var(--ink-4);
+}
+.chat-header-meta:empty { display: none; }
+.header-folder {
+  height: 24px; margin: 0 calc(-1 * var(--s1)); padding: 0 var(--s1); border: 0; border-radius: var(--r-xs);
+  background: none; font: inherit; color: inherit; cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.header-folder:hover { background: var(--bg-hover); color: var(--ink-2); }
+.header-folder[hidden], #instrBtn[hidden] { display: none; }
+#instrBtn[aria-expanded="true"] { background: var(--bg-active); color: var(--ink); }
+.chat-header-actions { margin-left: auto; display: flex; gap: var(--s1); }
+.chat-header-actions .btn-icon { width: 32px; height: 32px; border-radius: var(--r-sm); color: var(--ink-3); }
+.chat-header-actions .btn-icon:hover { background: var(--bg-hover); color: var(--ink); }
+.chat-header-actions .btn-icon--danger:hover { background: var(--bg-hover); color: var(--ink); }
+/* Пустой чат: название, мета и «Очистить» прячутся; «Задачи» и «Браузер» нужны и до первого сообщения */
+.chat-header.is-empty :is(.chat-header-title, .chat-header-meta, .chat-header-place, #clearChatBtn, #splitViewBtn) { visibility: hidden; }
+
+/* «Задачи»: значок и число идущих и ждущих, без подписи (слово 05.10) */
+.task-pill { height: 32px; border: 0; border-radius: 0; overflow: visible; }
+.task-center-trigger {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s1);
+  min-width: 32px; height: 32px; padding: 0 var(--s2); border: 0; border-radius: var(--r-sm);
+  background: none; color: var(--ink-3); font: 400 var(--fs-cap)/16px var(--font-ui);
+}
+.task-center-trigger > span:not(.task-center-trigger-count) { display: none; }
+.task-center-trigger:hover { background: var(--bg-hover); color: var(--ink); }
+.task-center-trigger.active, .task-center-trigger[aria-expanded="true"] { background: var(--bg-active); color: var(--ink); }
+.task-center-trigger-count { color: var(--ink-2); font-size: var(--fs-cap); font-variant-numeric: tabular-nums; }
+.task-center-trigger-count.is-waiting { color: var(--warn); }
+
+/* ─── Лента: колонка 832 (текст 784), поля 16/24/40 ─── */
+.feed-container { max-width: var(--chat-col); padding: var(--s4) var(--s6) var(--s10); }
+
+/* ─── Строка ввода ───
+   Режим, модель и effort — состояние хода, у них тихая подложка; стрелок нет.
+   Отправка 36 × 36 — единственная залитая кнопка строки. */
+.composer-container { padding: 0 var(--s6) var(--s5); }
+.composer-col { max-width: 784px; }
+.composer-card {
+  padding: var(--s4) var(--s3) var(--s3) var(--s5);
+  background: var(--bg-raised); border: 1px solid var(--line-strong); border-radius: var(--r-lg);
+  box-shadow: var(--shadow-composer);
+  transition: border-color var(--dur-hover) var(--ease-out);
+}
+.composer-card:focus-within { border-color: var(--line-field); box-shadow: var(--shadow-composer); }
+.composer-textarea {
+  min-height: 24px; max-height: 192px; padding: 0 var(--s2) 0 0;
+  font: 400 var(--fs-body)/24px var(--font-ui); color: var(--ink);
+}
+.composer-textarea::placeholder { color: var(--ink-4); }
+.composer-input-box .attachment-strip { padding: 0 0 var(--s2); }
+.composer-bar { gap: var(--s2); margin: var(--s3) 0 0 calc(-1 * var(--s2)); padding: 0; }
+.composer-actions-left, .composer-actions-right { gap: var(--s2); }
+
+/* «+» — значок-кнопка 32 */
+.composer-bar .btn-bar:not(.btn-bar-text) {
+  width: 32px; height: 32px; padding: 0; justify-content: center;
+  border-radius: var(--r-sm); color: var(--ink-3); background: none;
+}
+.composer-bar .btn-bar:not(.btn-bar-text):hover { background: var(--bg-hover); color: var(--ink); }
+
+/* Пилюли: режим, модель, effort — 30 px, тихая подложка, 13/500 --ink-2, без шеврона */
+#permModeBtn, .composer-bar .btn-model-pill {
+  display: inline-flex; align-items: center; flex: none; gap: var(--s2);
+  height: 30px; padding: 0 var(--s3); border: 0; border-radius: var(--r-pill);
+  background: var(--bg-chip); color: var(--ink-2); box-shadow: none;
+  font: 500 var(--fs-ui)/20px var(--font-ui); white-space: nowrap;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out),
+              transform var(--dur-press-back) var(--ease-press);
+}
+:is(#permModeBtn, .composer-bar .btn-model-pill):hover,
+:is(#permModeBtn, .composer-bar .btn-model-pill)[aria-expanded="true"] { background: var(--bg-active); color: var(--ink); border-color: transparent; }
+:is(#permModeBtn, .composer-bar .btn-model-pill):active { transform: translateY(1px); transition: transform var(--dur-press) var(--ease-out); }
+#permModeBtn .chevron, .composer-bar .btn-model-pill .chevron { display: none; }
+#permModeBtn { max-width: none; }
+/* Auto — агент делает всё без вопросов: режим окрашен статусом */
+#permModeBtn[data-mode="auto"] { color: var(--warn); }
+.composer-bar #modelEffortPillBtn { flex: 0 1 auto; max-width: 240px; min-width: 0; }
+/* Имя модели во время хода не переливается: ход виден по шагам в ленте */
+.btn-model-pill.is-working #pillModelName, .btn-model-pill.is-working #designModelName {
+  background: none; -webkit-background-clip: border-box; background-clip: border-box; color: inherit; animation: none;
+}
+.btn-model-pill.is-working .pill-effort-text { animation: none; }
+/* Effort: четыре столбика 3 px (5/7/9/12), включённые — цветом текста */
+.composer-bar .btn-model-pill .pill-effort-text {
+  height: auto; padding: 0; background: none; border-radius: 0;
+  font: 500 var(--fs-ui)/20px var(--font-ui); color: inherit;
+}
+.lvl { display: inline-flex; align-items: flex-end; gap: var(--s-half); height: 12px; flex: none; }
+.lvl i { display: block; width: 3px; border-radius: 1px; background: var(--line-field); }
+.lvl i:nth-child(1) { height: 5px; }
+.lvl i:nth-child(2) { height: 7px; }
+.lvl i:nth-child(3) { height: 9px; }
+.lvl i:nth-child(4) { height: 12px; }
+#effortPillBtn[data-level="1"] .lvl i:nth-child(-n+1),
+#effortPillBtn[data-level="2"] .lvl i:nth-child(-n+2),
+#effortPillBtn[data-level="3"] .lvl i:nth-child(-n+3),
+#effortPillBtn[data-level="4"] .lvl i { background: currentColor; }
+#effortPillBtn:not([data-level]) .lvl, #effortPillBtn[data-level="0"] .lvl { display: none; }
+.btn-model-pill.no-tools { border-color: transparent; }
+
+/* Кольцо контекста: 30 px справа от effort; ≥ 80 % — цветом --warn */
+.ctx-ring {
+  display: inline-grid; place-items: center; flex: none; width: 30px; height: 30px; padding: 0;
+  border: 0; border-radius: var(--r-pill); background: none; color: var(--ink-3);
+}
+.ctx-ring:hover, .ctx-ring[aria-expanded="true"] { background: var(--bg-hover); color: var(--ink); }
+.ctx-ring:active { transform: translateY(1px); }
+.ctx-ring:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.ctx-ring-dial { width: 18px; height: 18px; }
+.ctx-ring-track { stroke: var(--line-strong); }
+.ctx-ring-arc { stroke: currentColor; }
+.ctx-ring-value { display: none !important; }
+
+/* Отправка: 36 × 36, круг акцентом; стоп — круг --ink с квадратом */
+.btn-send {
+  width: 36px; height: 36px; flex: none; border: 0; border-radius: var(--r-pill);
+  background: var(--accent); color: var(--on-accent); box-shadow: var(--contact);
+  transition: background-color var(--dur-hover) var(--ease-out), transform var(--dur-press-back) var(--ease-press);
+}
+.btn-send .send-icon { width: 18px; height: 18px; stroke-width: 1.9; }
+.btn-send:hover:not(:disabled) { background: var(--accent-hover); filter: none; transform: none; }
+.btn-send:active:not(:disabled) { box-shadow: none; transform: translateY(1px); transition: transform var(--dur-press) var(--ease-out); }
+.btn-send:disabled { background: var(--bg-chip); color: var(--ink-disabled); box-shadow: none; }
+.btn-send.is-stop { background: var(--ink); color: var(--bg); box-shadow: none; }
+.btn-send.is-stop:hover { background: var(--ink-2); color: var(--bg); }
+.btn-send.is-stop .stop-icon { width: 16px; height: 16px; }
+
+/* ─── Главный экран: знак, место с веткой, строка ввода — группой чуть выше середины ─── */
+#chatView.is-empty .chat-feed { flex: none; margin-top: auto; overflow: visible; }
+#chatView.is-empty .feed-container { flex: none; padding-bottom: var(--s6); }
+#chatView.is-empty .composer-container { margin-bottom: auto; padding-bottom: 12vh; }
+.welcome-hero {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;
+  min-height: 0; padding: 0; text-align: left; animation: none;
+}
+.welcome-hero .hero-spark { width: 24px; height: 24px; margin-bottom: var(--s4); fill: var(--spark); }
+.hero-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s4); }
+.hero-title {
+  display: block; margin: 0; font: var(--fw-head) var(--fs-h1)/32px var(--font-ui);
+  letter-spacing: -.015em; color: var(--ink);
+}
+.hero-subtitle { display: none; }
+.ctx-ring.warn, .ctx-ring.full { color: var(--warn); }
+.ctx-ring.nokey .ctx-ring-track { stroke: var(--warn); opacity: 1; }
+#chatView.is-empty .ctx-ring { display: none; }
+#workspaceBtn.header-folder { flex: 0 1 auto; min-width: 0; max-width: 240px; padding: 0 var(--s1); font: 400 var(--fs-cap)/16px var(--font-ui); color: var(--ink-4); }
+#workspaceBtn.header-folder:hover { color: var(--ink-2); }
+#workspaceLabel { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Уведомление: текст, «Вернуть», полоса-таймер 2 px акцентом убывает линейно */
+.toast-box { white-space: nowrap; }
+.toast-box.has-action { pointer-events: auto; }
+.toast-box .notice-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.toast-box.is-error .notice-text { color: var(--danger); }
+.toast-box .notice-bar {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--accent);
+  transform-origin: left; animation: lookNoticeBar linear forwards;
+}
+.toast-box:not(.has-action) .notice-bar { background: var(--line-strong); }
+@keyframes lookNoticeBar { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+/* ═══════════════ 3. ЧАТ ═══════════════ */
+
+/* Лента: ход за ходом, между ходами 32 */
+.messages-list { gap: var(--s6); padding-bottom: var(--s8); }
+
+/* Сообщение человека: пузырь --bg-chip справа, без рамки, 15/24, до 85 % колонки */
+.msg-item.user {
+  max-width: 85%; padding: var(--s3) var(--s4);
+  border: 0; border-radius: var(--r-lg); background: var(--bg-chip); box-shadow: none;
+}
+.msg-item.user .msg-content { font: 400 var(--fs-body)/24px var(--font-ui); color: var(--ink); letter-spacing: 0; overflow-wrap: anywhere; }
+@media (max-width: 600px) { .msg-item.user { max-width: 92%; } }
+
+/* Ответ и мысли модели между действиями: 15/24 --ink-2 */
+.msg-item.assistant { padding: 0; }
+.msg-blocks { display: flex; flex-direction: column; gap: var(--s1); }
+.msg-content { font-size: var(--fs-body); line-height: 24px; color: var(--ink-2); overflow-wrap: anywhere; }
+.msg-content p { margin: 0 0 var(--s3); }
+.msg-content p:last-child { margin-bottom: 0; }
+.msg-content ul, .msg-content ol { margin: 0 0 var(--s3); }
+.msg-content ul > li, .msg-content ol > li { margin: 0 0 var(--s1); }
+.msg-content ul > li::before { background: var(--ink-4); }
+.msg-content h1, .msg-content h2, .msg-content h3, .msg-content h4 {
+  margin: var(--s4) 0 var(--s2); font-family: var(--font-ui); font-weight: var(--fw-head); color: var(--ink); letter-spacing: 0;
+}
+.msg-content h1, .msg-content h2 { font-size: var(--fs-h2); line-height: 24px; }
+.msg-content h3, .msg-content h4 { font-size: var(--fs-body); line-height: 24px; }
+.msg-content strong, .msg-content b { color: var(--ink); font-weight: 600; }
+.msg-content a { color: var(--ink); text-decoration: underline 1px var(--line-field); text-underline-offset: 3px; }
+.msg-content a:hover { text-decoration-color: currentColor; }
+/* Код в строке: тот же шрифт 13/20, --ink на --bg-hover */
+.msg-content code:not(.hljs), .msg-content code.is-path {
+  padding: 0 var(--s1); border: 0; border-radius: var(--r-xs);
+  background: var(--bg-hover); color: var(--ink); font: 400 var(--fs-ui)/20px var(--font-ui);
+}
+/* Блок кода: подложка --bg-sunken, радиус --r-md, тот же шрифт */
+/* Код в ответе (макет 20.10): блок в тон ленты — подложка цвета текста 5 %, без рамки и шапки;
+   «Скопировать» — значок в углу, виден при наведении и фокусе. Шрифт тот же, моноширинного нет */
+.code-block, .code-block.cb { position: relative; margin: var(--s3) 0 var(--s4); border: 0; border-radius: var(--r-md); background: color-mix(in srgb, var(--ink) 5%, transparent); overflow: hidden; }
+.code-block pre, .msg-content .code-block pre { margin: 0; padding: var(--s3) var(--s12) var(--s3) var(--s4); overflow-x: auto; background: transparent; border: 0; font: 400 var(--fs-ui)/20px var(--font); font-variant-numeric: tabular-nums; tab-size: 2; white-space: pre; color: var(--ink-2); }
+.msg-content pre { font-family: var(--font-ui); }
+.code-block .code-header, .code-block-head, .code-head { display: none; }
+.code-block .cb-copy { position: absolute; top: var(--s1); right: var(--s1); display: inline-grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-3); opacity: 0; cursor: pointer; transition: opacity var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out); }
+.code-block:hover .cb-copy, .code-block .cb-copy:focus-visible, .code-block .cb-copy.copied { opacity: 1; }
+.code-block .cb-copy:hover { background: var(--bg-hover); color: var(--ink); }
+.code-block .cb-copy.copied { color: var(--ok); }
+@media (hover: none) { .code-block .cb-copy { opacity: 1; } }
+.msg-content blockquote { margin: 0 0 var(--s3); padding-left: var(--s4); border-left: 2px solid var(--line-strong); color: var(--ink-3); }
+.msg-content table { border-collapse: collapse; font-size: var(--fs-ui); }
+.msg-content :is(th, td) { padding: var(--s2) var(--s3); border-bottom: 1px solid var(--line-subtle); text-align: left; }
+.msg-content th { font-weight: 500; color: var(--ink); }
+
+/* Группа действий — строка-аккордеон: «Прочитал 6 файлов ›», 13/20 --ink-3,
+   фон под указателем, шеврон поворачивается пружиной snap */
+.work-run-head, .thought-group .thought-head {
+  gap: var(--s2); min-height: 28px; width: calc(100% + var(--s2) * 2);
+  margin: 0 calc(-1 * var(--s2)); padding: 0 var(--s2);
+  border-radius: var(--r-sm); font: 400 var(--fs-ui)/20px var(--font-ui); color: var(--ink-3);
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.work-run-head:hover { background: var(--bg-hover); color: var(--ink); }
+.work-run-head:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.work-run-title { color: inherit; font-weight: 400; }
+.work-run-head:hover .work-run-title { color: var(--ink); }
+.work-run-head .think-chevron { width: 14px; height: 14px; color: var(--ink-4); transition: transform var(--dur-snap) var(--ease-snap); }
+.work-run-head:hover .think-chevron { color: var(--ink-2); }
+.thought-group.is-live > .thought-head, .thought-group.is-live .thought-title { color: var(--ink); }
+.thought-elapsed, .thought-tokens { color: var(--ink-4); font-size: var(--fs-cap); }
+.work-run-classified { color: var(--ink-4); font-size: var(--fs-cap); }
+.work-run-failed { color: var(--danger); }
+/* Плашки диффа: одинаковые в ходе, запросе и итоге */
+.work-run-diff, .rail-meta { gap: var(--s1); font-size: var(--fs-cap); }
+.work-run-diff { margin-left: var(--s1); }
+.rail-add, .rail-del {
+  display: inline-flex; align-items: center; height: 18px; padding: 0 var(--s1); border-radius: var(--r-xs);
+  font: 400 var(--fs-cap)/1 var(--font-ui); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.rail-add { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.rail-del { color: var(--danger); background: color-mix(in srgb, var(--danger) 14%, transparent); }
+.work-run-body, .thought-group .work-run-body { padding: var(--s-half) 0 var(--s1); }
+
+/* Строка действия: значок типа 16 | текст (объект 12 --ink-2) | статус справа.
+   Рельса — тонкая линия под значками внутри группы. */
+.think.rail-step { padding-left: 0; }
+.think.rail-step::before { display: none; }
+.work-run-body { position: relative; margin-left: 7px; padding-left: var(--s4) !important; border-left: 1px solid var(--line-strong); }
+.think.rail-step > .rail-line {
+  position: relative; display: grid; grid-template-columns: 16px auto minmax(0, 1fr) auto; align-items: center; column-gap: var(--s2);
+  height: auto; min-height: 28px; padding: 4px var(--s2); margin: 0 calc(-1 * var(--s2));
+  border-radius: var(--r-sm); font: 400 var(--fs-ui)/20px var(--font-ui); color: var(--ink-3);
+}
+.think.rail-step:not(.rail-step--flat) > .rail-line:hover { background: var(--bg-hover); }
+.rail-dot.rail-ico { position: static; width: 16px; height: 20px; background: none; color: var(--ink-4); }
+.tone-ok .rail-dot.rail-ico, .tone-read .rail-dot.rail-ico { background: none; color: var(--ink-4); }
+.tone-err .rail-dot.rail-ico { background: none; color: var(--danger); }
+.rail-dot.rail-ico svg { width: 16px; height: 16px; }
+.rail-verb { font: 400 var(--fs-ui)/20px var(--font-ui); color: var(--ink-3); }
+.rail-target { font: 400 var(--fs-cap)/20px var(--font-ui); color: var(--ink-2); }
+.tone-err .rail-target { color: var(--ink-3); }
+.rail-meta { justify-self: end; color: var(--ink-4); }
+.tone-err .rail-meta { color: var(--danger); }
+.think.rail-step > .rail-out {
+  margin: var(--s1) 0 var(--s2); padding: var(--s2) var(--s3); border: 0; border-radius: var(--r-sm);
+  background: var(--bg-sunken); font: 400 var(--fs-cap)/20px var(--font-ui); color: var(--ink-3);
+}
+.think.rail-step.tone-err > .rail-out { background: color-mix(in srgb, var(--danger) 10%, transparent); color: var(--danger); }
+/* Мысль модели между действиями — обычный текст --ink-3, не шире 68ch */
+.work-run-note { max-width: 68ch; padding: var(--s-half) 0 var(--s1); font-size: var(--fs-ui); line-height: 20px; color: var(--ink-3); }
+
+/* Мета под ответом: знак, модель, время, токены; рядом — копировать, повторить, закрепить.
+   Разделителей «·» нет. */
+.msg-footer { justify-content: flex-start; gap: var(--s2); margin-top: var(--s3); padding-bottom: 0; }
+.msg-meta { gap: var(--s2); font: 400 var(--fs-cap)/16px var(--font-ui); color: var(--ink-4); }
+.msg-meta .cli-dot { display: none; }
+.msg-meta .cli-model, .cli-model, .cli-mode, .cli-duration { color: var(--ink-4); font-size: var(--fs-cap); }
+.msg-meta.live .cli-duration { color: var(--ink-3); }
+.msg-actions { margin: 0 0 0 var(--s1); gap: var(--s-half); }
+.msg-action { border-radius: var(--r-sm); color: var(--ink-4); }
+.msg-action:hover { background: var(--bg-hover); color: var(--ink); }
+.msg-action:active { transform: translateY(1px); }
+.msg-action:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.msg-action.active { color: var(--accent); background: var(--accent-soft); }
+.stream-status { font-size: var(--fs-ui); color: var(--ink-3); }
+.btn-stop-stream { border: 0; border-radius: var(--r-sm); font-size: var(--fs-ui); color: var(--ink-2); }
+
+/* ─── Состояние в ленте: один шаблон (turn-state.js) ───
+   Искорка 24 (при сбое приглушена), заголовок 15/24, что случилось и что цело,
+   одно главное действие и тихие рядом; технический текст — под «Подробностями». */
+.state.in-chat { max-width: none; margin: var(--s2) 0 var(--s3); }
+.state.in-chat .state-mark { display: block; margin-bottom: var(--s3); fill: var(--spark); transition: fill var(--dur-snap) var(--ease-out); }
+.state.in-chat .state-mark.sad { fill: var(--ink-4); }
+.state.in-chat h2 { margin: 0; font: var(--fw-head) var(--fs-body)/24px var(--font-ui); color: var(--ink); }
+.state.in-chat p { margin: var(--s1) 0 0; max-width: 62ch; color: var(--ink-2); }
+.state.in-chat .key-row { display: flex; flex-wrap: wrap; gap: var(--s2); max-width: 560px; margin-top: var(--s4); }
+.state.in-chat .key-row .field-input { flex: 1 1 240px; min-width: 0; }
+.state.in-chat .field-msg { flex-basis: 100%; font-size: var(--fs-cap); color: var(--danger); }
+.fail-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); margin-top: var(--s4); }
+.fail-acts.tight { margin-top: var(--s2); }
+.fail-acts .lnk { margin-left: var(--s2); color: var(--ink-3); }
+.fail-tech { margin: var(--s3) 0 0; font: 400 var(--fs-cap)/20px var(--font-ui); color: var(--ink-4); white-space: pre-wrap; overflow-wrap: anywhere; }
+.msg-item.has-state .msg-content > hr:first-of-type { margin-top: var(--s4); }
+
+/* Новая вкладка браузера (слово владельца 20.10): заголовок и одна фраза по центру,
+   без подсказок про localhost и быстрых адресов */
+.browser-empty { display: grid; place-content: center; justify-items: center; gap: var(--s2); padding: var(--s8) var(--s6) 12vh; text-align: center; }
+.browser-empty-icon, .browser-quick, .browser-quick-hint, .browser-detect { display: none !important; }
+.browser-empty-title { margin: 0; font: var(--fw-head) var(--fs-h2)/24px var(--font-ui); color: var(--ink); }
+.browser-empty-hint { margin: 0; max-width: 40ch; font-size: var(--fs-ui); line-height: 20px; color: var(--ink-3); }
+
+/* ═══ Панель справа (макет .xp): ровная третья колонка во всю высоту, без карточки ═══ */
+.artifact-panel { inset: 0 0 0 auto; max-height: none; border: 0; border-left: 1px solid var(--line-subtle); border-radius: 0; box-shadow: none; background: var(--bg); }
+#chatView.artifact-expanded .artifact-panel { left: 0; }
+.artifact-head { border-bottom: 0; padding: var(--s3) var(--s3) var(--s3) var(--s4); }
+/* Браузер: адрес и управление панелью в одной строке, вкладки и навигация ниже. */
+.browser-tabbar { display: flex; align-items: center; gap: var(--s1); padding: 0 var(--s3) var(--s2); border: 0; background: none; }
+#browserTabs { display: flex; gap: var(--s1); flex: 1 1 auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.browser-tab { display: inline-flex; align-items: center; gap: var(--s2); max-width: 200px; height: 30px; padding: 0 var(--s1) 0 var(--s3); border: 0; border-radius: var(--r-sm); background: none; color: var(--ink-3); flex: none; transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out); }
+.browser-tab:hover { background: var(--bg-hover); color: var(--ink); }
+.browser-tab.active { background: var(--bg-active); color: var(--ink); font-weight: 500; }
+.browser-tab-dot:not(.loading) { display: none; }
+.browser-tab-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.browser-tab-close { display: inline-grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: var(--r-xs); background: none; color: var(--ink-4); }
+.browser-tab-close .icon { width: 12px; height: 12px; }
+.browser-tab-close:hover { background: var(--bg-hover); color: var(--ink); }
+.browser-bar { min-height: 52px; flex-shrink: 0; gap: var(--s1); padding: 0 var(--s3); border: 0; background: none; }
+.browser-bar .browser-form { margin: 0; }
+.browser-bar .browser-icon-btn, .browser-tabbar .browser-icon-btn { width: 30px; height: 30px; }
+.browser-address { height: 32px; padding: 0 var(--s4); border: 0; border-radius: var(--r-pill); background: var(--field-bg); box-shadow: inset 0 0 0 1px var(--field-line); color: var(--ink); font: var(--fs-ui)/20px var(--font-ui); caret-color: var(--accent); outline: 0; transition: box-shadow var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
+.browser-address:hover:not(:focus) { box-shadow: inset 0 0 0 1px var(--field-line-hover); }
+.browser-address:focus { background: var(--field-bg-focus); box-shadow: inset 0 0 0 1px var(--accent), 0 0 0 3px var(--accent-soft); }
+.browser-address::placeholder { color: var(--ink-4); opacity: 1; }
+.browser-zoom { display: none; }
+.browser-stage { margin: 0 var(--s3) var(--s3); border-radius: var(--r-md); background: var(--bg-sunken); overflow: hidden; }
+.browser-progress { height: 2px; margin: 0 var(--s3); }
+
+/* ═══ Правки владельца 24.10 (узел checkme) ═══ */
+
+/* Боковая панель: без полос прокрутки — прокручивается колесом; чат вне проекта и в проекте стоят на одной линии с названием группы */
+.history-list { overflow-x: hidden; scrollbar-width: none; }
+.history-list::-webkit-scrollbar { display: none; }
+
+/* Настройки: линии под заголовками групп нет; во вкладке «Провайдеры» у строк нет пояснений под названием */
+.settings-page .settings-group-title { padding-bottom: 0; border-bottom: 0; }
+#panel-keys .setting-row .row-hint { display: none; }
+#panel-keys .setting-row { min-height: 48px; }
+
+/* Подсказка не рвёт название клавиши: «Модель  Ctrl+M» в одну строку. Длинная
+   фраза («Auto · Без вопросов; удаление…») переносится, а не прокручивается:
+   полосы прокрутки в подсказке быть не должно (владелец, 25.10) */
+.ui-tooltip, :is(.one-ui, body) .ui-tooltip { overflow: hidden; }
+.ui-tooltip .ui-tooltip-text { min-width: 0; overflow-wrap: normal; text-wrap: pretty; }
+.ui-tooltip .ui-tooltip-kbd { flex: none; white-space: nowrap; }
+
+/* Ход мысли: ни горизонтальной, ни вертикальной полосы внутри раскрытой серии */
+.work-run-body, .thought-group .work-run-body { overflow-x: hidden; scrollbar-width: none; }
+.work-run-body::-webkit-scrollbar, .thought-group .work-run-body::-webkit-scrollbar { display: none; }
+
+/* Строки действий: объекты стоят одним столбцом, как бы ни звучал глагол; файл открывается нажатием.
+   Шаг без значка (инструмент без вида: ffmpeg_info, MCP, свои) рисует точку; она раньше висела вне сетки, и все колонки
+   сдвигались влево: глагол попадал в колонку точки шириной 16 px и вставал столбиком. Теперь точка — своя колонка. */
+.think.rail-step > .rail-line > .rail-dot:not(.rail-ico) { position: static; display: grid; place-items: center; width: 16px; height: 20px; border: 0; background: none; }
+.think.rail-step > .rail-line > .rail-dot:not(.rail-ico)::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-4); }
+.think.rail-step.tone-err > .rail-line > .rail-dot:not(.rail-ico)::before { background: var(--danger); }
+.rail-verb { min-width: 76px; }
+.rail-open { padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; cursor: pointer; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rail-open:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line-strong); }
+.rail-open:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; border-radius: var(--r-xs); }
+
+/* В пустом чате прокручивать некуда */
+#chatView.is-empty .scroll-down-btn { display: none; }
+
+/* Дизайн: убрать свой дизайн — корзина в углу превью, видна при наведении и с клавиатуры */
+.mk .ds-card { position: relative; cursor: pointer; }
+.mk .ds-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mk .ds-del { position: absolute; top: var(--s2); right: var(--s2); display: inline-grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--r-sm);
+  background: var(--bg-raised); color: var(--ink-3); opacity: 0; transition: opacity var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out); }
+.mk .ds-card:hover .ds-del, .mk .ds-card:focus-within .ds-del, .mk .ds-del:focus-visible { opacity: 1; }
+.mk .ds-del:hover { color: var(--danger); background: var(--bg-hover); }
+@media (hover: none) { .mk .ds-del { opacity: 1; } }
+
+/* Плавное появление «Задач» и браузера; лента уступает место без рывка */
+@keyframes panelIn { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  #tasksPanel.mk.tasks-drawer { animation: panelIn var(--dur-glide) var(--ease-glide) both; }
+  .artifact-panel:not([hidden]) { animation: panelIn var(--dur-glide) var(--ease-glide) both; }
+}

@@ -1,0 +1,38 @@
+# Local state and agent workspaces
+.1code/
+.agents/
+.claude/
+.codex/
+.sharrowkin/
+_private_backup/
+
+# Dependencies, generated packages, and local audit runs
+node_modules/
+release/
+dist/
+out/
+audits/
+audit-093-evidence/
+design-validation/
+scratch/
+
+# Secrets and machine-specific configuration
+.env
+.env.*
+*.pem
+*.p12
+*.pfx
+*.key
+
+# Temporary files and logs
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.swp
+.DS_Store
+Thumbs.db
+
+# Рабочие деревья (git worktree) — не входят в состав репозитория
+worktrees/

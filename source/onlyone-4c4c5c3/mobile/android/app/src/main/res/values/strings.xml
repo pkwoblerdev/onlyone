@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">onlyone</string>
+    <string name="title_activity_main">onlyone</string>
+    <string name="package_name">best.pkwobler.onlyone</string>
+    <string name="custom_url_scheme">best.pkwobler.onlyone</string>
+</resources>

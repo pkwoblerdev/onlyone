@@ -1,0 +1,17 @@
+{
+  "name": "onlyone-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "description": "onlyone для Android: свои чаты и ключи на телефоне, чаты компьютера через удалённое управление",
+  "scripts": {
+    "sync": "node sync.cjs && npx cap sync android",
+    "apk": "node sync.cjs && npx cap sync android && cd android && gradlew.bat assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/app": "^6.0.2",
+    "@capacitor/cli": "^6.2.2",
+    "@capacitor/core": "^6.2.2",
+    "@capacitor/local-notifications": "^6.1.2"
+  }
+}
