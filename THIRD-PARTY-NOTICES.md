@@ -4,6 +4,8 @@ The design review workflow references material from Trystan Sarrade's [design sy
 
 # Third-Party Software Notices and Provenance
 
+License texts accompanying this inventory are available in the [LICENSES](LICENSES/) directory. See [release status](docs/RELEASE-STATUS.md) for outstanding review items.
+
 ## onlyone (Installer and Portable Edition v1.3.38)
 
 This document contains third-party software notices and license information for components
