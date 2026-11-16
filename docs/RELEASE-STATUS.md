@@ -1,6 +1,6 @@
 # Release preparation status
 
-Candidate 1.3.38, revision `4c4c5c323529f0468236423702d9706d1448e966`. Publication is not yet approved; see the outstanding items below.
+Candidate 1.3.38, revision `4c4c5c323529f0468236423702d9706d1448e966`. The project owner chose to proceed with publication; the outstanding items below remain unresolved.
 
 - Project-authored design guidance replaces the previous instructions. Automatic update and packaged remote relay defaults are disabled, including legacy settings; a manually configured update feed remains possible.
 - The recorded `npm test` run exited 0 on this revision; some AppContainer and debugging scenarios were skipped or not run. A zero exit code does not establish that those scenarios passed.

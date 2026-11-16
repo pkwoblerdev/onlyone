@@ -2,7 +2,8 @@
 
 ## Setup
 
-```bash
+```powershell
+cd source/onlyone-4c4c5c3
 npm ci
 npm run dev
 ```
@@ -10,7 +11,7 @@ npm run dev
 ## Before you open a pull request
 
 - Run the tests that cover your change. Before merging, run the full suite: `npm test` must exit with code 0
-  (about 15 minutes). An interrupted run is not a pass.
+  An interrupted run is not a pass; report skipped checks separately.
 - After changes to the top of `src/main/main.js` or `src/renderer/app.js`, run `node tests/run-smoke.cjs`, which
   opens a real Electron window.
 - For UI changes, check both themes and both languages. `node tests/audit-design.cjs [folder] [screen...]` takes
@@ -46,3 +47,11 @@ tree, tests, issue reports or pull requests.
 
 Keep a pull request focused on one change. Include the tests you ran with their exit codes, and list known
 limitations instead of hiding them.
+
+## Кратко по-русски
+
+Для разработки перейдите в `source/onlyone-4c4c5c3`, выполните `npm ci` и `npm run dev`. Перед отправкой изменений запустите подходящие проверки, а перед слиянием — `npm test`. Укажите в описании результат и все пропущенные проверки.
+
+Делайте небольшие тематические изменения, сохраняйте стиль проекта и проверяйте оба языка и обе темы при изменении интерфейса. Не добавляйте в репозиторий ключи, токены, личные данные, журналы с содержимым переписок и реальные скриншоты с чувствительной информацией. Соблюдайте лицензии и сохраняйте уведомления об авторах сторонних компонентов.
+
+Публичные сообщения об ошибках не должны содержать секреты или детали эксплуатации уязвимостей. Проверенного закрытого канала для сообщений об уязвимостях пока нет; его статус указан в [политике безопасности](../SECURITY.md).
