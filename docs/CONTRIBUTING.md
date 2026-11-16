@@ -43,6 +43,10 @@ Do not commit API keys, tokens, personal paths, logs with user content, or scree
 repository ignores `.env*` files, but the check is yours: keys belong in the app's encrypted profile, never in the
 tree, tests, issue reports or pull requests.
 
+## AI-assisted contributions
+
+AI-generated content can be inaccurate or unsafe. Review and test your contributions, including generated code and commands, and verify that you have the necessary rights and permissions. Submitting content does not imply that the onlyone project created or endorses it. See the [usage terms](TERMS.md).
+
 ## Pull requests
 
 Keep a pull request focused on one change. Include the tests you ran with their exit codes, and list known
@@ -53,5 +57,7 @@ limitations instead of hiding them.
 Для разработки перейдите в `source/onlyone-4c4c5c3`, выполните `npm ci` и `npm run dev`. Перед отправкой изменений запустите подходящие проверки, а перед слиянием — `npm test`. Укажите в описании результат и все пропущенные проверки.
 
 Делайте небольшие тематические изменения, сохраняйте стиль проекта и проверяйте оба языка и обе темы при изменении интерфейса. Не добавляйте в репозиторий ключи, токены, личные данные, журналы с содержимым переписок и реальные скриншоты с чувствительной информацией. Соблюдайте лицензии и сохраняйте уведомления об авторах сторонних компонентов.
+
+При подготовке материалов с помощью ИИ проверяйте результаты, тестируйте предлагаемый код и команды и убедитесь, что у вас есть необходимые права и разрешения. Публикация материалов пользователем не означает, что их создал или одобрил проект onlyone. Подробнее — в [условиях использования](TERMS.md).
 
 Публичные сообщения об ошибках не должны содержать секреты или детали эксплуатации уязвимостей. Проверенного закрытого канала для сообщений об уязвимостях пока нет; его статус указан в [политике безопасности](../SECURITY.md).
