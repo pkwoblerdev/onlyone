@@ -14,6 +14,14 @@
 
 Available capabilities depend on the selected service, permissions and settings. External services can have separate requirements, limits and charges.
 
+## Project development
+
+onlyone is still growing. The current version is an early step, and there is plenty more we want to build, improve and learn from the people using it.
+
+Our priorities include improving stability and performance, making the application easier to use, strengthening security and privacy, and expanding documentation and testing. We also plan to explore update delivery through GitHub. These are directions for future work, not promises of features or release dates.
+
+Feedback, issue reports and contributions can help shape the project. Please read the [contribution guide](docs/CONTRIBUTING.md) before opening a pull request.
+
 ## Download
 
 Installers and portable builds, when published, appear in [Releases](https://github.com/pkwoblerdev/onlyone/releases). The executable files are uploaded separately and are not included in the Git source tree.
@@ -75,6 +83,14 @@ The project source is available under the [Apache License 2.0](LICENSE), where a
 - Русский и английский языки, светлая и тёмная темы.
 
 Доступные возможности зависят от выбранного сервиса, разрешений и настроек. У внешних сервисов могут быть свои условия, ограничения и стоимость.
+
+### Развитие проекта
+
+onlyone ещё развивается. Текущая версия — только первый шаг: впереди много идей и целей, над которыми мы хотим работать вместе с пользователями.
+
+Среди наших приоритетов — стабильность и производительность, удобство приложения, безопасность и конфиденциальность, документация и тестирование. Мы также планируем изучить возможность обновлений через GitHub. Это направления дальнейшей работы, а не обещания конкретных функций или сроков.
+
+Отзывы, сообщения об ошибках и участие в разработке помогут нам двигаться дальше. Перед отправкой изменений ознакомьтесь с [правилами участия](docs/CONTRIBUTING.md).
 
 ### Скачать
 
