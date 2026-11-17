@@ -1,0 +1,10 @@
+{
+  "expectedSpeedMode": "fast",
+  "content": "Создаю основной экран. Компонент записан, страница доступна в превью.",
+  "design": {
+    "path": "Landing.dc.html",
+    "b_dc_html": "<main style='min-height:100vh;background:#cde7d5;color:#103e31;padding:48px;font-family:Arial'><h1>Проверка Design</h1><p>Страница создана через настоящий dc_write.</p><button style='padding:16px;background:#efbb4c;border:0;border-radius:20px'>Продолжить</button></main>",
+    "c_dc_js": "",
+    "d_props_json": "{}"
+  }
+}

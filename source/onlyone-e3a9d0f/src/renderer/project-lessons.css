@@ -1,0 +1,14 @@
+/* Уроки проекта (АГ-4) на странице проекта: строки списка, источник и форма — на токенах приложения, в области .mk. */
+.mk .ls-row .row-t { overflow-wrap: anywhere; }
+.mk .ls-row .row-c { align-self: start; gap: var(--s2); }
+.mk .ls-row .row-c .status { margin-right: var(--s1); white-space: nowrap; }
+.mk .ls-row .row-c .btn { white-space: nowrap; }
+.mk .ls-src { display: flex; align-items: center; gap: var(--s1); min-width: 0; }
+.mk .ls-src .i { flex: none; color: var(--ink-4); }
+.mk .ls-ev { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mk .ls-from { flex: none; max-width: 45%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mk .ls-from::before { content: "·"; margin-right: var(--s1); }
+.mk .ls-old .row-t { color: var(--ink-3); }
+.mk .ls-foot { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s6); }
+.mk .ls-form { margin-bottom: var(--s4); }
+.mk .ls-note { margin: 0; font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); }

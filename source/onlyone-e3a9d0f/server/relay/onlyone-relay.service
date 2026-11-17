@@ -1,0 +1,30 @@
+[Unit]
+Description=onlyone relay (пересылка зашифрованных пакетов между компьютером и телефоном)
+After=network.target
+
+[Service]
+Type=simple
+User=onlyone-relay
+Group=onlyone-relay
+WorkingDirectory=/opt/onlyone-relay
+Environment=PORT=8788
+Environment=HOST=127.0.0.1
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/env node /opt/onlyone-relay/relay.js
+Restart=always
+RestartSec=3
+# Чужая рабочая машина: посреднику нужен только сокет на localhost и немного памяти.
+MemoryMax=128M
+TasksMax=64
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

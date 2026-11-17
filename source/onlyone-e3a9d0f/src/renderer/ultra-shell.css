@@ -1,0 +1,616 @@
+/* Оболочка Ultra — экран, который выбирает versionPreset = ultra.
+
+   Числа и формы перенесены из макета 2.0 (onlyone-mockup.html, блоки Ultra):
+   строка диалога 40 px с радиусом 10, список «Сессии» в колонке строки ввода
+   (680 px), строка ввода 680 px с подъёмом, полоса одного чата 48 px, лента не
+   шире 720 px, искра 56 на входе и 44 в пустой сессии. Правила дизайн-системы
+   держит этот файл: хром молчит — говорит содержимое; один акцент на экран;
+   карточка в карточке запрещена; шаг отступов 4; радиусы — только токены; тень
+   есть только у строки ввода; веса шрифта 400 и 500; значки — линия 1.5, без
+   заливки.
+
+   Движение: живой фон дышит яркостью и не трогает свойств раскладки; при
+   «уменьшить движение» замирает. Искра не вращается — никогда. `transition:
+   all` здесь нет; фокус описан через `:focus-visible`. */
+
+/* ─── холст под оболочку ───
+   Своего `z-index` у хоста нет: иначе живой фон не уходил бы ЗА содержимое
+   чата, а ложился поверх него. */
+#ultraHost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ultra {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  min-height: 0;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  color: var(--text);
+}
+
+/* Живой фон-горизонт: база, виньетка и свет Ultra — три значения макета 2.0,
+   в светлой теме они переворачиваются. Они стоят НА КОРНЕ, а не на `.ultra`:
+   холст слоя уходит в отрицательный слой корня и рисуется под фоном `body` и
+   `#app` — держи базу там, и экран под оболочкой остался бы обычным (иначе фон
+   был бы нарисован, но ровным). */
+:root[data-version-preset="ultra"] {
+  --ubase: #0b0a09;
+  --uvig: rgba(0, 0, 0, 0.55);
+  --ulight: rgba(236, 226, 208, 0.08);
+  background-color: var(--ubase);
+}
+
+:root[data-theme="light"][data-version-preset="ultra"] {
+  --ubase: #f6f3ed;
+  --uvig: rgba(120, 100, 80, 0.12);
+  --ulight: rgba(255, 255, 255, 0.45);
+}
+
+/* Вход и пустая сессия закрывают окно целиком; один чат — нет: содержимое
+   окна остаётся на виду, а живой фон уходит за него. */
+.ultra.is-entry,
+.ultra.is-empty {
+  pointer-events: auto;
+}
+.ultra.is-chat {
+  pointer-events: none;
+}
+
+/* ─── живой фон: горизонт на холсте, зерно и виньетка ─── */
+.ubg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--ubase);
+}
+.ubg-sky {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 1400ms var(--ease-out);
+}
+.ubg-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+.ubg-vig {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, var(--uvig) 100%);
+}
+
+/* ─── значки: своя линия, без заливки, цвет по наследованию ─── */
+.uico {
+  width: var(--ui-icon);
+  height: var(--ui-icon);
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--ui-icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: -2px;
+}
+
+/* ─── искра: свечение и дыхание яркости, без вращения ─── */
+.spk {
+  display: block;
+  overflow: visible;
+}
+.uspark {
+  color: var(--accent);
+  fill: currentColor;
+  filter: drop-shadow(0 2px 26px color-mix(in srgb, var(--accent) 30%, transparent));
+  animation: ultra-breath 9s ease-in-out infinite;
+}
+.uspark-mark {
+  fill: currentColor;
+  stroke: none;
+}
+@keyframes ultra-breath {
+  0%, 100% { opacity: 0.82; }
+  50% { opacity: 1; }
+}
+
+/* ─── экран входа: искра, приветствие, строка ввода, Sessions ─── */
+.uentry {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--ui-space-6);
+  height: 100%;
+  padding: var(--ui-space-8) var(--ui-space-6) 80px;
+}
+
+/* Приветствие — заголовок, а не жирный заголовок: размер, не вес. */
+.uhello {
+  margin: 0;
+  max-width: 680px;
+  font-size: 34px;
+  font-weight: 500;
+  line-height: 40px;
+  letter-spacing: -0.02em;
+  text-align: center;
+  text-wrap: balance;
+  text-shadow: 0 1px 30px color-mix(in srgb, var(--accent) 25%, transparent);
+  color: var(--text);
+}
+
+/* ─── список «Сессии»: та же колонка, что у строки ввода, — 680 px ───
+   Прежде список был 440 px и его левый край не
+   совпадал с краем строки ввода. Теперь ширина общая, время — у правого края
+   этой колонки, поэтому у строки нет боковых отступов: они сдвинули бы время
+   внутрь. Отступ названия держит `text-indent`. */
+.usess {
+  display: grid;
+  gap: var(--ui-space-1);
+  width: 680px;
+  max-width: 100%;
+}
+.usess-label {
+  padding: 0 var(--ui-space-3) var(--ui-space-2);
+  font-size: var(--ui-size-small);
+  letter-spacing: 0.04em;
+  color: var(--text-4);
+}
+.urow {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+  text-indent: var(--ui-space-3);
+  border: 0;
+  border-radius: var(--r-btn);
+  background: none;
+  color: var(--text-2);
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-body);
+  font-weight: 400;
+  line-height: 40px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+}
+.urow .uico {
+  margin-right: var(--ui-space-2);
+  color: var(--text-4);
+}
+.urow-when {
+  float: right;
+  margin-left: var(--ui-space-3);
+  font-size: var(--ui-size-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-4);
+}
+@media (hover: hover) {
+  .urow:hover {
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+    color: var(--text);
+  }
+}
+
+/* Первая строка — единственное акцентное место входа: список молчит, говорит
+   только то, что человек может начать прямо сейчас. */
+.urow-new {
+  color: var(--accent);
+  font-weight: 500;
+}
+.urow-new .uico {
+  color: var(--accent);
+}
+
+.urow:focus-visible,
+.ubk:focus-visible,
+.ub-set:focus-visible,
+.usend:focus-visible {
+  outline: var(--ui-focus-width) solid var(--ui-focus);
+  outline-offset: var(--ui-focus-offset);
+}
+
+/* ─── строка ввода: 680 px, подъём на своём фоне — единственная тень ─── */
+.ucmp {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ui-space-2);
+  width: 680px;
+  max-width: 100%;
+  padding: var(--ui-space-2);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-composer);
+  background: color-mix(in srgb, var(--bg-raised) 88%, transparent);
+  box-shadow: var(--shadow-composer);
+}
+.uint {
+  flex: 1;
+  min-width: 0;
+  max-height: 168px;
+  padding: var(--ui-space-2);
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-label);
+  line-height: var(--ui-leading);
+  resize: none;
+}
+.uint::placeholder {
+  color: var(--placeholder);
+}
+.uint:focus-visible {
+  outline: var(--ui-focus-width) solid var(--ui-focus);
+  outline-offset: var(--ui-space-1);
+  border-radius: var(--r-md);
+}
+.usend {
+  display: grid;
+  place-items: center;
+  width: var(--ui-control-md);
+  height: var(--ui-control-md);
+  flex: none;
+  border: 0;
+  border-radius: var(--r-send);
+  background: var(--accent);
+  color: var(--accent-ink);
+  cursor: pointer;
+  transition: opacity 140ms var(--ease-out), filter 140ms var(--ease-out);
+}
+@media (hover: hover) {
+  .usend:hover {
+    filter: brightness(1.06);
+  }
+}
+
+/* ─── пустая новая сессия ─── */
+.uempty {
+  position: absolute;
+  inset: 48px 0 0;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 24px;
+  padding: var(--ui-space-8) var(--ui-space-6) 92px;
+}
+
+/* ─── полоса 48 px: один чат, постоянной рейки с диалогами нет ─── */
+.ubar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-2);
+  padding: 0 var(--ui-space-3);
+  pointer-events: none;
+}
+.ubar button {
+  pointer-events: auto;
+}
+.ubk {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--ui-control-sm);
+  padding: 0 var(--ui-space-2);
+  border: 0;
+  border-radius: var(--r-row);
+  background: none;
+  color: var(--text-3);
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-body);
+  cursor: pointer;
+  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+}
+.ubk .uico {
+  color: var(--text-4);
+}
+@media (hover: hover) {
+  .ubk:hover {
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+    color: var(--text);
+  }
+}
+.ut {
+  font-size: var(--ui-size-body);
+  color: var(--text-4);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Кнопка настроек: в полосе — справа, на входе — в углу экрана. */
+.ub-set {
+  display: grid;
+  place-items: center;
+  width: var(--ui-control-sm);
+  height: var(--ui-control-sm);
+  margin-left: auto;
+  border: 0;
+  border-radius: var(--r-row);
+  background: none;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+}
+@media (hover: hover) {
+  .ub-set:hover {
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+    color: var(--text);
+  }
+}
+.ub-set2 {
+  position: absolute;
+  top: var(--ui-space-3);
+  right: var(--ui-space-3);
+  margin-left: 0;
+}
+
+/* ─── как это укладывается поверх окна ───
+   Панели уже выключены `--sidebar-display` и `--work-panel-display`, которые
+   ставит оболочка. Ниже — только то, чего переменные не делают: в одном чате
+   живой фон уходит ЗА содержимое, а шапка чата встаёт в полосу 48 px рядом с
+   кнопкой «‹ Sessions»; на входе и в пустой сессии содержимое окна скрыто,
+   потому что экран рисует оболочка. */
+/* Всё, что стоит между корнем и холстом, обязано не красить: `html, body, #app`
+   в index.css непрозрачны, а слой фона уходит в отрицательный слой корня — его
+   закрасил бы любой крашеный предок. */
+:root[data-version-preset="ultra"] body,
+:root[data-version-preset="ultra"] #app,
+:root[data-version-preset="ultra"] .app-container,
+:root[data-version-preset="ultra"] .app-body,
+:root[data-version-preset="ultra"] .main-content,
+:root[data-version-preset="ultra"] #chatView,
+:root[data-version-preset="ultra"] .chat-feed {
+  background: transparent;
+}
+
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-entry) .main-content,
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-empty) .main-content {
+  visibility: hidden;
+}
+
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-chat) #chatView {
+  padding-top: 48px;
+}
+
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-chat) .chat-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  /* 116 — кнопка «‹ Сессии»; за ней стоят две кнопки Workspace, и заголовок начинается правее них. */
+  padding: 0 var(--ui-space-4) 0 calc(116px + 2 * (var(--ui-control-sm) + var(--ui-space-2)));
+  border-bottom: 0;
+  background: transparent;
+}
+
+/* ─── Колонки отступают от прилипшего блока ──
+   Свободный блок, прилипший к борту, ложился поверх ленты и строки ввода —
+   печатать было нельзя. Правильное поведение: колонки ОТСТУПАЮТ САМИ. Модуль
+   блоков пишет на КОРЕНЬ ширину прилипшего блока плюс зазор 16 px
+   (`--ultra-block-inset-left` / `--ultra-block-inset-right`, у свободной стороны
+   `0px`), а `.feed-container` и `.composer-col` читают их в собственный
+   `padding-inline`. Инлайновых отступов на узлах колонок никто не ставит, а без
+   признака пресета правило не действует — в обычном виде колонки не меняются
+   вообще.
+
+   Отступ внутренний, поэтому коробка обязана расти вместе с заказом: прежняя
+   мера 720 px при отступе 648 px оставила бы внутри 8 px, и «нет пересечения»
+   достигалось бы пустым прямоугольником (замер на широком окне: заказ
+   680 px, в computed 627,7 px — браузер подрезал used padding). Отсюда
+   `720px + оба отступа` в `max-width` той же ветки: при нулевых отступах это
+   ровно прежние 720 px, а за контейнер коробка не вылезает и без `min(100%, …)`
+   — обе колонки заданы `width: 100%` в index.css (и не пиши здесь min():
+   вычисленный `max-width` оконный прогон оболочки сверяет строкой «720px», а с
+   min() в нём лежало бы «min(100%, 720px)»). Переход — только по padding: `all`
+   сторож запрещён, остальное пересчитывать раскладку здесь незачем (под
+   «уменьшить движение» глобальный `transition-duration` в index.css гасит и
+   этот). */
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-chat) .feed-container,
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-chat) .composer-col {
+  padding-inline: calc(var(--ultra-col-pad, 0px) + var(--ultra-block-inset-left, 0px))
+    calc(var(--ultra-col-pad, 0px) + var(--ultra-block-inset-right, 0px));
+  max-width: calc(720px + var(--ultra-block-inset-left, 0px) + var(--ultra-block-inset-right, 0px));
+  transition: padding-inline var(--dur-modal) var(--ease-out);
+}
+
+/* Прежний боковой отступ ленты под Ultra: 32 px, как `padding: 34px 32px 8px`
+   в общем стиле (верх и низ не трогаются — `padding-inline`). У колонки строки
+   ввода своего бокового отступа нет: gutter несёт `.composer-container`, для
+   неё база — 0 из запасного значения выше. */
+:root[data-version-preset="ultra"] .app-body:has(.ultra.is-chat) .feed-container {
+  --ultra-col-pad: 32px;
+}
+
+/* ─── один чат без лишнего хрома ───
+   В Ultra нет ни второго чата, ни панели «Работа»: их кнопки гасятся под
+   признаком пресета, а узлы и их id остаются на месте — разметку окна и
+   соседние наборы (test-app-split, test-interface-rules) правка не трогает.
+   «Задачи» — только при не-нуле: оболочка переносит счётчик центра задач на
+   корень признаком `data-ultra-tasks`, здесь он решает видимость. */
+:root[data-version-preset="ultra"] #splitViewBtn,
+:root[data-version-preset="ultra"] #splitPane,
+:root[data-version-preset="ultra"] #splitResizer,
+:root[data-version-preset="ultra"] .tasks-header-btn {
+  display: none;
+}
+
+:root[data-version-preset="ultra"][data-ultra-tasks="zero"] #navTasks {
+  display: none;
+}
+
+/* ─── в Ultra полос прокрутки на ленте и в блоках не видно ─────────────
+   Полоса на правом краю выглядела элементом интерфейса, хотя показывала
+   только длину ответа: под слоем свободных блоков и над строкой ввода её быть
+   не должно. Снимается ПОЛОСА, а не прокрутка — `overflow` остаётся `auto`,
+   колесо, клавиши и касание работают как раньше. Внутренние прокрутки (код в
+   сообщении, таблицы, меню) не тронуты: там человеку действительно есть что
+   искать глазами. `scrollbar-width` — современный путь, `::-webkit-scrollbar`
+   — для тех же полос в старом Chromium; один и тот же узел в обеих ветках. */
+:root[data-version-preset="ultra"] #chatFeed,
+:root[data-version-preset="ultra"] .chat-feed,
+:root[data-version-preset="ultra"] .ublock-meta,
+:root[data-version-preset="ultra"] body,
+:root[data-version-preset="ultra"] {
+  scrollbar-width: none;
+}
+
+:root[data-version-preset="ultra"] #chatFeed::-webkit-scrollbar,
+:root[data-version-preset="ultra"] .chat-feed::-webkit-scrollbar,
+:root[data-version-preset="ultra"] .ublock-meta::-webkit-scrollbar,
+:root[data-version-preset="ultra"] body::-webkit-scrollbar,
+:root[data-version-preset="ultra"]::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* ─── «Задачи» — свободный блок, а не экран на пол-окна ────────────────
+   Тем же слоем, что результаты, открывается существующий экран центра задач:
+   окно отдаёт оболочке свой узел (`#taskCenterView`), и пока блок открыт, на
+   `<body>` висит `ultra-tasks-block`. Класс НОВЫЙ и к `task-center-open` не
+   относится: тот значит «экран на пол-окна открыт», а в Ultra он не открывается
+   никогда — иначе правило `@media (max-width: 900px) … #chatView { display:
+   none }` съело бы разговор вместе с панелью.
+
+   Внутри блока экран живёт во второй строке сетки `.ublock` (38 px заголовок +
+   остаток), поэтому он сам себе прокрутка, а ширину не выбирает. */
+:root[data-version-preset="ultra"] body.ultra-tasks-block #taskCenterView {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border-left: 0;
+  background: transparent;
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-page {
+  min-height: 0;
+  padding: var(--ui-space-3);
+  overflow-y: auto;
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-shell {
+  width: 100%;
+}
+
+/* Внутри блока у экрана СВОЯ шапка: заголовок и кнопки «Свернуть»/«Убрать»
+   рисует слой блоков. Внутренний заголовок страницы и её крестик при этом
+   дублируют то же самое (кадр: «Задачи» дважды, два крестика), поэтому
+   из внутренней шапки остаётся только то, чего нет у блока, — счётчики. */
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-head .page-title,
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-close {
+  display: none;
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 8px;
+  margin-bottom: var(--ui-space-3);
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-head .page-desc {
+  display: none;
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-tools {
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--ui-space-2);
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-search {
+  flex: 0 0 34px;
+  width: 100%;
+  height: 34px;
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-filters {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Узкий блок: статус правее заголовка, а подробности хода — только в самом
+   ряду, иначе список не читается. */
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-item {
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px;
+  min-height: 0;
+  padding: var(--ui-space-2);
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-detail {
+  display: none;
+}
+
+:root[data-version-preset="ultra"] body.ultra-tasks-block .task-center-state {
+  grid-column: 3;
+  max-width: 96px;
+  font-size: var(--ui-size-small);
+  text-align: right;
+}
+
+/* Workspace. Две кнопки в полосе — выгрузить и открыть. Вид тот же, что у
+   кнопки настроек: хром молчит, и лишняя рамка рядом с настройками сделала бы
+   из двух действий панель. */
+.ub-ws {
+  display: grid;
+  place-items: center;
+  width: var(--ui-control-sm);
+  height: var(--ui-control-sm);
+  border: 0;
+  border-radius: var(--r-row);
+  background: none;
+  color: var(--text-3);
+  cursor: pointer;
+  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+}
+.ub-ws .uico {
+  color: var(--text-4);
+}
+@media (hover: hover) {
+  .ub-ws:hover {
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+    color: var(--text);
+  }
+}
+.ub-ws:focus-visible {
+  outline: var(--ui-focus-width) solid var(--ui-focus);
+  outline-offset: var(--ui-focus-offset);
+}
+
+/* ─── «уменьшить движение»: живой фон замирает, искра не дышит ─── */
+@media (prefers-reduced-motion: reduce) {
+  .ultra .ubg {
+    animation: none;
+  }
+  .ubg-sky {
+    animation: none;
+    transition: none;
+  }
+  .ubg-grain,
+  .ubg-vig {
+    animation: none;
+  }
+  .uspark {
+    animation: none;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "stack": "node",
+  "findings": [
+    "tests/test-fake-green.cjs:3:skipped",
+    "tests/test-fake-green.cjs:4:skipped",
+    "tests/test-fake-green.cjs:5:tautology"
+  ],
+  "honest": ["tests/test-honest.cjs"]
+}

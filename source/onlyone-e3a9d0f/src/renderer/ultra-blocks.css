@@ -1,0 +1,271 @@
+/* Свободные блоки результата в Ultra (план, 9.2, вторая часть).
+
+   Вид перенесён из макета 2.0 (`.upanel`, `.umin`, `.rh`, `.snapg`, строки
+   675–685 и 712–713): блок — карточка с шапкой 38 px и телом, радиус 14,
+   единственная тень уровня наложения, пилюля свёрнутого блока — 30 px, ручки
+   размера — невидимые полосы по всем четырём краям и четырём углам, призрак
+   зоны — пунктир акцента.
+
+   Правила дизайн-системы держит этот файл: акцент говорит только о зоне
+   прилипания и о возврате результата; карточка в карточке запрещена; отступы и
+   радиусы — токены; `transition: all` нет; свойства раскладки ничто не
+   анимирует — блок двигается тем, что переставляет его координаты. */
+
+/* Слой живёт поверх содержимого окна и сам по себе не ловит мышь: иначе он
+   закрыл бы ленту чата, а блоки — свои координаты — ловят. */
+.ublocks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ublock {
+  position: absolute;
+  display: grid;
+  grid-template-rows: 38px minmax(0, 1fr);
+  min-width: 280px;
+  min-height: 200px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-card);
+  background: color-mix(in srgb, var(--bg-raised) 92%, transparent);
+  box-shadow: var(--shadow-pop);
+  color: var(--text-2);
+  font-family: var(--font-ui);
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+/* ─── шапка: она же ручка перетаскивания, она же ряд кнопок ─── */
+.ublock-head {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  padding: 0 var(--ui-space-2) 0 var(--ui-space-3);
+  border-bottom: 1px solid var(--line-subtle);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.ublock-head:active {
+  cursor: grabbing;
+}
+.ublock-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--ui-size-body);
+  font-weight: 500;
+  color: var(--text);
+}
+.ublock-spacer {
+  flex: 1;
+  min-width: var(--ui-space-2);
+}
+.ublock-meta {
+  padding: var(--ui-space-3);
+  font-size: var(--ui-size-small);
+  font-variant-numeric: tabular-nums;
+  color: var(--text-4);
+  overflow: auto;
+}
+
+/* Блок с роликом: плеер занимает всё тело, подпись — узкой строкой под ним. */
+.ublock-media {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+.ublock-video {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  object-fit: contain;
+  background: var(--bg-inset);
+}
+.ublock-caption {
+  flex: 0 0 auto;
+  padding: var(--ui-space-1) var(--ui-space-3);
+  border-top: 1px solid var(--line-subtle);
+}
+
+/* ─── кнопки блока: один ряд, значок и подпись, акцент только у возврата ─── */
+.ublock-head button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  height: var(--ui-control-sm);
+  padding: 0 var(--ui-space-2);
+  flex: none;
+  border: 0;
+  border-radius: var(--r-row);
+  background: none;
+  color: var(--text-3);
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-small);
+  cursor: pointer;
+  transition: background-color 140ms var(--ease-out), color 140ms var(--ease-out);
+}
+@media (hover: hover) {
+  .ublock-head button:hover {
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+    color: var(--text);
+  }
+}
+/* Каждый класс назван своим правилом: набор сверяет с этим файлом все классы,
+   которые модуль ставит на узлы, — «кнопка в шапке» вместо имени не считается. */
+.ublock-open {
+  color: var(--text-2);
+}
+.ublock-min {
+  color: var(--text-3);
+}
+.ublock-close {
+  color: var(--text-3);
+}
+.ublock-open:focus-visible,
+.ublock-min:focus-visible,
+.ublock-close:focus-visible,
+.ublock-pill:focus-visible,
+.ublock-restore:focus-visible {
+  outline: var(--ui-focus-width) solid var(--ui-focus);
+  outline-offset: var(--ui-focus-offset);
+}
+
+/* ─── ручки размера: любой край и любой угол, невидимые, но широкие ─── */
+.ublock-grip {
+  position: absolute;
+  touch-action: none;
+}
+.ublock-grip[data-edge="n"],
+.ublock-grip[data-edge="s"] {
+  left: 12px;
+  right: 12px;
+  height: 7px;
+}
+.ublock-grip[data-edge="e"],
+.ublock-grip[data-edge="w"] {
+  top: 12px;
+  bottom: 12px;
+  width: 7px;
+}
+.ublock-grip[data-edge] {
+  z-index: 1;
+}
+.ublock-grip[data-edge="n"] { top: -3px; cursor: ns-resize; }
+.ublock-grip[data-edge="s"] { bottom: -3px; cursor: ns-resize; }
+.ublock-grip[data-edge="e"] { right: -3px; cursor: ew-resize; }
+.ublock-grip[data-edge="w"] { left: -3px; cursor: ew-resize; }
+.ublock-grip[data-edge="ne"],
+.ublock-grip[data-edge="nw"],
+.ublock-grip[data-edge="se"],
+.ublock-grip[data-edge="sw"] {
+  width: 14px;
+  height: 14px;
+}
+.ublock-grip[data-edge="nw"] { top: -3px; left: -3px; cursor: nwse-resize; }
+.ublock-grip[data-edge="ne"] { top: -3px; right: -3px; cursor: nesw-resize; }
+.ublock-grip[data-edge="sw"] { bottom: -3px; left: -3px; cursor: nesw-resize; }
+.ublock-grip[data-edge="se"] { bottom: -3px; right: -3px; cursor: nwse-resize; }
+
+/* ─── пилюля свёрнутого блока и возврат убранного ─── */
+.ublock-pill {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  height: 30px;
+  max-width: 320px;
+  padding: 0 var(--ui-space-3);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--bg-raised);
+  box-shadow: var(--shadow-pop);
+  color: var(--text-2);
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color 140ms var(--ease-out), border-color 140ms var(--ease-out);
+}
+@media (hover: hover) {
+  .ublock-pill:hover {
+    color: var(--text);
+    border-color: var(--line-hover);
+  }
+}
+
+.ublock-restore {
+  position: absolute;
+  top: var(--ui-space-2);
+  right: var(--ui-space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ui-space-1);
+  height: var(--ui-control-sm);
+  padding: 0 var(--ui-space-2);
+  border: 0;
+  border-radius: var(--r-row);
+  background: none;
+  color: var(--accent);
+  font-family: var(--font-ui);
+  font-size: var(--ui-size-body);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background-color 140ms var(--ease-out);
+}
+@media (hover: hover) {
+  .ublock-restore:hover {
+    background: color-mix(in srgb, var(--text) 7%, transparent);
+  }
+}
+
+/* Призрак зоны — единственное место, где блок показывает акцентом, куда сядет. */
+.ublock-snap {
+  position: absolute;
+  border: 1.5px dashed var(--accent);
+  border-radius: var(--r-card);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  pointer-events: none;
+}
+
+/* ─── U-2: блок задач в Ultra ─── */
+.ublock-tasks {
+  z-index: 40;
+}
+
+.ublock-tasks-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-sidebar);
+}
+
+.ublock-tasks-body .task-center-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.ublock-tasks-body .task-center-head {
+  display: none;
+}
+
+.ublock-tasks-body .task-center-tools {
+  margin-bottom: 8px;
+}
+
+.ublock-tasks-body .task-center-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}

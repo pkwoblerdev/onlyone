@@ -1,0 +1,132 @@
+/* Стили модуля src/renderer/composer-menu.js (план, 3.10): compact list of
+   commands and permission modes above the «/».
+
+   Числа здесь — размеры из поручения владельца, а не настройки: 28 px строки,
+   10 px отступ списка, коридор ширины 160–240 px (считает JS). Радиусы, цвета и
+   появление — по макету 19.10: список --r-md, строка --r-sm, выбор --bg-hover.
+   Цвета — только токены: литерал цвета в этом файле красит проверку. */
+
+.composer-menu {
+  position: fixed;
+  z-index: 60;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  max-height: 240px;
+  /* Длинная форма, не shorthand: глобальный сброс `* { padding: 0 }` лежит в
+     index.css, а тестовый раскладчик берёт последнее по файлам объявление, не
+     считая специфичность — короткая форма проиграла бы ему на ровном месте. */
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--bg-raised);
+  border: 0;
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-pop);
+  transform-origin: bottom left;
+  animation: onlyone-composer-menu-in var(--dur-pop) var(--ease-out) both;
+}
+
+/* Строка: только имя. Описание живёт подсказкой справа, поэтому здесь нет
+   второй строки и word-break — список остаётся узким и читается по именам. */
+.composer-menu-row {
+  box-sizing: border-box;
+  flex: none;
+  display: flex;
+  align-items: center;
+  height: 28px;
+  /* Те же 4 px, что входят в формулу ширины «имя + 24»: 20 px отступа списка и
+     4 px строки. Длинная форма — по той же причине, что и выше. */
+  padding-left: 4px;
+  padding-right: 4px;
+  background: none;
+  border: 0;
+  border-radius: var(--r-sm);
+  color: var(--ink-2);
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 120ms var(--ease-out), color 120ms var(--ease-out);
+}
+
+/* Выбор — состояние, а не мышиный трюк: [aria-selected] держит его и для
+   стрелок, и для клика, и для читалки с экрана. */
+.composer-menu-row[aria-selected="true"] {
+  background-color: var(--bg-hover);
+  color: var(--ink);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .composer-menu-row:hover {
+    background-color: var(--bg-hover);
+    color: var(--text);
+  }
+}
+
+.composer-menu-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-ui);
+  font-size: var(--fs-ui);
+  font-weight: 400;
+}
+
+/* Подсказка-описание: свой узел вне строк, справа от выбранной. В host её
+   класть нельзя — она попала бы в children списка режимов. */
+.composer-menu-hint {
+  position: fixed;
+  z-index: 60;
+  box-sizing: border-box;
+  display: none;
+  max-width: 280px;
+  font-family: var(--font-ui);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--text-3);
+  pointer-events: none;
+}
+
+.composer-menu-hint.is-shown {
+  display: block;
+}
+
+/* Обводка только с клавиатуры: мышиный клик не должен оставлять рамку на
+   строке, которую человек и так видит под курсором. */
+.composer-menu:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: 1px;
+}
+
+.composer-menu-row:focus-visible {
+  outline: 2px solid var(--border-focus);
+  outline-offset: -2px;
+}
+
+@keyframes onlyone-composer-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Появление — украшение; при сокращённом движении список встаёт
+   сразу, координаты от этого не меняются. */
+@media (prefers-reduced-motion: reduce) {
+  .composer-menu {
+    animation: none;
+    transform: none;
+  }
+
+  .composer-menu-row {
+    transition: none;
+  }
+}

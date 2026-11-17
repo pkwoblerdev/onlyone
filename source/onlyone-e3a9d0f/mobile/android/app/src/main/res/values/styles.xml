@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:background">@color/onecodeSurface</item>
+        <!-- Полосы системы под цвет приложения, значки на них — светлые. Иначе
+             сверху остаётся серая полоса, а снизу белая, и тёмное окно выглядит
+             вставленным в чужую рамку. -->
+        <item name="android:statusBarColor">@color/onecodeSurface</item>
+        <item name="android:navigationBarColor">@color/onecodeSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+    </style>
+
+
+    <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
+        <!-- Заставка была белым изображением: при каждом запуске тёмное
+             приложение открывалось вспышкой в глаза. Ровный фон того же цвета,
+             что и окно, — старт получается без шва. -->
+        <item name="android:background">@color/onecodeSurface</item>
+        <item name="windowSplashScreenBackground">@color/onecodeSurface</item>
+        <item name="android:statusBarColor">@color/onecodeSurface</item>
+        <item name="android:navigationBarColor">@color/onecodeSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

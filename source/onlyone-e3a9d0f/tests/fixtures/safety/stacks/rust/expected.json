@@ -1,0 +1,8 @@
+{
+  "stack": "rust",
+  "findings": [
+    "tests/fake_green.rs:6:skipped",
+    "tests/fake_green.rs:13:tautology"
+  ],
+  "honest": ["tests/honest.rs"]
+}

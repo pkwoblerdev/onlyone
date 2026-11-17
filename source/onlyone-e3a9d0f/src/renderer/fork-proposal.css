@@ -1,0 +1,237 @@
+/* Карточка предложения связанного чата. Только роли дизайн-системы: цвета,
+   радиусы и шрифты приходят из tokens.css, поэтому обе темы работают без
+   отдельных правил. Карточка не запускает работу — кнопки лишь подтверждают
+   создание уже показанного предложения. */
+.fork-proposal-card {
+  margin: 14px 0 18px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg-raised));
+  color: var(--text-main);
+  font-family: var(--font-ui);
+}
+.fork-proposal-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.fork-proposal-title {
+  margin: 6px 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.fork-proposal-label {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.fork-proposal-goal,
+.fork-proposal-reason,
+.fork-proposal-context {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.fork-proposal-reason { color: var(--text-dim); }
+.fork-proposal-parent {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+.fork-proposal-summary {
+  margin: 6px 0 0;
+  padding: 8px 10px;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-radius: 2px;
+  background: var(--bg-sunken);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.fork-proposal-meta {
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+.fork-proposal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.fork-proposal-actions button {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fork-proposal-actions button:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.fork-proposal-actions button:disabled { cursor: default; opacity: 0.55; }
+.fork-proposal-accept {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.fork-proposal-accept:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.fork-proposal-reject {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-main);
+}
+.fork-proposal-reject:hover:not(:disabled) { background: var(--bg-hover); }
+.fork-proposal-edit-toggle {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-main);
+}
+.fork-proposal-edit-toggle:hover:not(:disabled) { background: var(--bg-hover); }
+.fork-proposal-run {
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--accent);
+}
+.fork-proposal-run:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.fork-proposal-edit { display: grid; gap: 10px; margin-top: 10px; }
+.fork-proposal-edit[hidden] { display: none; }
+.fork-proposal-field { display: grid; gap: 4px; }
+.fork-proposal-field-label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.fork-proposal-input-title,
+.fork-proposal-goal-input,
+.fork-proposal-reason-input,
+.fork-proposal-input-end,
+.fork-proposal-edit input,
+.fork-proposal-edit textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg-raised);
+  color: var(--text-main);
+  font: inherit;
+  font-size: 13px;
+  resize: vertical;
+}
+.fork-proposal-edit input:focus-visible,
+.fork-proposal-edit textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.fork-proposal-save {
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.fork-proposal-save:hover:not(:disabled) { background: var(--accent-hover); border-color: var(--accent-hover); }
+.fork-proposal-cancel {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-main);
+}
+.fork-proposal-cancel:hover:not(:disabled) { background: var(--bg-hover); }
+.fork-proposal-hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.fork-proposal-status:empty { display: none; }
+.fork-proposal-status { margin-top: 8px; font-size: 12px; color: var(--text-dim); }
+.fork-proposal-card.is-created .fork-proposal-status { color: var(--ok); }
+.fork-proposal-card.is-created { border-color: var(--border-subtle); background: var(--bg-raised); }
+.fork-proposal-card.is-rejected { border-color: var(--border-subtle); background: none; opacity: 0.72; }
+.fork-proposal-card.has-problem { border-color: var(--err-line); background: var(--err-bg); }
+.fork-proposal-card.has-problem .fork-proposal-status { color: var(--err-text); }
+/* Сводка связанных задач: только счётчики и строки созданных чатов. Цвета и
+   радиусы — роли дизайн-системы, обе темы работают без отдельных правил. */
+.fork-proposal-summary-card {
+  margin: 10px 0 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-raised);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+}
+.fork-proposal-summary-title { font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
+.fork-proposal-summary-counts { margin-top: 4px; font-size: 12px; color: var(--text-dim); }
+.fork-proposal-summary-rows { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+.fork-proposal-summary-row {
+  padding: 6px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-main);
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.fork-proposal-summary-row:hover:not(:disabled) { background: var(--bg-hover); }
+.fork-proposal-summary-row:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.fork-proposal-summary-row:disabled { cursor: default; opacity: 0.55; }
+@media (max-width: 560px) {
+  .fork-proposal-actions { flex-direction: column; }
+  .fork-proposal-actions button { width: 100%; }
+}
+
+.fork-proposal-return {
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-main);
+}
+.fork-proposal-return:hover:not(:disabled) { background: var(--bg-hover); }
+
+/* Итог связанной задачи: отдельная запись в ленте родителя, не сообщение
+   модели. Ссылка ведёт в дочерний чат, текст — последний ответ ребёнка. */
+.fork-return-card {
+  margin: 10px 0;
+  padding: 12px 14px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg, var(--radius-sm));
+  background: var(--bg-raised);
+}
+.fork-return-kicker {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.fork-return-title { margin-top: 4px; font-weight: 600; color: var(--text-main); }
+.fork-return-text {
+  margin: 8px 0 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--line-strong);
+  color: var(--text-dim);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.fork-return-open {
+  margin-top: 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-main);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.fork-return-open:hover { background: var(--bg-hover); }

@@ -1,0 +1,7 @@
+body.one-ui { margin: 0; background: var(--bg-window); }
+.ui-catalog { max-width: var(--ui-catalog-width); margin: auto; padding: var(--ui-space-8); display: grid; gap: var(--ui-space-6); }
+.ui-catalog-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--ui-space-4); border-bottom: var(--ui-border-width) solid var(--line-strong); padding-bottom: var(--ui-space-6); }
+.ui-catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ui-catalog-column)), 1fr)); gap: var(--ui-space-4); }
+.ui-catalog-wide { grid-column: 1 / -1; }
+.ui-state-example { display: grid; justify-items: start; gap: var(--ui-space-2); padding: var(--ui-space-2); }
+.ui-type-example { display: flex; align-items: baseline; flex-wrap: wrap; justify-content: space-between; gap: var(--ui-space-3); }

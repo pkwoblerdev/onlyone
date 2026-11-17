@@ -1,0 +1,55 @@
+/* Плагины (OS-5): строка плагина и таблица журнала. Область .mk — общие кнопки,
+   списки и состояния берутся из look-pages.css; здесь только то, чего там нет.
+   Значения — роли из tokens.css, поэтому светлая и тёмная темы приходят сами. */
+
+.mk .pl {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--s2) var(--s6);
+  align-items: start;
+  padding: var(--s4) 0;
+}
+.mk .pl-main { min-width: 0; }
+.mk .pl-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s3); }
+/* Имя плагина — id из манифеста: это и есть его имя, выдумывать второе незачем */
+.mk .pl-name { font-weight: 500; font-size: var(--fs-body); line-height: 24px; color: var(--ink); }
+.mk .pl-ver { font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); font-variant-numeric: tabular-nums; }
+.mk .pl-status { margin-left: auto; }
+
+/* Права: подпись слева, значения — пилюлями. Выданное отмечено фоном акцента */
+.mk .pl-caps { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s1) var(--s2); margin-top: var(--s2); }
+.mk .pl-lbl { flex: none; min-width: 96px; font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); }
+.mk .pl-cap {
+  padding: 1px var(--s2); border-radius: var(--r-pill); background: var(--bg-chip);
+  font-size: var(--fs-cap); line-height: 18px; color: var(--ink-2); font-variant-numeric: tabular-nums;
+}
+.mk .pl-cap[data-granted="true"] { background: var(--accent-soft); color: var(--ink); }
+.mk .pl-none { font-size: var(--fs-cap); line-height: 16px; color: var(--ink-4); }
+.mk .pl-pending .pl-cap { background: color-mix(in srgb, var(--warn) 14%, transparent); color: var(--ink); }
+.mk .pl-note { margin: var(--s2) 0 0; max-width: 62ch; font-size: var(--fs-cap); line-height: 18px; color: var(--ink-3); }
+
+.mk .pl-acts { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2); justify-self: end; }
+.mk .pl-select {
+  height: 30px; padding: 0 var(--s2); border: 0; border-radius: var(--r-sm);
+  background: var(--bg-chip); color: var(--ink-2); font-family: inherit; font-size: var(--fs-ui);
+}
+.mk .pl-select:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.mk .pl-skeleton { display: block; }
+
+/* Журнал: одна таблица, без рамок — время моноширинными цифрами */
+.mk .pl-journal-wrap { overflow-x: auto; }
+.mk .pl-journal { width: 100%; border-collapse: collapse; font-size: var(--fs-ui); line-height: 20px; }
+.mk .pl-journal th {
+  padding: 0 0 var(--s2); border-bottom: 1px solid var(--line); text-align: left;
+  font-weight: 400; font-size: var(--fs-cap); color: var(--ink-4); white-space: nowrap;
+}
+.mk .pl-journal td { padding: var(--s2) 0; border-bottom: 1px solid var(--line-subtle); color: var(--ink-2); vertical-align: top; }
+.mk .pl-journal th + th, .mk .pl-journal td + td { padding-left: var(--s4); }
+.mk .pl-time { color: var(--ink-4); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.mk .pl-jver { color: var(--ink-4); font-variant-numeric: tabular-nums; }
+
+@container (max-width: 560px) {
+  .mk .pl { grid-template-columns: minmax(0, 1fr); }
+  .mk .pl-acts { justify-self: start; }
+  .mk .pl-lbl { min-width: 0; }
+}

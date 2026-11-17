@@ -1,0 +1,20 @@
+{
+  "file": "calc.py",
+  "module": "test_calc",
+  "mutants": [
+    {
+      "id": "add-plus-to-minus",
+      "find": "return a + b",
+      "replace": "return a - b",
+      "line": 2,
+      "change": "a + b -> a - b (covered by test_calc.test_add)"
+    },
+    {
+      "id": "adult-ge-to-gt",
+      "find": "return age >= 18",
+      "replace": "return age > 18",
+      "line": 6,
+      "change": "age >= 18 -> age > 18 (no test covers is_adult)"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Privacy information / Информация о конфиденциальности
 
-**Draft for the 1.3.38 source candidate. Not applicable to older builds.**
+**Draft for the 1.3.39 source candidate. Not applicable to older builds.**
 
 onlyone runs on your computer. The project currently does not operate its own account, update or relay service. Local execution does not mean that all data stays on your device.
 
@@ -8,13 +8,13 @@ When you use an external AI endpoint, the application can send your request, con
 
 Settings, conversations, files, credentials and diagnostic information may be stored on your device. Operating-system credential protection is used where available; its availability and scope depend on your environment. Do not assume every file, log, backup or export is encrypted. Review material before sharing it. Removing the application does not necessarily remove project files, backups or data already sent to third parties.
 
-Automatic update checks and the default remote relay are disabled in this candidate. Manually configuring an update endpoint or other service can cause network requests to that service. The former default third-party endpoint must not be used as an official project service. This description does not apply to earlier installations, including 1.3.36.
+In installed Windows builds, automatic update checks use the project GitHub Releases feed when enabled in settings; portable builds do not check or install updates automatically, and the default remote relay remains disabled in this candidate. Manually configuring an update endpoint or other service can cause network requests to that service. The former default third-party endpoint must not be used as an official project service. This description does not apply to earlier installations, including 1.3.36.
 
 This is a technical draft, not a declaration of legal compliance. A reliable contact channel and any notices required for actual distribution remain to be established.
 
 ---
 
-**Черновик для кандидата исходного кода 1.3.38. К предыдущим сборкам не относится.**
+**Черновик для кандидата исходного кода 1.3.39. К предыдущим сборкам не относится.**
 
 onlyone работает на компьютере пользователя. Сейчас проект не управляет собственными серверами учётных записей, обновлений или удалённого доступа. При этом локальный запуск не означает, что все данные остаются на устройстве.
 
@@ -22,6 +22,6 @@ onlyone работает на компьютере пользователя. С�
 
 Настройки, переписка, файлы, учётные данные и диагностическая информация могут храниться на устройстве. Там, где это доступно, используется защита учётных данных операционной системы; её доступность и охват зависят от окружения. Не следует считать, что все файлы, журналы, резервные копии и выгрузки зашифрованы. Проверяйте материалы перед отправкой. Удаление приложения не обязательно удалит проекты, резервные копии и данные, уже переданные сторонним сервисам.
 
-В этом кандидате автоматическая проверка обновлений и встроенный адрес сервера удалённого управления отключены. При ручной настройке адреса обновлений или другого сервиса приложение может обращаться к указанному адресу. Прежний встроенный сторонний адрес не является официальным сервисом проекта. Это описание не относится к предыдущим установленным версиям, в том числе 1.3.36.
+В установленной Windows-сборке этого кандидата при включённой настройке автоматических обновлений приложение проверяет выпуски на GitHub Releases проекта; portable-сборка не проверяет и не устанавливает обновления автоматически, а встроенный адрес сервера удалённого управления остаётся отключённым. При ручной настройке адреса обновлений или другого сервиса приложение может обращаться к указанному адресу. Прежний встроенный сторонний адрес не является официальным сервисом проекта. Это описание не относится к предыдущим установленным версиям, в том числе 1.3.36.
 
 Это технический черновик, а не подтверждение соответствия законодательству. Надёжный канал связи и необходимые для фактического распространения уведомления ещё предстоит определить.

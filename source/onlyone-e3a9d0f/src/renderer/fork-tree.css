@@ -1,0 +1,149 @@
+/* Дерево связанных чатов в боковике (Ф-2).
+ * Только роли и токены: ни одного своего цвета, радиуса или шрифта.
+ * Секция живёт между линией навигации и списком диалогов и прячется,
+ * когда связей нет.
+ */
+
+.fork-tree {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: 42vh;
+  padding: 0 var(--s2) var(--s2);
+}
+.fork-tree[hidden] { display: none; }
+
+.fork-tree-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex: none;
+  height: 28px;
+  margin-top: var(--s2);
+  padding: 0 var(--s2);
+  font: 400 var(--fs-cap)/16px var(--font-ui);
+  color: var(--ink-4);
+}
+.fork-tree-title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fork-tree-count { flex: none; font-variant-numeric: tabular-nums; }
+
+.fork-tree-search-wrap { flex: none; padding: 0 var(--s2) var(--s2); }
+.fork-tree-search {
+  width: 100%;
+  height: 26px;
+  padding: 0 var(--s2);
+  border: 1px solid var(--field-line);
+  border-radius: var(--r-sm);
+  background: var(--field-bg);
+  color: var(--ink-2);
+  font: 400 var(--fs-cap)/18px var(--font-ui);
+}
+.fork-tree-search::placeholder { color: var(--ink-4); }
+.fork-tree-search:hover { border-color: var(--field-line-hover); }
+.fork-tree-search:focus { border-color: var(--accent); outline: none; }
+.fork-tree-search:focus-visible { outline: 2px solid var(--focus); outline-offset: -1px; }
+
+.fork-tree-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.fork-tree-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  flex: none;
+  min-height: 30px;
+  padding: 3px var(--s2) 3px calc(var(--s2) + var(--fork-depth, 0) * 14px);
+  border-radius: var(--r-sm);
+  color: var(--ink-3);
+  font: 400 var(--fs-ui)/20px var(--font-ui);
+  cursor: pointer;
+  transition: background-color var(--dur-hover) var(--ease-out), color var(--dur-hover) var(--ease-out);
+}
+.fork-tree-row:hover { background: var(--bg-hover); color: var(--ink); }
+.fork-tree-row.active { background: var(--bg-active); color: var(--ink); }
+.fork-tree-row.active .fork-tree-title { font-weight: 500; }
+.fork-tree-row:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+
+.fork-tree-caret,
+.fork-tree-parent {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-xs);
+  background: none;
+  color: var(--ink-4);
+  cursor: pointer;
+}
+.fork-tree-caret:hover,
+.fork-tree-parent:hover:not(:disabled) { background: var(--bg-active); color: var(--ink); }
+.fork-tree-caret svg,
+.fork-tree-parent svg { width: 12px; height: 12px; }
+.fork-tree-caret svg { transition: transform var(--dur-snap) var(--ease-snap); }
+.fork-tree-row[aria-expanded="false"] .fork-tree-caret svg { transform: rotate(-90deg); }
+.fork-tree-caret-spacer { flex: none; width: 20px; height: 20px; }
+
+.fork-tree-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.fork-tree-title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.fork-tree-path {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--fs-cap);
+  line-height: 14px;
+  color: var(--ink-4);
+}
+
+.fork-tree-badge {
+  flex: none;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-cap);
+}
+.fork-tree-badge.is-missing { color: var(--danger); }
+.fork-tree-badge.is-archived { color: var(--warn); }
+.fork-tree-badge.is-broken { color: var(--warn); }
+
+.fork-tree-parent {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-hover) var(--ease-out), background-color var(--dur-hover) var(--ease-out);
+}
+.fork-tree-row:hover .fork-tree-parent,
+.fork-tree-row:focus-within .fork-tree-parent { opacity: 1; pointer-events: auto; }
+.fork-tree-parent:disabled { cursor: default; color: var(--ink-disabled); opacity: 0; }
+.fork-tree-row:hover .fork-tree-parent:disabled { opacity: .5; pointer-events: none; }
+
+.fork-tree-hint {
+  flex: none;
+  padding: var(--s2);
+  font-size: var(--fs-cap);
+  line-height: 16px;
+  color: var(--ink-4);
+}
+.fork-tree-hint[hidden] { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .fork-tree-row,
+  .fork-tree-caret svg,
+  .fork-tree-parent { transition: none; }
+}

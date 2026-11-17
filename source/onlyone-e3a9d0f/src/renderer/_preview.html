@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>preview</title>
+<link rel="stylesheet" href="fonts.css" />
+<link rel="stylesheet" href="tokens.css" />
+<link rel="stylesheet" href="index.css" />
+<style>
+  body { background: var(--bg-app); margin: 0; }
+  .wrap { max-width: 800px; margin: 0 auto; padding: 34px 32px 8px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- user bubble -->
+  <div class="msg-item user">
+    <div class="msg-content">
+      <p>Сделай реальное ядро: парсер подписок и share-ссылок, генератор конфига sing-box с Reality/uTLS и менеджер процесса. И проверь, что оно запускается.</p>
+      <div class="attachment-strip sent">
+        <div class="attachment-chip kind-text"><span class="attachment-name">links.txt</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="msg-item assistant">
+
+    <!-- plan -->
+    <div class="plan-inline">
+      <div class="plan-inline-head">
+        <span class="plan-inline-title">План</span>
+        <span class="plan-inline-count">2 / 5</span>
+        <span class="plan-progress"><span class="plan-progress-fill" style="width:40%"></span></span>
+      </div>
+      <div class="plan-inline-body">
+        <div class="plan-node status-done"><div class="plan-dot"></div><div class="plan-body"><div class="plan-title">Прочитать текущее состояние ядра</div></div><span class="plan-status">готово</span></div>
+        <div class="plan-node status-done"><div class="plan-dot"></div><div class="plan-body"><div class="plan-title">Парсер vless / vmess / ss / trojan</div></div><span class="plan-status">готово</span></div>
+        <div class="plan-node status-doing"><div class="plan-dot"></div><div class="plan-body"><div class="plan-title">Генератор конфига sing-box — Reality / uTLS</div></div><span class="plan-status">идёт</span></div>
+        <div class="plan-node status-todo"><div class="plan-dot"></div><div class="plan-body"><div class="plan-title">Менеджер процесса</div></div><span class="plan-status">ждёт</span></div>
+        <div class="plan-node status-todo"><div class="plan-dot"></div><div class="plan-body"><div class="plan-title">Проверить запуск на Windows</div></div><span class="plan-status">ждёт</span></div>
+      </div>
+    </div>
+
+    <!-- rail -->
+    <details class="think tool rail-step tone-read">
+      <summary class="think-head rail-line">
+        <span class="rail-dot"></span><span class="rail-verb">Прочитал</span>
+        <span class="rail-target">proX/core/main.go</span>
+        <span class="rail-meta"><span class="rail-add">213 строк</span><span class="rail-del">0.4 с</span></span>
+      </summary>
+      <div class="think-body rail-out">{"path":"proX/core/main.go"}</div>
+    </details>
+    <details class="think tool rail-step tone-ok">
+      <summary class="think-head rail-line">
+        <span class="rail-dot"></span><span class="rail-verb">Запустил</span>
+        <span class="rail-target">run_cmd</span><span class="rail-count">×12</span>
+        <span class="rail-meta">6.8 с</span>
+      </summary>
+      <div class="rail-group">
+        <div class="rail-subline"><span class="rail-target">node core-node/server.js</span><span class="rail-meta">0.6 с</span></div>
+        <div class="rail-subline"><span class="rail-target">node -e "require('./lib/links')"</span><span class="rail-meta">0.4 с</span></div>
+        <div class="rail-subline"><span class="rail-target">curl 127.0.0.1:7890/status</span><span class="rail-meta">0.3 с</span></div>
+      </div>
+    </details>
+    <details class="think tool rail-step tone-err">
+      <summary class="think-head rail-line">
+        <span class="rail-dot"></span><span class="rail-verb">Запустил</span>
+        <span class="rail-target">run_cmd · go version</span>
+        <span class="rail-meta">ошибка</span>
+      </summary>
+      <div class="think-body rail-out">'go' is not recognized as an internal or external command</div>
+    </details>
+    <details class="think rail-step tone-read think-row">
+      <summary class="think-head rail-line rail-line-think">
+        <svg class="think-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg>
+        <span class="think-label">Схема в манифесте обновилась, но рантайм-регистрация осталась со старой</span>
+      </summary>
+      <div class="think-body rail-out">полный текст размышления…</div>
+    </details>
+    <details class="think tool rail-step tone-ok" open>
+      <summary class="think-head rail-line">
+        <span class="rail-dot"></span><span class="rail-verb">Записал</span>
+        <span class="rail-target">core-node/lib/links.js</span>
+        <span class="rail-meta"><span class="rail-add">+184</span><span class="rail-del">−0</span></span>
+      </summary>
+      <div class="think-body rail-out">export function parseVless(url) { … }</div>
+    </details>
+    <details class="think tool rail-step tone-ok">
+      <summary class="think-head rail-line">
+        <span class="rail-dot"></span><span class="rail-verb">Записал</span>
+        <span class="rail-target">core-node/lib/singbox.js</span>
+        <span class="rail-meta"><span class="rail-add">+96</span><span class="rail-del">−0</span></span>
+      </summary>
+      <div class="think-body rail-out">…</div>
+    </details>
+
+    <!-- prose -->
+    <div class="msg-content">
+      <p>Go на машине нет, поэтому ядро делаю на Node — его можно запустить и проверить прямо здесь, а не писать вслепую.</p>
+      <p>Парсер уже держит <code>vless</code> <code>vmess</code> <code>ss</code> <code>trojan</code> — то, что присылают ТГ-боты. Дальше генератор конфига: Reality/uTLS, правила direct/proxy и менеджер процесса.</p>
+      <h4>Сделано фактически</h4>
+      <ul>
+        <li>Рабочие инструменты заведены и проверены: <code>own_run_cmd</code>, <code>own_fetch_url</code>.</li>
+        <li>Все три репозитория скачаны и распакованы, наличие проверено.</li>
+        <li>Сняты метаданные и README всех трёх.</li>
+      </ul>
+      <div class="code-block">
+        <div class="code-header"><span>core-node/lib/singbox.js</span><button class="btn-copy-code">Копировать</button></div>
+        <pre><code class="hljs"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">buildConfig</span>(nodes, opts) {
+  <span class="hljs-keyword">const</span> outbounds = nodes.<span class="hljs-title function_">map</span>(toOutbound)
+  <span class="hljs-comment">// Reality + uTLS: отпечаток берём из профиля</span>
+  <span class="hljs-keyword">return</span> { <span class="hljs-attr">log</span>: { <span class="hljs-attr">level</span>: <span class="hljs-string">'warn'</span> } }
+}</code></pre>
+      </div>
+    </div>
+
+    <!-- meta -->
+    <div class="msg-footer">
+      <div class="msg-meta">
+        <button type="button" class="mark-btn"><svg class="agent-mark" viewBox="0 0 16 16" width="13" height="13"><g class="mark-rays"><path d="M8 2.4l4.9 2.8v5.6L8 13.6 3.1 10.8V5.2z"/></g><circle class="mark-core" cx="8" cy="8" r="1.5"/></svg></button>
+        <span class="cli-model">GLM 5.3 Flash</span>
+        <span class="cli-dot">·</span><span class="cli-duration">1 мин 01 с</span>
+        <span class="cli-dot">·</span><span class="cli-tokens">32.2k</span>
+      </div>
+      <div class="msg-actions">
+        <button type="button" class="msg-action"><svg class="icon small" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+        <button type="button" class="msg-action"><svg class="icon small" viewBox="0 0 24 24"><path d="M12.8 6.6A5 5 0 103 8.6"/><path d="M12.8 3.4v3.4H9.4"/></svg></button>
+        <button type="button" class="msg-action"><svg class="icon small" viewBox="0 0 24 24"><path d="M12 17v5M9 3h6l-1 7 4 3H6l4-3z"/></svg></button>
+      </div>
+    </div>
+
+    <div class="msg-footer">
+      <div class="msg-meta live"><span class="cli-status">Пишу менеджер процесса</span></div>
+      <button type="button" class="btn-bar btn-stop-ghost">Остановить</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -18,7 +18,7 @@ Available capabilities depend on the selected service, permissions and settings.
 
 onlyone is still growing. The current version is an early step, and there is plenty more we want to build, improve and learn from the people using it.
 
-Our priorities include improving stability and performance, making the application easier to use, strengthening security and privacy, and expanding documentation and testing. We also plan to explore update delivery through GitHub. These are directions for future work, not promises of features or release dates.
+Our priorities include improving stability and performance, making the application easier to use, strengthening security and privacy, and expanding documentation and testing. Update delivery through GitHub Releases is included for installed Windows builds starting in 1.3.39; code signing and clean-system upgrade verification remain future work. These are directions for future work, not promises of features or release dates.
 
 Feedback, issue reports and contributions can help shape the project. Please read the [contribution guide](docs/CONTRIBUTING.md) before opening a pull request.
 
@@ -26,14 +26,14 @@ Feedback, issue reports and contributions can help shape the project. Please rea
 
 Installers and portable builds, when published, appear in [Releases](https://github.com/pkwoblerdev/onlyone/releases). The executable files are uploaded separately and are not included in the Git source tree.
 
-Version 1.3.38 is a release candidate. Its Windows builds are unsigned. The [release status](docs/RELEASE-STATUS.md) records the checks completed and the remaining limitations, including clean Windows installation testing. Automatic update checks and the packaged remote-control relay are disabled in this candidate.
+Version 1.3.39 is a release candidate. Its Windows builds are unsigned. The [release status](docs/RELEASE-STATUS.md) records the checks completed and the remaining limitations, including clean Windows installation and live cross-release upgrade testing. Installed Windows builds check [GitHub Releases](https://github.com/pkwoblerdev/onlyone/releases) when automatic updates are enabled in settings (see [GitHub updates](docs/GITHUB-UPDATES.md)); portable builds update manually, and the packaged remote-control relay remains disabled.
 
 ## Run from source
 
 On Windows, install Node.js and npm, then run from the repository root:
 
 ```powershell
-cd source/onlyone-4c4c5c3
+cd source/onlyone-e3a9d0f
 npm ci
 npm run dev
 ```
@@ -48,7 +48,7 @@ The application runs on your computer. When you use an external service, your re
 
 | Path | Contents |
 | --- | --- |
-| [`source/`](source/) | Application source, tests and build scripts. The 1.3.38 candidate is in `source/onlyone-4c4c5c3/`. |
+| [`source/`](source/) | Application source, tests and build scripts. The 1.3.39 candidate is in `source/onlyone-e3a9d0f/`. |
 | [`docs/`](docs/) | Guides, contribution rules, security information and release status. |
 | [`releases/`](releases/) | Information and manifests for builds; download published files from GitHub Releases. |
 | [`LICENSES/`](LICENSES/) | License texts and notices for included components. |
@@ -88,7 +88,7 @@ The project source is available under the [Apache License 2.0](LICENSE), where a
 
 onlyone ещё развивается. Текущая версия — только первый шаг: впереди много идей и целей, над которыми мы хотим работать вместе с пользователями.
 
-Среди наших приоритетов — стабильность и производительность, удобство приложения, безопасность и конфиденциальность, документация и тестирование. Мы также планируем изучить возможность обновлений через GitHub. Это направления дальнейшей работы, а не обещания конкретных функций или сроков.
+Среди наших приоритетов — стабильность и производительность, удобство приложения, безопасность и конфиденциальность, документация и тестирование. Начиная с 1.3.39, для установленной Windows-версии добавлена доставка обновлений через GitHub Releases; цифровая подпись сборок и проверка обновления на чистой системе остаются задачами следующих этапов. Это направления дальнейшей работы, а не обещания конкретных функций или сроков.
 
 Отзывы, сообщения об ошибках и участие в разработке помогут нам двигаться дальше. Перед отправкой изменений ознакомьтесь с [правилами участия](docs/CONTRIBUTING.md).
 
@@ -96,14 +96,14 @@ onlyone ещё развивается. Текущая версия — толь�
 
 Установщик и portable-версия, когда они опубликованы, находятся в разделе [Releases](https://github.com/pkwoblerdev/onlyone/releases). Исполняемые файлы загружаются отдельно и не входят в Git-репозиторий исходников.
 
-Версия 1.3.38 — кандидат выпуска; её сборки для Windows не подписаны. Завершённые проверки и оставшиеся ограничения, в том числе проверка установки на чистой Windows, описаны в [статусе выпуска](docs/RELEASE-STATUS.md). Автопроверка обновлений и встроенный сервер удалённого управления в этом кандидате отключены.
+Версия 1.3.39 — кандидат выпуска; её сборки для Windows не подписаны. Завершённые проверки и оставшиеся ограничения, в том числе проверка установки на чистой Windows и живого обновления между опубликованными выпусками, описаны в [статусе выпуска](docs/RELEASE-STATUS.md). Установленная Windows-версия проверяет [GitHub Releases](https://github.com/pkwoblerdev/onlyone/releases) при включённых автообновлениях в настройках (см. [обновления через GitHub](docs/GITHUB-UPDATES.md)); portable-версия обновляется вручную, а встроенный сервер удалённого управления остаётся отключённым.
 
 ### Запуск из исходников
 
 Установите Node.js и npm, откройте PowerShell в корне репозитория и выполните:
 
 ```powershell
-cd source/onlyone-4c4c5c3
+cd source/onlyone-e3a9d0f
 npm ci
 npm run dev
 ```
@@ -118,7 +118,7 @@ npm run dev
 
 | Путь | Что внутри |
 | --- | --- |
-| [`source/`](source/) | Исходники приложения, тесты и скрипты сборки. Кандидат 1.3.38 находится в `source/onlyone-4c4c5c3/`. |
+| [`source/`](source/) | Исходники приложения, тесты и скрипты сборки. Кандидат 1.3.39 находится в `source/onlyone-e3a9d0f/`. |
 | [`docs/`](docs/) | Руководства, правила участия, сведения о безопасности и статус выпуска. |
 | [`releases/`](releases/) | Информация и манифесты сборок; опубликованные файлы скачиваются через GitHub Releases. |
 | [`LICENSES/`](LICENSES/) | Тексты лицензий и уведомления для включённых компонентов. |

@@ -1,0 +1,8 @@
+{
+  "stack": "dotnet",
+  "findings": [
+    "FakeGreenTests.cs:5:skipped",
+    "FakeGreenTests.cs:14:tautology"
+  ],
+  "honest": ["HonestTests.cs"]
+}

@@ -1,0 +1,497 @@
+/* Design tokens — the only place in the app where a colour, a face, a radius or
+   a shadow is written as a literal. Since the mockup port (19.10.2026) the
+   canonical block is the role set of `audits/ui-2026-10-18/onlyone-mockup.html`
+   (:root and :root[data-theme="light"]); the names below it are the app's older
+   spellings, kept as `var()` aliases so every older rule resolves to a role.
+
+   This is the whole `:root` of the application. It used to live inside
+   index.css, and twice a second `:root` further down that file silently
+   overrode it — once putting the mono face back to a family whose files had
+   been deleted, so code rendered in Consolas for a release. One block, one
+   file, and a test that fails if a second one appears. */
+
+:root {
+  color-scheme: dark;
+
+  /* ═══════════════ РОЛИ (макет 19.10) ═══════════════
+     Тёплый графит: фон #1c1917 выбран владельцем 19.10. Боковая панель чуть
+     светлее окна. Контраст на --bg: ink 15,7 · ink-2 11,4 · ink-3 7,0 ·
+     ink-4 5,4 (4,5 на hover, 4,8 на raised) · accent 7,5 · ok 8,5 · warn 9,4 ·
+     danger 6,9. --ink-4 не кладётся на --bg-active: там 3,9:1. */
+  --bg:           #1c1917;
+  --bg-sunken:    #171412;
+  --bg-sidebar:   #211d1a;
+  --bg-raised:    #27231f;
+  --bg-hover:     #2c2724;
+  --bg-active:    #36312c;
+  --bg-chip:      #322d29;
+  --ink:          #f5f2ef;
+  --ink-2:        #d6d0ca;
+  --ink-3:        #aaa29a;
+  --ink-4:        #958d85;
+  --ink-disabled: #5f5852;
+  --line-subtle:  #2a2522;
+  --line:         #342f2b;
+  --line-strong:  #443e39;
+  --line-field:   #6f6760;
+  /* Искорка — знак бренда, не меняется ни при каком акценте. Акцент — искра
+     #ff8a50 (выбор владельца 19.10); выбирать его в настройках больше нельзя. */
+  --spark:        #ff8a50;
+  --accent:       #ff8a50;
+  --accent-hover: #ffa070;
+  --accent-soft:  color-mix(in srgb, var(--accent) 14%, transparent);
+  --on-accent:    #1f0d03;
+  --on-danger:    #1f0d03;
+  --ok:           #5cc98f;
+  --warn:         #e8b74a;
+  --danger:       #ff7b6e;
+  --focus:        color-mix(in srgb, var(--accent) 80%, transparent);
+  --scrim:        rgb(8 6 5 / .6);
+  --shadow-pop:      0 0 0 1px #3a3430, 0 16px 40px -12px rgb(8 6 5 / .7);
+  --shadow-composer: 0 0 0 1px rgb(255 240 230 / .02), 0 16px 40px -18px rgb(8 6 5 / .8);
+  --shadow-drawer:   -1px 0 0 #342f2b, -24px 0 48px -24px rgb(8 6 5 / .75);
+  --contact:         0 1px 2px rgb(8 6 5 / .4);
+  /* Расход токенов: вход, выход, кэш. */
+  --viz-in:    #4f8ff0;
+  --viz-out:   #e2672c;
+  --viz-cache: #159e83;
+  --field-bg: rgb(0 0 0 / .22); --field-bg-focus: rgb(0 0 0 / .3); --field-line: rgb(255 255 255 / .08);
+  --field-line-hover: rgb(255 255 255 / .16); --field-dash: rgb(255 255 255 / .18);
+  /* Превью тем в настройках — образцы, а не роли: одинаковы в обеих темах. */
+  --pv-dark-bg:  #1c1917;
+  --pv-dark-side:  #27231f;
+  --pv-dark-ink:  #4a433d;
+  --pv-light-bg: #f8f6f3;
+  --pv-light-side: #ece8e3;
+  --pv-light-ink: #cfc8c0;
+  /* Холст: чужая страница в превью артефакта, браузере и Дизайне, и QR.
+     Содержимое пользователя, а не роли onlyone, — одинаково в обеих темах. */
+  --cv-bg: #ffffff;
+  --cv-soft: #f3f1ee;
+  --cv-line: #e4dfd9;
+  --cv-ink: #1c1917;
+  --cv-ink-2: #5b544e;
+  --cv-brand: #2456c8;
+  --cv-on-brand: #ffffff;
+  --cv-ok: #117035;
+  /* Отступы: шаг 4, ритм 8. --s-half — только оптическая подгонка. */
+  --s-half: 2px;
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+  --s10: 40px;
+  --s12: 48px;
+  /* Радиусы (крупнее, слово владельца 18.10). */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+  /* Один шрифт везде, моноширинного нет (слово владельца 18.10). У Instrument
+     Sans нет кириллицы — русский текст набирает Segoe UI. Файлы — fonts.css. */
+  --font-ui: "Instrument Sans", "Segoe UI", system-ui, "Twemoji", sans-serif;
+  --font-emoji: "Twemoji", "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+  /* Пять размеров на всё приложение; заголовки — размером и весом 600. */
+  --fs-cap:  12px;  /* подпись, мета — строка 16 */
+  --fs-ui:   13px;  /* кнопки, строки, меню — строка 20 */
+  --fs-body: 15px;  /* ответ, сообщение, поле ввода — строка 24 */
+  --fs-h2:   18px;  /* раздел страницы, заголовок состояния — строка 24 */
+  --fs-h1:   26px;  /* заголовок страницы — строка 32 */
+  --fw-head: 600;
+
+  /* ─── Код: роли подсветки (выбираются в «Внешнем виде») ─── */
+  --code-base:      #d6d0ca;
+  --code-kw:        #f0a273;
+  --code-fn:        #8db6ea;
+  --code-key:       #e3c27a;
+  --code-num:       var(--code-key);
+  --code-str:       #a8c98a;
+  --code-comment:   #958d85;
+  --inline-bg:      rgba(184, 166, 214, 0.10);
+  --inline-fg:      #bfaedc;
+  /* ─── Размеры каркаса ─── */
+  --sidebar-w: 248px;
+  --chat-col:  832px;
+  --head-h:    52px;
+  /* ═══════════════ ПСЕВДОНИМЫ ПРИЛОЖЕНИЯ ═══════════════
+     Прежние имена, которыми написаны правила в index.css и модулях. Ни одно
+     не несёт собственного значения — все ведут на роль выше. */
+
+  /* Поверхности */
+  --bg-window:      var(--bg);
+  --bg-titlebar:    var(--bg-sidebar);
+  --bg-card:        var(--bg-raised);
+  --bg-card-hover:  var(--bg-hover);
+  --bg-inset:       var(--bg-sunken);
+  --bg-code:        var(--bg-sunken);
+  --bg-diff:        var(--bg-sunken);
+  --bg-composer:    var(--bg-raised);
+  --bg-active-row:  var(--bg-active);
+  --bg-popover:     var(--bg-raised);
+  --bg-popover-row: var(--bg-hover);
+  --bg-raised-2:    var(--bg-chip);
+  --bg-input:       var(--bg);
+  --bg-app:         var(--bg);
+  --bg-topbar:      var(--bg-sidebar);
+  --bg-well:        var(--bg-sunken);
+  --bg-overlay:     var(--bg-raised);
+  /* Линии. Прежняя «--line» значила разделитель хрома — её места в стилях
+     переписаны на --line-subtle; сама --line теперь роль макета. */
+  --line-sidebar:   var(--line-subtle);
+  --line-rule:      var(--line-subtle);
+  --line-card:      var(--line);
+  --line-control:   var(--line-field);
+  --line-hairline:  var(--line-subtle);
+  --line-hover:     var(--ink-4);
+  --line-window:    var(--line-strong);
+  /* Текст */
+  --text:           var(--ink);
+  --text-bright:    var(--ink);
+  --text-hover:     var(--ink);
+  --text-on-active: var(--ink);
+  --text-prose:     var(--ink-2);
+  --text-2:         var(--ink-2);
+  --text-soft:      var(--ink-2);
+  --text-3:         var(--ink-3);
+  --text-4:         var(--ink-4);
+  --text-5:         var(--ink-4);
+  /* Боковая панель: строка --ink-3, текущая --ink, мета --ink-4 */
+  --sb-item:         var(--ink-3);
+  --sb-count:        var(--ink-4);
+  --sb-count-on:     var(--ink-3);
+  --sb-chat:         var(--ink-3);
+  --sb-chat-hover:   var(--ink);
+  --sb-group-hover:  var(--ink-2);
+  --sb-age:          var(--ink-4);
+  --sb-age-on:       var(--ink-3);
+  --sb-section:      var(--ink-4);
+  --sb-avatar-bg:    var(--bg-chip);
+  --sb-avatar-line:  var(--line-strong);
+  --sb-avatar-text:  var(--ink-2);
+  --sb-scroll:       var(--line-strong);
+  --sb-scroll-hover: var(--line-field);
+  /* Акцент: производные оттенки считаются от --accent */
+  --accent-primary:      var(--accent);
+  --accent-08:           color-mix(in srgb, var(--accent) 10%, transparent);
+  --accent-16:           color-mix(in srgb, var(--accent) 16%, transparent);
+  --accent-17:           color-mix(in srgb, var(--accent) 17%, transparent);
+  --accent-18:           color-mix(in srgb, var(--accent) 18%, transparent);
+  --accent-line:         color-mix(in srgb, var(--accent) 24%, transparent);
+  --accent-line-on:      color-mix(in srgb, var(--accent) 40%, transparent);
+  --accent-ink:          var(--on-accent);
+  --accent-focus:        var(--focus);
+  --accent-subtle:       var(--accent-soft);
+  --accent-subtle-hover: var(--accent-18);
+  --accent-glow:         var(--accent-16);
+  /* Статусы */
+  --ok-dot:       var(--ok);
+  --ok-add:       var(--ok);
+  --err:          var(--danger);
+  --err-dot:      var(--danger);
+  --err-text:     var(--danger);
+  --err-soft:     var(--danger);
+  --err-bg:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --err-line:     color-mix(in srgb, var(--danger) 30%, transparent);
+  --danger-soft:  var(--err-bg);
+  --danger-line:  var(--err-line);
+  --diff-add-bg:   color-mix(in srgb, var(--ok) 12%, transparent);
+  --diff-add-fg:   var(--ok);
+  --diff-add-mark: var(--ok);
+  --diff-del-bg:   color-mix(in srgb, var(--danger) 12%, transparent);
+  --diff-del-fg:   var(--danger);
+  --diff-del-mark: var(--danger);
+  /* Рельса шагов, план, проза */
+  --rail-dot:    var(--line-strong);
+  --rail-target: var(--ink-2);
+  --rail-sub:    var(--ink-3);
+  --rail-think:  var(--ink-3);
+  --plan-label:  var(--ink-4);
+  --plan-track:  var(--line);
+  --plan-strike: var(--ink-disabled);
+  --plan-ring:   var(--line-strong);
+  --plan-circle: var(--line-strong);
+  --bullet:      var(--ink-4);
+  --meta-sep:    var(--line-strong);
+  /* Строка ввода и блоки ответа */
+  --placeholder:      var(--ink-3);
+  --ctx-num:          var(--ink-4);
+  --pill-hover:       var(--bg-active);
+  --code-head-bg:     var(--bg-sunken);
+  --code-copy:        var(--ink-3);
+  --code-copy-on:     var(--ink);
+  --user-bubble:      var(--bg-chip);
+  --user-bubble-flat: var(--bg-chip);
+  --user-bubble-line: transparent;
+  --user-bubble-text: var(--ink);
+  --user-file-bg:     var(--bg-active);
+  --user-file-line:   var(--line-strong);
+  --user-file-text:   var(--ink-2);
+  --icon-btn:         var(--ink-3);
+  --bg-user-bubble:      var(--user-bubble-flat);
+  --bg-user-bubble-grad: var(--user-bubble);
+  --border-subtle:      var(--line);
+  --border-medium:      var(--line-strong);
+  --border-hairline:    var(--line-subtle);
+  --border-window:      var(--line-strong);
+  --border-input:       var(--line-field);
+  --border-input-hover: var(--ink-4);
+  --border-focus:       var(--focus);
+  --text-main:      var(--ink);
+  --text-muted:     var(--ink-3);
+  --text-dim:       var(--ink-3);
+  --text-faint:     var(--ink-4);
+  --text-on-accent: var(--on-accent);
+  --color-green:      var(--ok);
+  --color-green-deep: var(--ok);
+  --color-emerald:    var(--ok);
+  --color-amber:      var(--warn);
+  --color-red:        var(--danger);
+  --color-red-soft:   var(--danger);
+  --color-blue:       var(--code-key);
+  --color-purple:     var(--inline-fg);
+  /* Гарнитуры: одна. Старые имена ведут на неё же. */
+  --font:         var(--font-ui);
+  --font-prose:   var(--font-ui);
+  --font-mono:    var(--font-ui);
+  --font-display: var(--font-ui);
+  --font-sans:    var(--font-ui);
+  --font-code:    var(--font-mono);
+  --font-serif:   var(--font-display);
+  /* Радиусы: прежние имена на шкалу макета */
+  --r-chip:     var(--r-xs);
+  --r-row:      var(--r-sm);
+  --r-btn:      var(--r-sm);
+  --r-card:     var(--r-md);
+  --r-composer: var(--r-lg);
+  --r-send:     var(--r-pill);
+  --r-full:     var(--r-pill);
+  --radius-sm:   var(--r-sm);
+  --radius-md:   var(--r-md);
+  --radius-lg:   var(--r-lg);
+  --radius-full: var(--r-pill);
+  --shadow-sm: var(--contact);
+  --shadow-md: var(--shadow-pop);
+  --shadow-lg: var(--shadow-pop);
+  /* Движение: отклик 70–140 мс, пружины ≤ 290 мс. Пружины считаются в
+     linear() при запуске (ui-system.js); значения ниже — запасные. */
+  --ease-out:    cubic-bezier(.23, 1, .32, 1);
+  --ease-in:     cubic-bezier(.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-smooth: var(--ease-out);
+  --dur-press:   70ms;
+  --dur-hover:   120ms;
+  /* Множитель длительностей пружин: в макете — «Замедлить ×4», в приложении всегда 1 */
+  --slow: 1;
+  --dur-popover: 180ms;
+  --dur-modal:   220ms;
+  --dur-pop:     140ms;
+  --dur-exit:    100ms;
+  --ease-glide: var(--ease-out);
+  --dur-glide: 233ms;
+  --ease-soft:  var(--ease-out);
+  --dur-soft:  283ms;
+  --ease-snap:  var(--ease-out);
+  --dur-snap:  200ms;
+  --ease-press: var(--ease-out);
+  --dur-press-back: 200ms;
+  /* Component contract (1.2): прежние роли компонентов ведут на шкалу макета. */
+  --ui-size-section: var(--fs-h1);
+  --ui-size-heading: var(--fs-body);
+  --ui-size-body: var(--fs-ui);
+  --ui-size-label: var(--fs-ui);
+  --ui-size-small: var(--fs-cap);
+  --ui-size-mono: var(--fs-cap);
+  --ui-size-emoji: 16px;
+  --ui-weight-body: 400;
+  --ui-weight-label: 500;
+  --ui-weight-heading: 600;
+  --ui-leading: 1.5;
+  --ui-space-1: var(--s1);
+  --ui-space-2: var(--s2);
+  --ui-space-3: var(--s3);
+  --ui-space-4: var(--s4);
+  --ui-space-6: var(--s6);
+  --ui-space-8: var(--s8);
+  --ui-control-sm: 28px;
+  --ui-control-md: 32px;
+  --ui-control-lg: 40px;
+  --ui-icon-small: 12px;
+  --ui-icon-compact: 14px;
+  --ui-icon: 16px;
+  --ui-icon-large: 20px;
+  --ui-icon-stroke: 1.5;
+  --ui-border-width: 1px;
+  --ui-focus-width: 2px;
+  --ui-focus-offset: 2px;
+  --ui-radius-control: var(--r-sm);
+  --ui-radius-card: var(--r-md);
+  --ui-radius-chip: var(--r-xs);
+  --ui-muted: var(--ink-2);
+  --ui-on-accent: var(--on-accent);
+  --ui-scrim-opacity: 1;
+  /* Граница поля ввода — единственная, которой нужен контраст 3:1. */
+  --ui-control-border: var(--line-field);
+  --ui-control-line: var(--line-field);
+  --ui-surface-line: var(--line-strong);
+  --ui-control-fill: var(--bg-chip);
+  --ui-focus: var(--focus);
+  --ui-segment-pad: var(--s-half);
+  --ui-segment-radius: var(--r-pill);
+  --ui-segment-item-radius: var(--r-pill);
+  --ui-danger: var(--danger);
+  --ui-success: var(--ok);
+  --ui-disabled-opacity: .45;
+  --ui-shadow-overlay: var(--shadow-pop);
+  --ui-tooltip-layer: 3000;
+  --ui-tooltip-delay: 130ms;
+  --ui-panel-width: 460px;
+  --ui-tooltip-width: 280px;
+  --ui-qr-size: 176px;
+  --ui-catalog-width: 1040px;
+  --ui-catalog-column: 280px;
+  --ui-dialog-margin: 48px;
+  --ui-switch-width: 36px;
+  --ui-switch-height: 22px;
+  --ui-switch-thumb: 16px;
+  --ui-switch-travel: 14px;
+}
+
+/* ═══════════════ СВЕТЛАЯ ТЕМА ═══════════════
+   Те же роли, перевёрнутые по светлоте; псевдонимы следуют сами. Контраст на
+   --bg: ink 16,2 · ink-2 10,7 · ink-3 7,3 · ink-4 5,5 · accent 5,3 · ok 5,7 ·
+   warn 6,1 · danger 6,1. Статусы держат 4,5 и на своей подложке, и на
+   --bg-active (Э7): не возвращать прежние #137a3a/#975506/#bf2c26. */
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg:           #f8f6f3;
+
+  --bg-sunken:    #f0ece7;
+
+  --bg-sidebar:   #f2efea;
+
+  --bg-raised:    #ffffff;
+
+  --bg-hover:     #ece8e3;
+
+  --bg-active:    #e1dcd5;
+
+  --bg-chip:      #efebe6;
+
+  --ink:          #1c1917;
+
+  --ink-2:        #3d3833;
+
+  --ink-3:        #57504a;
+
+  --ink-4:        #6b635c;
+
+  --ink-disabled: #aaa29a;
+
+  --line-subtle:  #ebe6e0;
+
+  --line:         #e0dad3;
+
+  --line-strong:  #cfc8c0;
+
+  --line-field:   #8c847c;
+
+  --spark:        #e8662a;
+
+  --accent:       #b83c0a;
+
+  --accent-hover: #9c3207;
+
+  --accent-soft:  color-mix(in srgb, var(--accent) 10%, transparent);
+
+  --on-accent:    #ffffff;
+
+  --on-danger:    #ffffff;
+
+  --ok:           #117035;
+
+  --warn:         #8b4e06;
+
+  --danger:       #b02823;
+  /* Сплошное кольцо: полупрозрачное на светлом давало 2,4:1 */
+  --focus:        var(--accent);
+  --scrim:        rgb(28 25 23 / .28);
+  --shadow-pop:      0 0 0 1px #e0dad3, 0 16px 40px -14px rgb(28 25 23 / .22);
+  --shadow-composer: 0 0 0 1px rgb(28 25 23 / .02), 0 12px 32px -18px rgb(28 25 23 / .28);
+  --shadow-drawer:   -1px 0 0 #e0dad3, -24px 0 48px -24px rgb(28 25 23 / .22);
+  --contact:         0 1px 2px rgb(28 25 23 / .12);
+  --viz-in:    #2f6fe0;
+  --viz-out:   #c2410c;
+  --viz-cache: #0e8a72;
+  --field-bg: rgb(28 25 23 / .035); --field-bg-focus: rgb(255 255 255 / .9); --field-line: rgb(28 25 23 / .13);
+  --field-line-hover: rgb(28 25 23 / .24); --field-dash: rgb(28 25 23 / .26);
+  --code-base:      #3d3833;
+  --code-kw:        #a5420f;
+  --code-fn:        #2a5ea6;
+  --code-key:       #85570a;
+  --code-str:       #3d7428;
+  --code-comment:   #6b635c;
+  --inline-bg:      color-mix(in srgb, #6b3fa0 8%, transparent);
+  --inline-fg:      #5c3690;
+}
+
+/* ═══════════════ ПОДСВЕТКА КОДА ═══════════════
+   Роли одни и те же — ключевое слово, имя, строка, число, комментарий, — а
+   значения выбираются в настройках. Схема живёт отдельно от темы. */
+
+:root[data-code="warm"] {
+  --code-kw:      #d9a05a;
+  --code-fn:      #e0b070;
+  --code-key:     #cbb08a;
+  --code-str:     #b6c48a;
+  --code-comment: #958d85;
+  --inline-fg:    #dfb37a;
+}
+:root[data-theme="light"][data-code="warm"] {
+  --code-kw:      #8a5a16;
+  --code-fn:      #8f6420;
+  --code-key:     #7b6323;
+  --code-str:     #5d6b1f;
+  --code-comment: #6b635c;
+  --inline-fg:    #8a5a16;
+}
+
+:root[data-code="cool"] {
+  --code-kw:      #87a8d8;
+  --code-fn:      #8fc3cf;
+  --code-key:     #a3b4c6;
+  --code-str:     #93c0b8;
+  --code-comment: #958d85;
+  --inline-fg:    #9fb8dc;
+}
+:root[data-theme="light"][data-code="cool"] {
+  --code-kw:      #2a5a9c;
+  --code-fn:      #1f6a7a;
+  --code-key:     #3a5a70;
+  --code-str:     #1f6b5f;
+  --code-comment: #6b635c;
+  --inline-fg:    #2a5a9c;
+}
+
+/* Без цвета: различает не оттенок, а насыщенность самого текста. */
+:root[data-code="mono"] {
+  --code-kw:      #f5f2ef;
+  --code-fn:      #d6d0ca;
+  --code-key:     #bcb5ab;
+  --code-str:     #aaa29a;
+  --code-comment: #958d85;
+  --inline-fg:    #d6d0ca;
+}
+:root[data-theme="light"][data-code="mono"] {
+  --code-kw:      #1d1a15;
+  --code-fn:      #34302a;
+  --code-key:     #4a453d;
+  --code-str:     #57504a;
+  --code-comment: #6b635c;
+  --inline-fg:    #34302a;
+}

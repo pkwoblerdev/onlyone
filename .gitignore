@@ -1,6 +1,7 @@
 # Build executables are distributed through Releases, not Git
 *.exe
 *.exe.blockmap
+*.zip
 **/node_modules/
 **/.env
 **/.env.*

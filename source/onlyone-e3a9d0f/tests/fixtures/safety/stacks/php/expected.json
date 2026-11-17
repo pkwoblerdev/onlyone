@@ -1,0 +1,8 @@
+{
+  "stack": "php",
+  "findings": [
+    "tests/FakeGreenTest.php:9:skipped",
+    "tests/FakeGreenTest.php:15:tautology"
+  ],
+  "honest": ["tests/HonestTest.php"]
+}

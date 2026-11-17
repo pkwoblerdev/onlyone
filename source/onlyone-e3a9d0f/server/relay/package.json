@@ -1,0 +1,8 @@
+{
+  "name": "onlyone-relay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Посредник удалённого управления onlyone: пересылает зашифрованные пакеты между компьютером и телефоном и ничего не хранит",
+  "main": "relay.js",
+  "dependencies": { "ws": "^8.18.0" }
+}

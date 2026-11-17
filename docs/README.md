@@ -2,6 +2,7 @@
 
 - [Project overview / Описание проекта](../README.md)
 - [Release status / Статус выпуска](RELEASE-STATUS.md)
+- [GitHub updates / Обновления через GitHub](GITHUB-UPDATES.md)
 - [Privacy draft / Черновик конфиденциальности](PRIVACY.md)
 - [Usage and licenses / Использование и лицензии](TERMS.md)
 - [Security / Безопасность](SECURITY.md)

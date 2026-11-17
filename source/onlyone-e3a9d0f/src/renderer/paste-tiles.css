@@ -1,0 +1,119 @@
+/* Плитки вставки над полем ввода и в отправленном сообщении; строка снимка в ходе мысли агента.
+ * Только токены дизайн-системы. Крестик виден по наведению и по фокусу, а на касании — всегда: без наведения убрать плитку
+ * было бы нечем. */
+
+.attachment-tile {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  width: calc(var(--ui-control-lg) * 2.8);
+  height: calc(var(--ui-control-lg) * 2.8);
+  border: var(--ui-border-width) solid var(--ui-control-line);
+  border-radius: var(--ui-radius-card);
+  background: var(--bg-inset);
+  overflow: hidden;
+}
+.attachment-tile.has-error { border-color: var(--err); }
+
+/* Картинка занимает плитку целиком: миниатюру кладёт fillThumbnail на этот слот. */
+.attachment-tile .attachment-thumb.tile-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  background-color: var(--bg-inset);
+  background-size: cover;
+  background-position: center;
+}
+
+/* Вставленный текст: начало, обрезанное по плитке, и метка. Кегль мелкий — это узнавание, а не чтение. */
+.attachment-tile .tile-text {
+  position: absolute;
+  inset: 0;
+  padding: var(--ui-space-3) var(--ui-space-3) calc(var(--ui-space-6) + var(--ui-space-2));
+  font-family: var(--font-mono);
+  font-size: var(--ui-size-mono);
+  line-height: 1.45;
+  color: var(--text-3);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0) 55%, transparent 88%);
+  mask-image: linear-gradient(to bottom, rgb(0 0 0) 55%, transparent 88%);
+}
+.attachment-tile .tile-badge {
+  position: absolute;
+  left: var(--ui-space-2);
+  bottom: var(--ui-space-2);
+  padding: 2px var(--ui-space-2);
+  border: var(--ui-border-width) solid var(--ui-control-line);
+  border-radius: var(--ui-radius-chip);
+  background: var(--bg-raised-2);
+  font-size: var(--ui-size-mono);
+  font-weight: var(--ui-weight-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-2);
+}
+
+.attachment-tile .tile-remove {
+  position: absolute;
+  top: var(--ui-space-1);
+  left: var(--ui-space-1);
+  width: calc(var(--ui-control-sm) - var(--ui-space-1));
+  height: calc(var(--ui-control-sm) - var(--ui-space-1));
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: var(--ui-border-width) solid var(--ui-control-line);
+  border-radius: 50%;
+  background: var(--bg-raised-2);
+  color: var(--text-2);
+  opacity: 0;
+  transition: opacity var(--dur-hover) ease, background-color var(--dur-hover) ease;
+}
+.attachment-tile .tile-remove .icon { width: var(--ui-icon-small); height: var(--ui-icon-small); }
+.attachment-tile:hover .tile-remove,
+.attachment-tile:focus-within .tile-remove,
+.attachment-tile .tile-remove:focus-visible { opacity: 1; }
+.attachment-tile .tile-remove:hover { background: var(--bg-hover); color: var(--text); }
+.attachment-tile .tile-remove:focus-visible { outline: var(--ui-focus-width) solid var(--ui-focus); outline-offset: 1px; }
+@media (hover: none) { .attachment-tile .tile-remove { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .attachment-tile .tile-remove { transition: none; } }
+
+/* В отправленном сообщении плитки меньше и без крестика: убирать там нечего. */
+.attachment-strip.sent .attachment-tile {
+  width: calc(var(--ui-control-lg) * 2.4);
+  height: calc(var(--ui-control-lg) * 2.4);
+}
+.attachment-strip.sent .attachment-tile .tile-badge {
+  left: var(--ui-space-1);
+  bottom: var(--ui-space-1);
+  padding: 1px var(--ui-space-1);
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+.attachment-strip.sent .attachment-tile .tile-remove { display: none; }
+
+/* Снимок страницы в ходе мысли агента: уменьшенная копия того, что он увидел, прямо под строкой шага. Лежит внутри строки
+   (summary), чтобы быть видной и в закрытом шаге; строка с кадром растёт по высоте. */
+.think.rail-step.has-shot > .rail-line { flex-wrap: wrap; height: auto; min-height: var(--ui-control-md); align-content: flex-start; }
+.think.rail-step.has-shot > .rail-line > .rail-verb,
+.think.rail-step.has-shot > .rail-line > .rail-target,
+.think.rail-step.has-shot > .rail-line > .rail-meta { line-height: var(--ui-control-md); }
+.think.rail-step.has-shot > .rail-line > .rail-dot { top: var(--ui-space-1); }
+.rail-shot-row { flex: 0 0 100%; }
+.rail-shot {
+  display: block;
+  box-sizing: border-box;
+  max-width: calc(var(--ui-control-lg) * 6);
+  max-height: calc(var(--ui-control-lg) * 4.5);
+  margin: var(--ui-space-1) 0 var(--ui-space-2);
+  border: var(--ui-border-width) solid var(--ui-control-line);
+  border-radius: var(--ui-radius-control);
+  background: var(--bg-inset);
+  object-fit: cover;
+}

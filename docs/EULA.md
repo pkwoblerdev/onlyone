@@ -1,6 +1,6 @@
 # Usage and licenses / Использование и лицензии
 
-**Draft for the 1.3.38 source candidate.**
+**Draft for the 1.3.39 source candidate.**
 
 The project source is offered under the Apache License 2.0 where applicable; see `LICENSE` and `NOTICE`. Third-party components and assets may have their own licenses and attribution requirements; see `THIRD-PARTY-NOTICES.md` and the notices accompanying the specific distribution. This text does not replace or restrict the rights granted by those licenses.
 
@@ -12,7 +12,7 @@ The source license contains its own warranty and liability provisions, subject t
 
 ---
 
-**Черновик для кандидата исходного кода 1.3.38.**
+**Черновик для кандидата исходного кода 1.3.39.**
 
 Исходный код проекта предлагается на условиях Apache License 2.0 там, где она применима; см. `LICENSE` и `NOTICE`. Сторонние компоненты и материалы могут распространяться на собственных условиях и требовать указания авторства: см. `THIRD-PARTY-NOTICES.md` и уведомления, прилагаемые к конкретному дистрибутиву. Этот текст не заменяет лицензии и не ограничивает предоставленные ими права.
 

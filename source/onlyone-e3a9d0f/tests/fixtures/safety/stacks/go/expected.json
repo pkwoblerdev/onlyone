@@ -1,0 +1,8 @@
+{
+  "stack": "go",
+  "findings": [
+    "fake_green_test.go:6:skipped",
+    "fake_green_test.go:14:skipped"
+  ],
+  "honest": ["honest_test.go"]
+}

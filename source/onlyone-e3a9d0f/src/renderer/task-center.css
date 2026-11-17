@@ -1,0 +1,301 @@
+.task-center-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.task-center-shell {
+  width: min(100%, 920px);
+  margin: 0 auto;
+}
+
+.task-center-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.task-center-title {
+  color: var(--text-main);
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.task-center-description {
+  max-width: 620px;
+  margin-top: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.task-center-count {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.task-center-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.task-center-search {
+  min-width: 0;
+  height: 38px;
+  flex: 1;
+  padding: 0 12px;
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-md);
+  outline: none;
+  background: var(--bg-card);
+  color: var(--text-main);
+  font-size: 13px;
+}
+
+.task-center-search:focus-visible {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.task-center-filters {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.task-center-filter {
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.task-center-filter:hover { color: var(--text-main); }
+.task-center-filter[aria-pressed="true"] {
+  background: var(--bg-active);
+  color: var(--text-main);
+}
+
+.task-center-list {
+  display: grid;
+  gap: 8px;
+}
+
+.task-center-item {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 68px;
+  padding: 12px 16px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  text-align: left;
+}
+
+.task-center-item:hover {
+  border-color: var(--border-medium);
+  background: var(--bg-card-hover);
+}
+
+.task-center-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.task-center-status {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.task-center-item.status-running .task-center-status { background: var(--accent); }
+.task-center-item.status-waiting .task-center-status { background: var(--color-amber); }
+.task-center-item.status-problem .task-center-status,
+.task-center-item.status-interrupted .task-center-status { background: var(--err-soft); }
+.task-center-item.status-complete .task-center-status { background: var(--ok); }
+
+.task-center-copy { display: grid; min-width: 0; gap: 4px; }
+.task-center-copy .task-center-title {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-center-meta,
+.task-center-detail,
+.task-center-state {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.task-center-detail { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* Состояние не ставится в одну строку: английская подпись «There is a problem»
+ * в колонке `auto` съела бы заголовок работы целиком. */
+.task-center-state { padding-left: 12px; text-align: right; overflow-wrap: anywhere; }
+
+.task-center-empty {
+  display: grid;
+  min-height: 220px;
+  align-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 28px;
+  border: 1px dashed var(--border-medium);
+  border-radius: var(--radius-lg);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Состояние «читаю»: пустой экран неотличим от экрана, где ничего нет, поэтому
+ * первая загрузка говорит о себе словами и заготовками строк. Пульс свой, а не
+ * общий из index.css: раздел не должен молча умереть, если там переименуют
+ * анимацию. */
+@keyframes taskCenterPulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+
+.task-center-loading {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.task-center-loading span { animation: taskCenterPulse 1.4s ease-in-out infinite; }
+
+.task-center-skeleton {
+  height: 68px;
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  animation: taskCenterPulse 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .task-center-loading span,
+  .task-center-skeleton { animation: none; opacity: 0.7; }
+}
+
+.task-center-empty strong { color: var(--text-main); font-size: 14px; font-weight: 500; }
+.task-center-empty span:last-child { max-width: 420px; font-size: 12px; }
+.task-center-empty-mark { color: var(--accent); font-size: 22px; line-height: 1; }
+
+@media (max-width: 640px) {
+  .task-center-page { padding: 20px 16px; }
+  .task-center-head { align-items: flex-start; }
+  .task-center-tools { align-items: stretch; flex-direction: column; }
+  .task-center-filters { width: fit-content; max-width: 100%; overflow-x: auto; }
+  .task-center-item { grid-template-columns: 8px minmax(0, 1fr); }
+  .task-center-state { grid-column: 2; padding: 0; }
+}
+
+/* The task index is a companion to the live chat, not another full-page route. */
+body.task-center-open .main-content { flex-direction: row; }
+body.task-center-open #chatView { min-width: 0; }
+body.task-center-open #taskCenterView {
+  flex: 0 0 clamp(340px, 34vw, 460px);
+  min-width: 0;
+  border-left: 1px solid var(--border-subtle);
+  background: var(--bg-sidebar);
+}
+body.task-center-open .task-center-page { padding: 16px; }
+body.task-center-open .task-center-shell { width: 100%; }
+body.task-center-open .task-center-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 8px;
+  margin-bottom: 16px;
+}
+body.task-center-open .task-center-head .page-title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 500;
+}
+body.task-center-open .task-center-head .page-desc { display: none; }
+body.task-center-open .task-center-count { grid-column: 1; grid-row: 2; }
+body.task-center-open .task-center-close { grid-column: 2; grid-row: 1 / span 2; }
+body.task-center-open .task-center-tools { flex-direction: column; align-items: stretch; gap: 12px; }
+/* `flex: 1` was inherited from the wide-page search row: in a column it
+   shrank the actual input to a thin line while leaving the placeholder clipped. */
+body.task-center-open .task-center-search {
+  flex: 0 0 38px;
+  width: 100%;
+  height: 38px;
+  font-family: var(--font-ui);
+  font-size: 13px;
+}
+body.task-center-open .task-center-filters { max-width: 100%; overflow-x: auto; }
+body.task-center-open .task-center-item {
+  grid-template-columns: 8px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 8px;
+  min-height: 0;
+  padding: 12px;
+}
+body.task-center-open .task-center-status { margin-top: 4px; }
+body.task-center-open .task-center-copy { gap: 4px; }
+body.task-center-open .task-center-copy .task-center-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+body.task-center-open .task-center-meta { font-size: 12px; line-height: 1.4; }
+/* Agent names and transient progress remain in the task data, but not in the
+   compact overview. Opening the task shows the full run. */
+body.task-center-open .task-center-detail { display: none; }
+body.task-center-open .task-center-state {
+  grid-column: 3;
+  padding: 0;
+  max-width: 100px;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  body.task-center-open #chatView { display: none; }
+  body.task-center-open #taskCenterView { flex: 1 1 auto; }
+}
+@media (max-width: 700px) {
+  body.task-center-open .task-center-item { grid-template-columns: 8px minmax(0, 1fr); }
+  body.task-center-open .task-center-state { grid-column: 2; grid-row: 2; max-width: none; text-align: left; }
+}
+
+/* Очередь фоновых работ. Ряд — та же карточка плюс то, чего нет у
+   хода чата: полоса работы, причина отказа и кнопки действий. Кнопки берут вид
+   у `btn-secondary`, здесь только то, без чего ряд рассыпается. */
+.task-center-row { display: flex; flex-direction: column; gap: 8px; }
+.task-center-progress { display: block; height: 3px; border-radius: var(--radius-sm); background: var(--bg-sidebar); overflow: hidden; }
+.task-center-progress-fill { display: block; height: 100%; background: var(--accent); }
+.task-center-error { font-size: 12px; line-height: 1.35; color: var(--color-amber); }
+.task-center-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.task-center-action { font-family: var(--font-ui); }
